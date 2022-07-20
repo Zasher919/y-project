@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="text" id="input" />
+    <button id="btn">提交</button>
+    <script>
+      var input = document.querySelector("#input");
+      var btn = document.querySelector("#btn");
+      function throttle(fn, time) {
+        let timeout = null;
+        return function () {
+          let _this = this;
+          let args = arguments;
+          if (timeout) {
+            clearTimeout(timeout);
+          }
+          timeout = setTimeout(fn, time);
+        };
+      }
+      input.addEventListener(
+        "input",
+        throttle(function () {
+          console.log("1");
+        }, 1000)
+      );
+      console.log("value", input, btn);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      class Event {
+        constructor() {
+          this.events = {};
+        }
+
+        on(type, cb) {
+          (this.events[type] || (this.events[type] = [])).push(cb);
+          console.log("on", this.events);
+        }
+
+        emit(type, args) {
+          // debugger;
+          this.events[type] &&
+            this.events[type].forEach((fn) => {
+              // console.log(fn, "fn");
+              fn.call(this, args);
+              // fn(args);
+            });
+        }
+
+        // 原版
+        // on(type, cb) {
+        //   (this.events[type] || (this.events[type] = [])).push({
+        //     listener: cb,
+        //   });
+        //   console.log("on", this.events[type]);
+        // }
+
+        // emit(type, args) {
+        //   // debugger;
+        //   this.events[type] &&
+        //     this.events[type].forEach((e) => {
+        //       console.log("e", e);
+        //       e.listener(args);
+        //       if (type === "once") {
+        //         this.off(type, e.listener);
+        //       }
+        //     });
+        // }
+
+        once(type, listener) {
+          this.events[type] = this.events[type] || [];
+
+          this.events[type].push({ listener, once: true });
+        }
+
+        off(type, cb) {
+          if (this.events[type]) {
+            this.events[type] = this.events[type].filter(
+              (item) => item.listener !== cb
+            );
+          }
+        }
+      }
+
+      let e = new Event();
+
+      // e.on("aaa", (a) => {
+      //   console.log("a", a);
+      // });
+
+      // e.emit("aaa", { id: 15 });
+      /*
+      e.on("ccc", (a) => {
+        console.log("c", a);
+      });
+      */
+
+      // e.emit("cccsa", { id: 10 });
+    </script>
+  </body>
+</html>

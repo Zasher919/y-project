@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let tags = "div,ui,li,p,span".split(",");
+
+      function testFun(keys) {
+        let set = {};
+        keys.forEach((key) => (set[key] = true));
+        console.log("set", set);
+
+        return function (tagName) {
+          console.log("bibao", tagName.toLowerCase());
+          return !!set[tagName.toLowerCase()];
+        };
+      }
+
+      let initName = testFun(tags);
+
+      console.log("ccc", initName("div"));
+    </script>
+  </body>
+</html>

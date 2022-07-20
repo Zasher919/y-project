@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var obj = {
+        name: "张三",
+        age: 18,
+        gander: "nan",
+      };
+
+      let obja = {};
+
+      let abval;
+      // 对象响应式
+      Object.defineProperty(obja, "aaa", {
+        configurable: true, // 可配置,
+        enumerable: true, // 可枚举
+        get() {
+          return abval;
+        },
+        set(val) {
+          //   console.log("val", val);
+          abval = val;
+        },
+      });
+
+      function reactive(obj, key, value) {
+        console.log("value", value);
+        Object.defineProperty(obj, key, {
+          configurable: true,
+          enumerable: true,
+          get() {
+            console.log("get", value);
+            return value;
+          },
+          set(val) {
+            console.log("set", val);
+            value = val;
+          },
+        });
+      }
+
+      let keys = Object.keys(obj);
+      for (let i = 0; i < keys.length; i++) {
+        let key = keys[i];
+        console.log("key", keys[i]);
+        reactive(obj, key, obj[key]);
+      }
+      //   console.log("keys", keys);
+      // 遍历对象响应式
+    </script>
+  </body>
+</html>

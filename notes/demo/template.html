@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="root">
+      <!-- <div>
+          <p>{{name}}-{{message}}</p>
+        </div> -->
+      <p>{{name}}</p>
+      <p>{{message}}</p>
+    </div>
+
+    <script>
+      let rstr = /\{\{(.+?)\}\}/g;
+      //   let tmpNode = document.querySelector("#root");
+      let tmpNode = document.querySelector("#root");
+
+      let data = {
+        name: "张三",
+        message: "18",
+      };
+      //   let rstr = /\{\{(.+?)\}\}/g;
+
+      function tmpChangeData(template, data) {
+        let childNodes = template.childNodes; // 取子元素
+
+        console.log("child", childNodes);
+
+        for (let i = 0; i < childNodes.length; i++) {
+          let type = childNodes[i].nodeType;
+
+          if (type === 3) {
+            let txt = childNodes[i].nodeValue; // 取到模版
+
+            txt = txt.replace(rstr, function (_, g) {
+              let key = g.trim(); // 写在双花括号里面的 东西
+              let value = data[key];
+
+              return value;
+            });
+
+            console.log("txt", txt);
+            childNodes[i].nodeValue = txt;
+          } else if (type === 1) {
+            tmpChangeData(childNodes[i], data);
+          }
+        }
+      }
+
+      // 利用 模板生成一个 需要被渲染的 HTML 标签 ( 准 真正在页面中显示的 标签 )
+      let generateNode = tmpNode.cloneNode(true); // 注意这里是 DOM 元素, 可以这么用
+
+      console.log("generateNode", generateNode);
+
+      // console.log( tmpNode );
+      tmpChangeData(generateNode, data); // 将 坑 替换掉
+      // console.log( generateNode );
+
+      // 我们此时是没有生成 新的 template, 所以这里看到的 是直接在页面中就更新的数据, 因为 DOM 是引用类型
+      // 这样做 模板就没有了
+
+      // 4. 将 渲染好的 HTML 加到页面中
+      root.parentNode.replaceChild(generateNode, root);
+
+      // 上面的思路有很大的问题:
+      // 1. Vue 使用的 虚拟 DOM
+      // 2. 只考虑了 单属性 ( {{ name }} ), 而 Vue 中大量的使用层级 ( {{ child.name.firstName }} )
+      // 3. 代码没有整合
+    </script>
+  </body>
+</html>
