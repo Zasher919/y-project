@@ -1,5 +1,3 @@
-
-
 <template>
   <div class="product-detail">
     <s-header :name="'商品详情'"></s-header>
@@ -28,10 +26,7 @@
           <li>安装服务</li>
           <li>常见问题</li>
         </ul>
-        <div
-          class="product-content"
-          v-html="detail.content || ''"
-        ></div>
+        <div class="product-content" v-html="detail.content || ''"></div>
       </div>
     </div>
     <van-action-bar>
@@ -53,7 +48,14 @@
 </template>
 
 <script>
-import { reactive, onMounted, computed, toRefs, nextTick, getCurrentInstance } from "vue";
+import {
+  reactive,
+  onMounted,
+  computed,
+  toRefs,
+  nextTick,
+  getCurrentInstance
+} from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 // import { getDetail } from "@/service/good";
@@ -66,7 +68,7 @@ export default {
     const route = useRoute();
     const router = useRouter();
     const store = useStore();
-    const {proxy} = getCurrentInstance()
+    const { proxy } = getCurrentInstance();
 
     const state = reactive({
       imgList: [],
@@ -74,18 +76,17 @@ export default {
       // detail: {
       //   goodsCarouselList: [], // 多张图轮播
       // },
-      detail: {
-      },
+      detail: {}
     });
 
     onMounted(async () => {
       const { id } = route.params;
-      console.log(id,'id');
-      let data= await proxy.$api.http("get", `api/products/`+id);
+      console.log(id, "id");
+      let data = await proxy.$api.http("get", `api/products/` + id);
       // console.log("data", data.data.productCoverImg);
       // data.goodsCarouselList = data.goodsCarouselList.map(i => prefix(i))
-      state.imgList.push({url:state.imgHeadUrl + data.pic});
-      console.log(state.imgList,'state.imgList');
+      state.imgList.push({ url: state.imgHeadUrl + data.pic });
+      console.log(state.imgList, "state.imgList");
       state.detail = data;
       // store.dispatch("updateCart");
     });
@@ -105,10 +106,31 @@ export default {
     };
 
     const handleAddCart = async () => {
+      // let submitFrom = {
+      // 			userId: user.id,
+      // 			productId: this.info.id,
+      // 			productName: this.info.name,
+      // 			productImg: this.info.pic || '无',
+      // 			productPrice: this.info.price || 0,
+      // 			productTag: this.info.productTag || '无',
+      // 			isCollect: this.isIcon
+      // 		};
+
+      //     console.log(submitFrom);
+
+      // console.log(submitFrom);
+      // let { code } = await this.$http('POST', 'api/h5/cart/add', submitFrom);
+      // if (code == 200) {
+      // 	this.$refs['toast'].open({
+      // 		position: 'middle',
+      // 		message: '添加成功'
+      // 	});
+      // }
+
       console.log("state.detail", state.detail);
       const { resultCode } = await addCart({
         goodsCount: 1,
-        goodsId: state.detail.id,
+        goodsId: state.detail.id
       });
       if (resultCode == 200) Toast.success("添加成功");
       store.dispatch("updateCart");
@@ -131,12 +153,12 @@ export default {
       goTo,
       handleAddCart,
       goToCart,
-      count,
+      count
     };
   },
   components: {
-    sHeader,
-  },
+    sHeader
+  }
 };
 </script>
 
