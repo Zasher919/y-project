@@ -8,6 +8,6 @@ export class MobileController {
 
   @Get()
   async test() {
-    return await 'test'
+    return await 'mobiletest'
   }
 }

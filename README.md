@@ -1,4 +1,4 @@
-# GiiBee CMS
+<!-- # GiiBee CMS
 
 > The CMS system developed by nest.js based on node.js and nuxt.js based on vue.js is used to implement SSR server-side rendering and generate static HTML, which is conducive to SEO.Suitable for enterprises to build SEO-type websites.
 
@@ -12,7 +12,7 @@ English | [简体中文](./README.zh-CN.md)
 
 1. Create the `nest_cms_api` table;
 
-2. Use MySql command or management software to import the `.sql` file in the `DB` directory.
+2. Use MySql command or management software to import the `.sql` file in the `DB` directory. -->
 
 ### CMS API server
 
@@ -75,7 +75,7 @@ $ npm run generate
 * Serve: [http://localhost:3001/](http://localhost:3001/)
 
 
-## Features
+<!-- ## Features
 
 * NestJS + MySql output API.
 * API calls sensitive operation records IP, administrator and client information.
@@ -116,4 +116,4 @@ $ npm run generate
 
 ## License
 
-[Apache License 2.0](LICENSE).
+[Apache License 2.0](LICENSE). -->
