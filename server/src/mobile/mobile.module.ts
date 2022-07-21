@@ -7,10 +7,11 @@ import { MobileService } from './mobile.service'
 import { H5UserModule } from './h5users/h5-user.module'
 import { H5OperateModule } from './h5ProductOperate/h5-operate.module'
 import { ProductModule } from './product/product.module'
+import { ProductCategoriesModule } from 'src/web/product-categories/product-categories.module'
 
 
 @Module({
-  imports: [ProductModule,H5UserModule,H5OperateModule],
+  imports: [ProductModule,H5UserModule,H5OperateModule,ProductCategoriesModule],
   providers: [MobileService],
   exports: [MobileService],
   controllers: [MobileController],

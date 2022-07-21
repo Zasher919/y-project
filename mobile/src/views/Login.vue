@@ -147,6 +147,7 @@ export default {
         });
 
         sessionStorage.setItem("tokenH", JSON.stringify(data.access_token));
+        sessionStorage.setItem("userInfo", JSON.stringify(data.userinfo));
 
         console.log("res", JSON.stringify(data.access_token));
         // return;

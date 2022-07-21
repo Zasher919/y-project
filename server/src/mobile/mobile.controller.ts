@@ -2,12 +2,17 @@
 import { Controller, Get } from '@nestjs/common'
 import { MobileService } from './mobile.service'
 
-@Controller('h5')
+@Controller('/api/h5')
 export class MobileController {
   constructor(private readonly MobileService: MobileService) {}
 
-  @Get()
+  @Get('test')
   async test() {
-    return await 'mobiletest'
+    return  'mobiletest'
+  }
+
+  @Get('loginout')
+  async loginout() {
+    return await this.MobileService.loginout()
   }
 }

@@ -1,12 +1,4 @@
-<!--
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本系统已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2020 陈尼克 all rights reserved.
- * 版权所有，侵权必究！
- *
--->
+
 
 <template>
   <div class="seting-box">
@@ -22,17 +14,20 @@
 </template>
 
 <script>
-import { reactive, onMounted, toRefs } from 'vue'
+import { reactive, onMounted, toRefs, getCurrentInstance } from 'vue'
 import md5 from 'js-md5'
 import sHeader from '@/components/SimpleHeader'
-import { getUserInfo, EditUserInfo, logout } from '@/service/user'
-import { setLocal } from '@/common/js/utils'
+import { getUserInfo, EditUserInfo } from '@/service/user'
+// import { setLocal } from '@/common/js/utils'
 import { Toast } from 'vant'
 export default {
   components: {
     sHeader
   },
   setup() {
+
+    const { proxy } = getCurrentInstance()
+
     const state = reactive({
       nickName: '',
       introduceSign: '',
@@ -58,11 +53,14 @@ export default {
     }
 
     const handleLogout = async () => {
-      const { resultCode } = await logout()
-      if (resultCode == 200) {
-        setLocal('token', '')
-        window.location.href = '/home'
-      }
+      const { resultCode } = await proxy.$api.http("get", `/api/h5/loginout`);
+      console.log('resultCode',resultCode);
+      sessionStorage.removeItem('userInfo')
+      window.location.href = '/home'
+      // if (resultCode == 200) {
+      //   setLocal('token', '')
+      //   window.location.href = '/home'
+      // }
     }
 
     return {

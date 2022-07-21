@@ -12,7 +12,7 @@ import { CreateH5OperateDto } from './dto/create-h5-operate.dto'
 
 import { FindOperateListDto } from './dto/find-h5-operate.dto'
 
-@ApiTags('h5登录注册')
+@ApiTags('h5添加到购物车')
 @ApiExtraModels(ResultData, H5OperateEntity)
 @Controller('api/h5/cart')
 export class H5OperateController {
