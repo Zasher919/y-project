@@ -4,9 +4,11 @@ import { Module } from '@nestjs/common'
 import { H5OperateEntity } from './h5-operate.entity'
 import { H5OperateService } from './h5-operate.service'
 import { H5OperateController } from './h5-operate.controller'
+import { ProductCategoriesModule } from 'src/web/product-categories/product-categories.module'
+
 
 @Module({
-  imports: [TypeOrmModule.forFeature([H5OperateEntity])],
+  imports: [TypeOrmModule.forFeature([H5OperateEntity]),],
   providers: [H5OperateService],
   controllers: [H5OperateController],
   exports: [],

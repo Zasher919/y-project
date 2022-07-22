@@ -6,7 +6,6 @@ export class MobileService {
     constructor(private ProductCategoriesService: ProductCategoriesService) {}
     async loginout(){
         // return {msg:'ok'}
-
         return await this.ProductCategoriesService.getCount()
     }
 }

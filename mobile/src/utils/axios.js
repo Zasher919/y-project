@@ -3,11 +3,14 @@ import axios from 'axios'
 // import { Toast } from 'vant'
 import router from '../router'
 import { getToken } from './auth'
+import { Toast } from "vant";
 
 // axios.defaults.baseURL = process.env.NODE_ENV == 'development' ? '//backend-api-01.newbee.ltd/api/v1' : '//backend-api-01.newbee.ltd/api/v1'
 // axios.defaults.baseURL = '/'
 
-axios.defaults.baseURL = 'https://4h1s324364.qicp.vip'
+// axios.defaults.baseURL = 'https://4h1s324364.qicp.vip'
+axios.defaults.baseURL = 'http://localhost:7788/'
+
 // axios.defaults.withCredentials = true
 // axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest'
 // axios.defaults.headers['authorization'] = localStorage.getItem('token') || ''
@@ -50,11 +53,15 @@ axios.interceptors.response.use(
   },
   //接口错误状态处理，也就是说无响应时的处理
   err => {
-    console.log('err', err);
+    
     // console.log(err.response.data.code, '123');
     if (err.response.data.code == 401) {
-      router.replace('/')
+      console.log('err', err);
+    Toast('登录已过期')
+    router.replace('/login')
     }
+
+   
     // return Promise.reject(err.message) // 返回接口返回的错误信息
   })
 
@@ -76,10 +83,12 @@ axios.interceptors.request.use(
 
 axios.http = function (method, url, data) {
   let params = {}
-  if (method == 'get') {
+  if (method == 'GET') {
     params = { params: data }
-  } else if (method == 'post') {
+  } else if (method == 'POST') {
     params = { data: data }
+
+    console.log(params);
   }
 
   return new Promise((resolve, reject) => {

@@ -61,7 +61,7 @@ import { useStore } from "vuex";
 // import { getDetail } from "@/service/good";
 import { addCart } from "@/service/cart";
 import sHeader from "@/components/SimpleHeader";
-import { Toast } from "vant";
+// import { Toast } from "vant";
 // import { prefix } from "@/common/js/utils";
 export default {
   setup() {
@@ -76,11 +76,13 @@ export default {
       // detail: {
       //   goodsCarouselList: [], // 多张图轮播
       // },
-      detail: {}
+      detail: {},
+      userInfo:{}
     });
 
     onMounted(async () => {
       const { id } = route.params;
+      state.userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
       console.log(id, "id");
       let data = await proxy.$api.http("get", `api/products/` + id);
       // console.log("data", data.data.productCoverImg);
@@ -106,34 +108,14 @@ export default {
     };
 
     const handleAddCart = async () => {
-      // let submitFrom = {
-      // 			userId: user.id,
-      // 			productId: this.info.id,
-      // 			productName: this.info.name,
-      // 			productImg: this.info.pic || '无',
-      // 			productPrice: this.info.price || 0,
-      // 			productTag: this.info.productTag || '无',
-      // 			isCollect: this.isIcon
-      // 		};
-
-      //     console.log(submitFrom);
-
-      // console.log(submitFrom);
-      // let { code } = await this.$http('POST', 'api/h5/cart/add', submitFrom);
+      const { id } = route.params;
+      console.log(state.userInfo.id,id);
+      await proxy.$api.http('POST', 'api/h5/cart/add', { userId:state.userInfo.id,productId:id});
       // if (code == 200) {
-      // 	this.$refs['toast'].open({
-      // 		position: 'middle',
-      // 		message: '添加成功'
-      // 	});
+      // 	Toast.success("添加成功");
       // }
 
-      console.log("state.detail", state.detail);
-      const { resultCode } = await addCart({
-        goodsCount: 1,
-        goodsId: state.detail.id
-      });
-      if (resultCode == 200) Toast.success("添加成功");
-      store.dispatch("updateCart");
+      
     };
 
     const goToCart = async () => {

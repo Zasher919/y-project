@@ -9,11 +9,11 @@ module.exports = {
                 ws: true,
                 changeOrigin: true
             },
-            // '/api': {
-            //     target: 'http://10.225.10.63:9542',
-            //     ws: true,
-            //     changeOrigin: true
-            // },
+            '/api': {
+                target: 'http://localhost:7788',
+                ws: true,
+                changeOrigin: true
+            },
             // '/api': {
             //     target: 'http://49.232.20.32:5057/'
             // },
