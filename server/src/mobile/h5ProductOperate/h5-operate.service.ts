@@ -9,11 +9,14 @@ import { ResultData } from 'src/libs/result'
 
 import { CreateH5OperateDto } from './dto/create-h5-operate.dto'
 
+import { ProductsService } from 'src/web/products/product.service'
+
 @Injectable()
 export class H5OperateService {
   constructor(
     @InjectRepository(H5OperateEntity)
     private readonly H5OperateEntity: Repository<H5OperateEntity>,
+    private readonly ProductsService: ProductsService
   ) {}
 
   /** 新增购物车 */
@@ -40,9 +43,13 @@ export class H5OperateService {
   }
 
   async findCart(search: CreateH5OperateDto): Promise<ResultData> {
+   
     if (search.userId) {
+
       let result = await this.H5OperateEntity.find({ userId: search.userId })
-      return ResultData.ok(result)
+      let ids = result.map(v=>v.productId)
+      let datas = await this.ProductsService.findOneByIds(ids)
+      return ResultData.ok(datas) 
     }
 
     let result = await this.H5OperateEntity.find()
@@ -53,7 +60,7 @@ export class H5OperateService {
   async getCollect(search: CreateH5OperateDto): Promise<ResultData> {
     if (search.userId) {
       let result = await this.H5OperateEntity.find({ userId: search.userId })
-      result = result.filter((v) => v.isCollect != '0')
+      // result = result.filter((v) => v.isCollect != '0')
       console.log(result, 'result')
 
       return ResultData.ok(result)

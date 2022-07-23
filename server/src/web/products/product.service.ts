@@ -97,6 +97,11 @@ export class ProductsService {
       .getOne();
   }
 
+  // 根据多ID查找
+  async findOneByIds(ids: any): Promise<any> {
+    return this.productsRepository.findByIds(ids)
+  }
+
   // 数量
   async getCount() {
     return await this.productsRepository.count();

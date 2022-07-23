@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like, Raw, In } from 'typeorm';
 import { RemoveProductCategoriesDto } from './dto/remove-product-categories.dto';
 
+
 @Injectable()
 export class ProductCategoriesService {
   constructor(
@@ -100,6 +101,7 @@ export class ProductCategoriesService {
       .where([{ route: id }, { id }])
       .getOne();
   }
+
 
   // 数量
   async getCount() {

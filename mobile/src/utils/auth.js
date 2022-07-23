@@ -19,6 +19,10 @@ export function getToken() {
     return sessionStorage.getItem('tokenH')
 }
 
+export function removeTOken() {
+    return sessionStorage.removeItem('tokenH')
+}
+
 export function setRefreshToken(refreshToken) {
     sessionStorage.setItem('refresh-token', refreshToken)
 }

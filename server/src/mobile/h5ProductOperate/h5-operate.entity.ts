@@ -4,27 +4,12 @@ import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 export class H5OperateEntity {
   @PrimaryGeneratedColumn()
   id: number
-
   @Column()
   userId: string
-
   @Column()
   productId: string
-
-  @Column()                 
-  productImg: string
-
-  @Column()
-  productName: string
-
-  @Column()
-  productPrice: string
-
-  @Column()
-  productTag: string
-
-  @Column()
-  isCollect: string
+  // @Column()
+  // isCollect?: string
 
   // //   @ApiProperty({ type: Date, description: '创建时间' })
   // @CreateDateColumn({ type: 'timestamp', name: 'create_date', comment: '创建时间' })

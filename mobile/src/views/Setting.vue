@@ -18,8 +18,10 @@ import { reactive, onMounted, toRefs, getCurrentInstance } from 'vue'
 import md5 from 'js-md5'
 import sHeader from '@/components/SimpleHeader'
 import { getUserInfo, EditUserInfo } from '@/service/user'
-// import { setLocal } from '@/common/js/utils'
+import { removeTOken } from '@/utils/auth'
 import { Toast } from 'vant'
+import { useRouter } from 'vue-router';
+
 export default {
   components: {
     sHeader
@@ -27,6 +29,8 @@ export default {
   setup() {
 
     const { proxy } = getCurrentInstance()
+
+    const router = useRouter()
 
     const state = reactive({
       nickName: '',
@@ -56,7 +60,10 @@ export default {
       const { resultCode } = await proxy.$api.http("get", `/api/h5/loginout`);
       console.log('resultCode',resultCode);
       sessionStorage.removeItem('userInfo')
-      window.location.href = '/home'
+      removeTOken()
+
+      router.replace('/login')
+      // window.location.href = '/login'
       // if (resultCode == 200) {
       //   setLocal('token', '')
       //   window.location.href = '/home'
