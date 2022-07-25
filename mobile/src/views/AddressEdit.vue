@@ -1,12 +1,4 @@
-<!--
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本系统已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2020 陈尼克 all rights reserved.
- * 版权所有，侵权必究！
- *
--->
+
 
 <template>
   <div class="address-edit-box">
@@ -115,6 +107,18 @@ export default {
         detailAddress: content.addressDetail,
         defaultFlag: content.isDefault ? 1 : 0,
       }
+      
+      {
+    // "userName": "1111",
+    // "userPhone": "18888888888",
+    // "provinceName": "北京",
+    // "cityName": "北京市",
+    // "regionName": "东城区",
+    // "detailAddress": "大牌坊1010",
+    // "defaultFlag": 1
+}
+
+      console.log('params',params);
       if (state.type == 'edit') {
         params['addressId'] = state.addressId
       }

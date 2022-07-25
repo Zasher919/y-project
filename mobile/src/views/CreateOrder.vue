@@ -1,23 +1,15 @@
-<!--
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本系统已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2020 陈尼克 all rights reserved.
- * 版权所有，侵权必究！
- *
--->
+
 
 <template>
   <div class="create-order">
-    <s-header :name="'生成订单'" @callback="deleteLocal"></s-header>
+    <s-header :name="'确认购买'" @callback="deleteLocal"></s-header>
     <div class="address-wrap">
       <div class="name" @click="goTo">
-        <span>{{ address.userName }} </span>
-        <span>{{ address.userPhone }}</span>
+        <span>{{ address.userName || '张三' }} </span>
+        <span>{{ address.userPhone || '13888888888' }}</span>
       </div>
       <div class="address">
-        {{ address.provinceName }} {{ address.cityName }} {{ address.regionName }} {{ address.detailAddress }}
+        {{ address.provinceName || '地址1' }} {{ address.cityName || '地址1'}} {{ address.regionName || '地址1'}} {{ address.detailAddress|| '地址1' }}
       </div>
       <van-icon class="arrow" name="arrow" />
     </div>
