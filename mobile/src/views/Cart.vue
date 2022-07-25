@@ -89,13 +89,15 @@ export default {
       let userinfo = JSON.parse(sessionStorage.getItem("userInfo"));
       console.log(userinfo, "userinfo");
 
-      let data =
-        userinfo &&
-        (await proxy.$api.http("get", "api/h5/cart?userId=" + userinfo.id));
+      if(userinfo){
+        let res = await proxy.$api.http("get", "api/h5/cart?userId=" + userinfo.id  )
+        
+        if(res.code == 200){
+          state.list = res.data
+        }
+      }
 
-      state.list = data.data;
       // Toast.clear();
-      console.log(state.list, "datas");
 
     };
 

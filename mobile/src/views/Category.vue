@@ -60,7 +60,7 @@
             <div class="category-list">
               <p class="catogory-title">{{ category.name }}</p>
               <div class="product-item" @click="selectProduct(category)">
-                <img :src="imgApi + category.pic" class="product-img" />
+                <img :src="category.pic" class="product-img" />
               </div>
               <!-- </div> -->
             </div>
@@ -93,7 +93,8 @@ export default {
       categoryData: [],
       currentIndex: 0,
       rightData: [],
-      imgApi: process.env.VUE_APP_BASE_HOST
+      imgApi: 'https://4h1s324364.qicp.vip/',
+      // imgApi: process.env.VUE_APP_BASE_HOST
     });
 
     onMounted(async () => {
@@ -123,7 +124,7 @@ export default {
         category: row.id
       });
       console.log("res", data);
-      state.rightData = data;
+      state.rightData = data.map(v=>({...v,pic:state.imgApi+v.pic}));
       state.currentIndex = index;
     };
 

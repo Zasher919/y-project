@@ -72,7 +72,8 @@ export default {
 
     const state = reactive({
       imgList: [],
-      imgHeadUrl: process.env.VUE_APP_UPLOAD_API,
+      // imgHeadUrl: process.env.VUE_APP_UPLOAD_API,
+      imgHeadUrl: 'https://4h1s324364.qicp.vip/',
       // detail: {
       //   goodsCarouselList: [], // 多张图轮播
       // },
@@ -83,14 +84,9 @@ export default {
     onMounted(async () => {
       const { id } = route.params;
       state.userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
-      console.log(id, "id");
       let data = await proxy.$api.http("get", `api/products/` + id);
-      // console.log("data", data.data.productCoverImg);
-      // data.goodsCarouselList = data.goodsCarouselList.map(i => prefix(i))
       state.imgList.push({ url: state.imgHeadUrl + data.pic });
-      console.log(state.imgList, "state.imgList");
       state.detail = data;
-      // store.dispatch("updateCart");
     });
 
     nextTick(() => {
