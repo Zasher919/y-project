@@ -9,7 +9,10 @@ export class AddressEntity{
     userID: string
 
     @Column()
-    phoneNume: string
+    userName:  string
+
+    @Column()
+    phoneNum: string
 
     @Column()
     provinceName:  string
@@ -24,8 +27,8 @@ export class AddressEntity{
     detailAddress: string
 
     @Column()
-    defautlFLag: string
+    defaultFlag: number
 
     @Column()
-    createDate: string
+    createDate: Date
 }

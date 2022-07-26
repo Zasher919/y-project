@@ -19,10 +19,10 @@
 </template>
 
 <script>
-import { reactive, onMounted, toRefs } from 'vue'
+import { reactive, onMounted, toRefs, getCurrentInstance } from 'vue'
 import { Toast } from 'vant'
 import sHeader from '@/components/SimpleHeader'
-import { addAddress, EditAddress, DeleteAddress, getAddressDetail } from '@/service/address'
+import {  DeleteAddress, getAddressDetail } from '@/service/address'
 import { tdist } from '@/common/js/utils'
 import { useRoute, useRouter } from 'vue-router'
 export default {
@@ -32,6 +32,7 @@ export default {
   setup() {
     const route = useRoute()
     const router = useRouter()
+    const {proxy} = getCurrentInstance()
     const state = reactive({
       areaList: {
         province_list: {},
@@ -46,6 +47,7 @@ export default {
     })
 
     onMounted(async () => {
+    
       // 省市区列表构造
       let _province_list = {}
       let _city_list = {}
@@ -98,9 +100,12 @@ export default {
     })
 
     const onSave = async (content) => {
+      let userinfo = JSON.parse(sessionStorage.getItem("userInfo"));
+      console.log(userinfo,'userinfo');
       const params = {
+        userID:userinfo.id,
         userName: content.name,
-        userPhone: content.tel,
+        phoneNum: content.tel,
         provinceName: content.province,
         cityName: content.city,
         regionName: content.county,
@@ -108,7 +113,7 @@ export default {
         defaultFlag: content.isDefault ? 1 : 0,
       }
       
-      {
+      // {
     // "userName": "1111",
     // "userPhone": "18888888888",
     // "provinceName": "北京",
@@ -116,13 +121,15 @@ export default {
     // "regionName": "东城区",
     // "detailAddress": "大牌坊1010",
     // "defaultFlag": 1
-}
+// }
 
-      console.log('params',params);
+      
       if (state.type == 'edit') {
         params['addressId'] = state.addressId
       }
-      await state.type == 'add' ? addAddress(params) : EditAddress(params)
+        let res = await proxy.$api.http("post", "api/h5/address" , params  )
+     console.log('res',res);
+     // await state.type == 'add' ? addAddress(params) : EditAddress(params)
       Toast('保存成功')
       setTimeout(() => {
         router.back()

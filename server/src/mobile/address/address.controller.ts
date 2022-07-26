@@ -14,6 +14,7 @@ export class AddressController {
     
     @Post()
     async create(@Body() data:CreateAddressrDto): Promise<ResultData>{    
+        console.log(data,'data')
         return await this.AddressService.create(data)
     }
 

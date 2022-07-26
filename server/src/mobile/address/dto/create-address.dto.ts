@@ -14,6 +14,10 @@ export class CreateAddressrDto {
   // @IsPhoneNumber('CH', { message: '请输入正确的手机号' })
   phoneNum: string
 
+  @ApiProperty({ description: '收货人' })
+  @IsNotEmpty({ message: 'userName 不能为空' })
+  userName:  string
+
   @ApiProperty({ description: '省名' })
   @IsNotEmpty({ message: 'provinceName 不能为空' })
   provinceName:  string
@@ -32,9 +36,9 @@ export class CreateAddressrDto {
 
   @ApiProperty({ description: '是否默认' })
   @IsNotEmpty({ message: 'defautlFLag 不能为空' })
-  defautlFLag: string
+  defaultFlag: number
 
   @ApiProperty({ description: '时间' })
   @IsNotEmpty({ message: 'createDate 不能为空' })
-  createDate: string
+  createDate?: Date
 }

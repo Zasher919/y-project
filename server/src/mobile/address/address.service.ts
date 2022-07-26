@@ -15,10 +15,11 @@ export class AddressService {
     /** 创建地址 */
   async create(dto: CreateAddressrDto): Promise<ResultData> {
     const finds =await this.AddressRepo.find({userID:dto.userID})
-    let flag = finds.some(v=>Number(v.defautlFLag))
-    if(flag && dto.defautlFLag == '1'){
+    let flag = finds.some(v=>Number(v.defaultFlag))
+    if(flag && dto.defaultFlag == 1){
         return ResultData.fail(407,'默认地址只能选择一个')
     }else{
+        dto['createDate'] = new Date()
         const result = await this.AddressRepo.save(dto)
         return ResultData.ok()
         

@@ -25,9 +25,9 @@
 </template>
 
 <script>
-import { reactive, toRefs, onMounted } from 'vue'
+import { reactive, toRefs, onMounted, getCurrentInstance } from 'vue'
 import sHeader from '@/components/SimpleHeader'
-import { getAddressList } from '@/service/address'
+// import { getAddressList } from '@/service/address'
 import { useRoute, useRouter } from 'vue-router'
 export default {
   components: {
@@ -36,6 +36,7 @@ export default {
   setup() {
     const route = useRoute()
     const router = useRouter()
+    const { proxy } = getCurrentInstance()
     const state = reactive({
       chosenAddressId: '1',
       list: [],
@@ -43,7 +44,8 @@ export default {
     })
 
     onMounted(async () => {
-      const { data } = await getAddressList()
+      let {data} = await proxy.$api.http("get", "api/h5/address"   )
+      // const { data } = await getAddressList()
       if (!data) {
         state.list = []
         return
@@ -52,7 +54,7 @@ export default {
         return {
           id: item.addressId,
           name: item.userName,
-          tel: item.userPhone,
+          tel: item.phoneNum,
           address: `${item.provinceName} ${item.cityName} ${item.regionName} ${item.detailAddress}`,
           isDefault: !!item.defaultFlag
         }
