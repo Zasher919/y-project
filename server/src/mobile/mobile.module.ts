@@ -9,11 +9,11 @@ import { H5OperateModule } from './h5ProductOperate/h5-operate.module'
 import { ProductModule } from './product/product.module'
 import { ProductCategoriesModule } from 'src/web/product-categories/product-categories.module'
 import { AddressModule } from './address/address.module';
-
+import { OrederModule } from './order/order.module'
 
 
 @Module({
-  imports: [ProductModule,H5UserModule,H5OperateModule,ProductCategoriesModule, AddressModule],
+  imports: [OrederModule,ProductModule,H5UserModule,H5OperateModule,ProductCategoriesModule, AddressModule],
   providers: [MobileService],
   exports: [MobileService],
   controllers: [MobileController],
