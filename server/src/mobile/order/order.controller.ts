@@ -8,7 +8,7 @@ import { OrderService } from './order.service';
 
 import { ResultData } from 'src/libs/result'
 
-@Controller('api/h5/address')
+@Controller('api/h5/oreder')
 export class OrederController {
     constructor(
         private readonly OrderService:OrderService,

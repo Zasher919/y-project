@@ -5,7 +5,7 @@ export class CreateOrderDto {
 
 @ApiProperty({ description: '用户ID' })
   @IsNotEmpty({ message: 'userid 不能为空' })
-  userID: string
+  userId: string
 
   @ApiProperty({ description: '手机号', required: false })
   @IsString({ message: 'phoneNum 类型错误，正确类型 string' })
