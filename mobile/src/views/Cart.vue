@@ -7,12 +7,14 @@
       finished-text="没有更多了"
       @load="onLoad"
     >
-
-
       <ul class="cart-list">
         <li class="cart-item" v-for="v in list" :key="v.id">
           <div class="li-checkbox">
-            <van-checkbox-group v-model="selectedCart" @click="selectedEvent" ref="checkboxGroup">
+            <van-checkbox-group
+              v-model="selectedCart"
+              @click="selectedEvent"
+              ref="checkboxGroup"
+            >
               <van-checkbox :name="v.id" />
             </van-checkbox-group>
           </div>
@@ -21,12 +23,12 @@
 
           <div class="name-price">
             <h6>{{ v.name }}</h6>
-            <span>￥{{ v.price || '0' }}</span>
+            <span>￥{{ v.price || "0" }}</span>
           </div>
         </li>
       </ul>
     </van-list>
-    
+
     <van-submit-bar
       v-if="list.length > 0"
       class="submit-all van-hairline--top"
@@ -77,7 +79,8 @@ export default {
       finished: false,
       all: false,
       result: [],
-      checkAll: false
+      checkAll: false,
+      sum: 0
     });
 
     onMounted(() => {
@@ -89,41 +92,44 @@ export default {
       let userinfo = JSON.parse(sessionStorage.getItem("userInfo"));
       console.log(userinfo, "userinfo");
 
-      if(userinfo){
-        let res = await proxy.$api.http("get", "api/h5/cart?userId=" + userinfo.id  )
-        
-        if(res.code == 200){
-          state.list = res.data
+      if (userinfo) {
+        let res = await proxy.$api.http(
+          "get",
+          "api/h5/cart?userId=" + userinfo.id
+        );
+
+        if (res.code == 200) {
+          state.list = res.data;
         }
       }
 
       // Toast.clear();
-
     };
 
     const onLoad = () => {};
 
     const total = computed(() => {
       // let sum = 0;
-    
-     let  a1 = state.list.filter(v=>state.selectedCart.includes(v.id))
 
-     let a2 = a1.map(v=>Number(v.price))
+      let a1 = state.list.filter(v => state.selectedCart.includes(v.id));
 
-    //  let a3 = [...a2].reduce((j,v)=>j+v) 
-    //  console.log(a3)
-    // let a4 = eval(a2.join("+")) 
-    // console.log(a4,'a4')
-    // console.log(a2,'a2')
+      let a2 = a1.map(v => Number(v.price));
+
+      //  let a3 = [...a2].reduce((j,v)=>j+v)
+      //  console.log(a3)
+      // let a4 = eval(a2.join("+"))
+      // console.log(a4,'a4')
+      // console.log(a2,'a2')
       // let a1 = state.list(v=>state.selectedCart.includes(v.id))
-    // console.log(a1,'a1');
+      // console.log(a1,'a1');
       // let _list = state.list.filter(item =>
       //   state.result.includes(item.cartItemId)
       // );
       // _list.forEach(item => {
       //   sum += item.goodsCount * item.sellingPrice;
       // });
-      return eval(a2.join("+")) || 0 ;
+      state.sum = eval(a2.join("+")) || 0;
+      return state.sum;
     });
 
     const goBack = () => {
@@ -133,15 +139,17 @@ export default {
     const goTo = () => {
       router.push({ path: "/home" });
     };
-    const selectedEvent = ()=>{
-     
+    const selectedEvent = () => {
       // let a1 = state.selectedCart.includes(v.id)
-      let a2 = state.list.filter(v=>state.selectedCart.includes(v.id)).map(v=>Number(v.price)).reduce((j,v)=>j+v)
-     
-      console.log(a2)
-    
-      console.log(state.selectedCart,'selectedCart');
-    }
+      let a2 = state.list
+        .filter(v => state.selectedCart.includes(v.id))
+        .map(v => Number(v.price))
+        .reduce((j, v) => j + v);
+
+      console.log(a2);
+
+      console.log(state.selectedCart, "selectedCart");
+    };
 
     const onChange = async (value, detail) => {
       if (value > 5) {
@@ -177,7 +185,11 @@ export default {
         return;
       }
       const params = JSON.stringify(state.selectedCart);
-      router.push({ path: "/create-order", query: { cartItemIds: params } });
+
+      router.push({
+        path: "/create-order",
+        query: { cartItemIds: params, price: state.sum }
+      });
     };
 
     const deleteGood = async id => {
@@ -253,7 +265,7 @@ export default {
           font-weight: 700;
           font-size: 0.4rem;
           width: 4rem;
-          height: 0.50rem;
+          height: 0.5rem;
 
           overflow: hidden;
           text-overflow: ellipsis;

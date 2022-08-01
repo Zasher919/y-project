@@ -32,7 +32,7 @@
     <div class="pay-wrap">
       <div class="price">
         <span>商品金额</span>
-        <span>¥{{ total }}</span>
+        <span>¥{{ sum }}</span>
       </div>
       <van-button
         @click="handleCreateOrder"
@@ -90,7 +90,8 @@ export default {
       address: {},
       showPay: false,
       orderNo: "",
-      cartItemIds: []
+      cartItemIds: [],
+      sum: route.query.price
     });
 
     onMounted(() => {
