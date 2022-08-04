@@ -71,7 +71,7 @@
 import { reactive, onMounted, toRefs, computed, getCurrentInstance } from "vue";
 import sHeader from "@/components/SimpleHeader";
 // import { getByCartItemIds } from "@/service/cart";
-// import { getDefaultAddress, getAddressDetail } from "@/service/address";
+import { getAddressList } from "@/service/address";
 import { payOrder } from "@/service/order";
 import { setLocal } from "@/common/js/utils";
 import { Toast } from "vant";
@@ -99,6 +99,12 @@ export default {
     });
 
     const init = async () => {
+      let res = await getAddressList({
+        userID: "1"
+        // page: 1,
+        // pageSize: 10
+      });
+      console.log(res, "res");
       // Toast.loading({ message: "加载中...", forbidClick: true });
       // const { addressId, cartItemIds } = route.query;
       // const _cartItemIds = cartItemIds
