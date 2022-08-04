@@ -9,6 +9,30 @@ export function getAddressList(params) {
   });
 }
 
+export function putAddressList(data) {
+  return request({
+    url: "/api/h5/address",
+    method: "put",
+    data
+  });
+}
+
+export function postAddressList(data) {
+  return request({
+    url: "/api/h5/address",
+    method: "post",
+    data
+  });
+}
+
+export function delAddressList(data) {
+  return request({
+    url: "/api/h5/address",
+    method: "delete",
+    data
+  });
+}
+
 export function addAddress(params) {
   return axios.post("/address", params);
 }
