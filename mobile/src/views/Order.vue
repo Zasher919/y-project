@@ -1,12 +1,4 @@
-<!--
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本系统已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2020 陈尼克 all rights reserved.
- * 版权所有，侵权必究！
- *
--->
+
 
 <template>
   <div class="order-box">
@@ -30,10 +22,10 @@
         >
           <div v-for="(item, index) in list" :key="index" class="order-item-box" @click="goTo(item.orderNo)">
             <div class="order-item-header">
-              <span>订单时间：{{ item.createTime }}</span>
-              <span>{{ item.orderStatusString }}</span>
+              <span>订单时间：{{ item.createTime || '00:00' }}</span>
+              <span>订单状态：{{ item.orderStatus || '无' }}</span>
             </div>
-            <van-card
+            <!-- <van-card
               v-for="one in item.newBeeMallOrderItemVOS"
               :key="one.orderId"
               :num="one.goodsCount"
@@ -41,7 +33,7 @@
               desc="全场包邮"
               :title="one.goodsName"
               :thumb="$filters.prefix(one.goodsCoverImg)"
-            />
+            /> -->
           </div>
         </van-list>
       </van-pull-refresh>
@@ -73,11 +65,14 @@ export default {
     })
 
     const loadData = async () => {
-      const { data, data: { list } } = await getOrderList({ pageNumber: state.page, status: state.status })
-      state.list = state.list.concat(list)
-      state.totalPage = data.totalPage
-      state.loading = false;
-      if (state.page >= data.totalPage) state.finished = true
+      const { data } = await getOrderList()
+      // state.list = state.list.concat(list)
+      console.log(data,'data');
+      state.list = data.data
+      // state.totalPage = data.totalPage
+      // state.loading = false;
+      // if (state.page >= data.totalPage) state.finished = true
+      state.finished = true
     }
 
     const onChangeTab = (name) => {
