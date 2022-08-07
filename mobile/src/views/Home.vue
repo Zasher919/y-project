@@ -1,5 +1,3 @@
-
-
 <template>
   <div>
     <header class="home-header wrap" :class="{ active: headerScroll }">
@@ -24,17 +22,21 @@
       </router-link>
     </header>
     <nav-bar />
+
+    <!-- 轮播图 -->
     <swiper :list="swiperList"></swiper>
+    <!-- 图标 -->
     <div class="category-list">
       <div
         v-for="item in categoryList"
         v-bind:key="item.categoryId"
-        @click="tips"
+        @click="tips(item.toPath)"
       >
         <img :src="item.imgUrl" />
         <span>{{ item.imgName }}</span>
       </div>
     </div>
+    <!-- 产品列表 -->
     <div class="good">
       <header class="good-header">新品上线</header>
       <van-skeleton title :row="3" :loading="loading">
@@ -119,7 +121,7 @@ export default {
       isLogin: false, // 是否已登录
       headerScroll: false, // 滚动透明判断
       hots: [],
-      imgHeadUrl: 'https://4h1s324364.qicp.vip/',
+      imgHeadUrl: "https://4h1s324364.qicp.vip/",
       newGoodses: [],
       recommends: [],
       categoryList: [],
@@ -222,8 +224,9 @@ export default {
       router.push({ path: `/product/${item.id}` });
     };
 
-    const tips = () => {
-      Toast("敬请期待");
+    const tips = path => {
+      // Toast("敬请期待");
+      router.push({ path: path || "/category" });
     };
 
     return {
