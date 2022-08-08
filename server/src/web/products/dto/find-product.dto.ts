@@ -8,16 +8,16 @@ export class FindProductDto {
   @ApiProperty({
     required: false,
   })
-  category: string
+  category?: string
 
   @ApiProperty()
-  page: number
+  page?: number
 
   @ApiProperty()
-  limit: number
+  limit?: number
 
   @ApiProperty({
     required: false,
   })
-  recommend: boolean
+  recommend?: boolean
 }
