@@ -98,12 +98,15 @@ export default {
       init();
     });
 
-    const init = async () => {
+    const init = async () => {  
+      let userinfo = JSON.parse(sessionStorage.getItem('userInfo'))
       let res = await getAddressList({
-        userID: "1"
+        userID: userinfo.id
         // page: 1,
         // pageSize: 10
       });
+
+      state.address = res.data[0]
       console.log(res, "res");
       // Toast.loading({ message: "加载中...", forbidClick: true });
       // const { addressId, cartItemIds } = route.query;
