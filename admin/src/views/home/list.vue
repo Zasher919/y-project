@@ -2,20 +2,10 @@
 <template>
   <div class="list-content">
     <div>
-      <el-button
-        style="float: left; margin: 10px"
-        @click="addRow"
-        size="mini"
-        type="primary"
-        >新增文件</el-button
-      >
+      <el-button style="float: left; margin: 10px" @click="addRow" size="mini" type="primary">新增文件</el-button>
     </div>
 
-    <TemplateTable
-      :data="tableList"
-      :columns="columns"
-      :tableLoading="tableLoading"
-    />
+    <TemplateTable :data="tableList" :columns="columns" :tableLoading="tableLoading" />
     <!-- 新增/修改操作 -->
     <el-dialog :visible.sync="submitDialogVisible" title="新增数据" width="70%">
       <el-form ref="formRef" :model="submitForm" label-width="120px">
@@ -24,12 +14,7 @@
         </el-form-item>
         <el-form-item label="文件位置">
           <el-select v-model="submitForm.imgType" placeholder="文件位置">
-            <el-option
-              v-for="(k, y) in imgTypeEnum"
-              :key="k"
-              :label="k"
-              :value="y"
-            />
+            <el-option v-for="(k, y) in imgTypeEnum" :key="k" :label="k" :value="y" />
           </el-select>
         </el-form-item>
 
@@ -62,7 +47,7 @@
             :limit="uploadFile.limit"
             :on-success="
               (response, file, fileList) => {
-                return sucUpload(response, file, fileList)
+                return sucUpload(response, file, fileList);
               }
             "
             :on-exceed="onUploadExceed"
@@ -83,33 +68,33 @@
 </template>
 
 <script>
-import { imgPostion } from '@/utils/enum'
+import { imgPostion } from "@/utils/enum";
 
-import { getList, create, update, remove } from '@/api/img'
+import { getList, create, update, remove } from "@/api/img";
 
 // import { getToken } from '@/utils/auth'
-import { resManage, formatDate } from '@/utils/index'
-import TemplateTable from '@/components/template/TemplateTable.vue'
+import { resManage, formatDate } from "@/utils/index";
+import TemplateTable from "@/components/template/TemplateTable.vue";
 
-import { getToken } from '@/utils/auth'
+import { getToken } from "@/utils/auth";
 
-const token = getToken()
-const Authorization = `Bearer ${token}`
+const token = getToken();
+const Authorization = `Bearer ${token}`;
 
 export default {
   components: {
-    TemplateTable,
+    TemplateTable
   },
   data() {
     return {
       uploadFile: {
         list: [],
-        limit: 1,
+        limit: 1
       },
       uploadHeaders: {
-        Authorization,
+        Authorization
       },
-      imgHeadUrl: '',
+      imgHeadUrl: "",
       uploadApi: process.env.VUE_APP_UPLOAD_API,
       token: { Authorization: getToken() },
       imgTypeEnum: imgPostion,
@@ -118,18 +103,18 @@ export default {
       submitForm: {
         imgName: null,
         imgType: null,
-        imgUrl: null,
+        imgUrl: null
       },
       tableLoading: false,
       submitDialogVisible: false,
       columns: [
-        { label: '文件名称', prop: 'imgName', align: 'center' },
+        { label: "文件名称", prop: "imgName", align: "center" },
         {
-          label: '所属位置',
-          align: 'center',
-          render: (scope) => {
-            return this.imgTypeEnum[scope.row.imgType]
-          },
+          label: "所属位置",
+          align: "center",
+          render: scope => {
+            return this.imgTypeEnum[scope.row.imgType];
+          }
         },
         // {
         //   label: '文件地址',
@@ -140,25 +125,24 @@ export default {
         //     )
         //   },
         // },
-         {
-          label: '文件地址',
-          align: 'center',
-          prop:'imgUrl',
-          width:600
-          
-        },
-        { label: '创建时间', prop: 'createDate', align: 'center' },
-        { label: '更新时间', prop: 'updateDate', align: 'center' },
         {
-          label: '操作',
-          align: 'center',
-          render: (scope) => {
+          label: "文件地址",
+          align: "center",
+          prop: "imgUrl",
+          width: 600
+        },
+        { label: "创建时间", prop: "createDate", align: "center" },
+        { label: "更新时间", prop: "updateDate", align: "center" },
+        {
+          label: "操作",
+          align: "center",
+          render: scope => {
             return (
               <div>
                 <el-button
                   type="text"
                   onClick={() => {
-                    this.modifyRow(scope.row)
+                    this.modifyRow(scope.row);
                   }}
                 >
                   修改
@@ -166,81 +150,81 @@ export default {
                 <el-button
                   type="text"
                   onClick={() => {
-                    this.rowDel(scope.row.id)
+                    this.rowDel(scope.row.id);
                   }}
                 >
                   删除
                 </el-button>
               </div>
-            )
-          },
-        },
-      ],
-    }
+            );
+          }
+        }
+      ]
+    };
   },
   mounted() {
-    console.log(this.imgTypeEnum, '2')
-    this.init()
+    console.log(this.imgTypeEnum, "2");
+    this.init();
   },
   methods: {
     async init() {
-      this.tableLoading = true
-      let res = await getList()
-      console.log(res, 'res')
-      this.tableLoading = false
-      this.tableList = res.data.map((item) => ({
+      this.tableLoading = true;
+      let res = await getList();
+      console.log(res, "res");
+      this.tableLoading = false;
+      this.tableList = res.data.map(item => ({
         ...item,
-        imgUrl: this.uploadApi + '/' + item.imgUrl,
+        imgUrl: this.uploadApi + "/" + item.imgUrl,
         createDate: this.formatTime(Number(item.createDate)),
-        updateDate: this.formatTime(Number(item.updateDate)),
-      }))
+        updateDate: this.formatTime(Number(item.updateDate))
+      }));
 
-      console.log('this.tableList', this.tableList)
+      console.log("this.tableList", this.tableList);
     },
 
     // 超出文件
     onUploadExceed() {
       this.$message({
-        message: '抱歉，只能上传一张文件',
-        type: 'error',
-      })
-      console.log('onUploadExceed')
+        message: "抱歉，只能上传一张文件",
+        type: "error"
+      });
+      console.log("onUploadExceed");
     },
     // 保存数据
     async submitData() {
-      let res = await create(this.submitForm)
+      let res = await create(this.submitForm);
       // let res = await this.$api.http('post', '/img', this.submitForm)
       // await resManage(res)
-      this.submitDialogVisible = false
-      this.init()
+      this.submitDialogVisible = false;
+      this.init();
     },
     addRow() {
-      this.submitForm = {}
-      this.fileList = []
-      this.uploadFile.list = []
-      this.submitDialogVisible = true
+      this.submitForm = {};
+      this.fileList = [];
+      this.uploadFile.list = [];
+      this.submitDialogVisible = true;
     },
     async rowDel(id) {
       // let res = await this.$api.del('/img', id)
-      let res = await remove(id)
+      let res = await remove(id);
 
-      this.init()
+      this.init();
     },
 
     modifyRow(row) {
-      this.fileList = []
-      this.submitDialogVisible = true
-      this.fileList.push({ name: row.imgName, url: row.imgUrl })
-      this.submitForm = row
+      this.fileList = [];
+      this.submitDialogVisible = true;
+      this.fileList.push({ name: row.imgName, url: row.imgUrl });
+      this.submitForm = row;
     },
     sucUpload(res, file, list) {
-      console.log(res, 'res, file, list')
-      this.submitForm.imgUrl = res.realUrl
+      console.log(res, "res, file, list");
+      this.submitForm.imgUrl = res.realUrl;
     },
     formatTime(time) {
-      return formatDate(time)
-    },
-  },
-}
+      return formatDate(time);
+    }
+  }
+};
 </script>
 <style lang="css" scoped></style>
