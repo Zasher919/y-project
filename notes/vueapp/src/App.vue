@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
+    <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
   </div>
 </template>
 
@@ -8,6 +8,11 @@
 export default {
   name: "App",
   components: {},
+  create() {
+    this.$demo({ title: "测试22" }).then((res) => {
+      console.log("res", res);
+    });
+  },
 };
 </script>
 

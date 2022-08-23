@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 手写call
+      Function.prototype.myCall = function (context) {
+        console.log("context", context);
+        // 判断调用对象
+        if (typeof this !== "function") {
+          throw new Error("type error");
+        }
+        // 首先获取参数
+        let args = [...arguments].splice(1);
+        let result = null;
+        // 判断context 是否传入，如果没有传就设置window
+        context = context || window;
+        // 将被调用的方法设置为context
+        // this 即为我们要调用的方法
+        context.fn = this;
+        // 执行要被调用的方法
+        result = context.fn(...args);
+        // 删除手动添加的属性方法
+        delete context.fn;
+
+        return result;
+      };
+      // 手写apply
+      Function.prototype.myApply = function (context) {
+        if (typeof this !== "function") throw Error("not funtion");
+        let args = [...arguments][1];
+        let result = null;
+        const fnSymbol = Symbol();
+        context = context || window;
+        context[fnSymbol] = this;
+        if (args) {
+          result = context[fnSymbol](...args);
+        } else {
+          result = context[fnSymbol]();
+        }
+
+        delete context[fnSymbol];
+        return result;
+      };
+
+      // 手写bind
+      Function.prototype.myBind = function (content) {
+        if (typeof this !== "function") throw Error("not funtion");
+        const fn = this;
+        const args = [...arguments].splice(1);
+
+        return function Fn() {
+          args.concat(...arguments);
+          console.log("bind-thsi", args);
+        };
+      };
+
+      function ta(a, b, c) {
+        console.log(a, b, c, "a");
+        console.log("ta-this", this);
+      }
+
+      let self = this;
+
+      let t1 = {
+        name: "222",
+        run() {
+          let aaa = ta.myBind(this);
+          aaa("232323");
+          console.log("run", this);
+        },
+      };
+      t1.run();
+      //   ta();
+    </script>
+  </body>
+</html>
