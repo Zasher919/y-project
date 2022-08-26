@@ -2,13 +2,7 @@
   <div class="template-table">
     <!-- 列表 -->
     <div>
-      <el-table
-        v-bind="$attrs"
-        v-on="$listeners"
-        stripe
-        v-loading="loading"
-        tooltip-effect="light"
-      >
+      <el-table v-bind="$attrs" v-on="$listeners" stripe v-loading="loading" tooltip-effect="light">
         <template v-for="(item, index) in columns">
           <el-table-column
             v-if="item.render"
@@ -65,64 +59,64 @@
 
 <script>
 export default {
-  name: 'TemplateTable',
+  name: "TemplateTable",
   props: {
     columns: Array,
     toUrl: {
       type: String,
-      default: '',
+      default: ""
     },
     showTableHeight: {
       type: Boolean,
-      default: false,
+      default: false
     },
     pageObj: {
       type: Object,
       default: () => {
-        return {}
-      },
+        return {};
+      }
     },
     showPage: {
       type: Boolean,
-      default: false,
+      default: false
     },
     tableLoading: {
       type: Boolean,
-      default: true,
-    },
+      default: true
+    }
   },
   components: {
     RenderDom: {
       props: {
         item: [Object, Function],
-        scope: [Object, String],
+        scope: [Object, String]
       },
       render(h, stx) {
         // const dom=this.item.render()
-        return <div>{this.item.render(this.scope)}</div>
-      },
-    },
+        return <div>{this.item.render(this.scope)}</div>;
+      }
+    }
   },
   data() {
     return {
-      tableHeight: window.screen.width >= 1920 ? 600 : 405,
-    }
+      tableHeight: window.screen.width >= 1920 ? 600 : 405
+    };
   },
   mounted() {},
   computed: {
     loading() {
-      return this.tableLoading
-    },
+      return this.tableLoading;
+    }
   },
   methods: {
     handleSizeChange(val) {
-      this.$emit('pageSizeChange', val)
+      this.$emit("pageSizeChange", val);
     },
     handleCurrentChange(val) {
-      this.$emit('pageCurrentChange', val)
-    },
-  },
-}
+      this.$emit("pageCurrentChange", val);
+    }
+  }
+};
 </script>
 
 <style lang="less"></style>

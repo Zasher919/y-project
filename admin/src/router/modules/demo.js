@@ -3,20 +3,20 @@
 import Layout from "@/layout";
 
 const fileRouter = {
-  path: "/file",
+  path: "/demo",
   component: Layout,
-  redirect: "/file/list",
-  name: "file",
+  redirect: "/demo",
+  name: "demo",
   meta: {
-    title: "文件管理",
+    title: "空白页",
     icon: "tab"
   },
   children: [
     {
-      path: "list",
-      component: () => import("@/views/file/List"),
-      name: "fileListManagement",
-      meta: { title: "文件管理", noCache: true }
+      path: "demo",
+      component: () => import("@/views/demo"),
+      name: "demo",
+      meta: { title: "空白页1", noCache: true }
     }
   ]
 };
