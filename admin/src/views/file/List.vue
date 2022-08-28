@@ -163,7 +163,6 @@ export default {
     };
   },
   mounted() {
-    console.log(this.imgTypeEnum, "2");
     this.init();
   },
   methods: {
