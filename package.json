@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/givebest/node-nest-vue-nuxt-cms/issues"
   },
-  "homepage": "https://github.com/givebest/node-nest-vue-nuxt-cms#readme"
+  "homepage": "https://github.com/givebest/node-nest-vue-nuxt-cms#readme",
+  "dependencies": {
+    "websocket": "^1.0.34"
+  }
 }

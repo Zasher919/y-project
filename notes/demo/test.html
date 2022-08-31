@@ -1,18 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
     <script>
-        let arr = [1,2,3,4,5,6]
+      let funcObj = {
+        run: () => {
+          console.log("run");
+        },
+        eat() {
+          console.log("eat");
+        },
+        debounce(fn, wait) {
+          let timer;
+          return function () {
+            if (!timer) clearTimeout(timer);
+            let args = arguments;
+            setTimeout(() => {
+              fn.apply(this, args);
+            }, wait);
+          };
+        },
+      };
 
-        let a2 = arr.fill(2,2,4)
-
-        console.log(a2);
+      funcObj.run();
+      funcObj.eat();
     </script>
-</body>
+  </body>
 </html>

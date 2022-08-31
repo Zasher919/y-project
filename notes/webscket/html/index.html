@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <div>
+      <input type="text" id="text" />
+      <input type="button" value="发送" onclick="send()" />
+    </div>
+    <script>
+      //WebSocket协议名字是ws，不是http
+      //创建客户端链接
+      var websocket = new WebSocket("ws://127.0.0.1:8080");
+      //监听websocket链接
+      websocket.onopen = function () {
+        console.log(websocket.readyState);
+      };
+      //发送的点击事件
+      function send() {
+        //获取元素内容
+        var text = document.getElementById("text").value;
+        //发送给服务端
+        websocket.send(text);
+      }
+      //客户端接受服务器传过来值
+      websocket.onmessage = function (back) {
+        console.log(back);
+      };
+    </script>
+  </body>
+</html>
