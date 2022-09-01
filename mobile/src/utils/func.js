@@ -33,6 +33,24 @@ export default {
       }
     }
     return deepData;
+  },
+
+  /*
+   * 1: ios
+   * 2: android
+   * 3: 其它
+   */ getOSType() {
+    let u = navigator.userAgent,
+      app = navigator.appVersion;
+    let isAndroid = u.indexOf("Android") > -1 || u.indexOf("Linux") > -1;
+    let isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+    if (isIOS) {
+      return 1;
+    }
+    if (isAndroid) {
+      return 2;
+    }
+    return 3;
   }
   //
 };

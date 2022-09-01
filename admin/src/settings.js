@@ -1,6 +1,6 @@
 module.exports = {
-  title: 'GiiBee CMS 管理系统',
-
+  title: "南无阿弥陀佛--管理后台",
+  prot: 8080,
   /**
    * @type {boolean} true | false
    * @description Whether show the settings right-panel
@@ -38,5 +38,5 @@ module.exports = {
    * The default is only used in the production env
    * If you want to also use it in dev, you can pass ['production', 'development']
    */
-  errorLog: 'production',
-}
+  errorLog: "production"
+};
