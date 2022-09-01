@@ -26,7 +26,7 @@ export const isHTMLTag = makeMap(
 // contain child elements.
 export const isSVG = makeMap(
   'svg,animate,circle,clippath,cursor,defs,desc,ellipse,filter,font-face,' +
-  'foreignobject,g,glyph,image,line,marker,mask,missing-glyph,path,pattern,' +
+  'foreignObject,g,glyph,image,line,marker,mask,missing-glyph,path,pattern,' +
   'polygon,polyline,rect,switch,symbol,text,textpath,tspan,use,view',
   true
 )
@@ -73,5 +73,5 @@ export function isUnknownElement (tag: string): boolean {
     return (unknownElementCache[tag] = /HTMLUnknownElement/.test(el.toString()))
   }
 }
-
+/** 是否为input的type */
 export const isTextInputType = makeMap('text,number,password,search,email,tel,url')

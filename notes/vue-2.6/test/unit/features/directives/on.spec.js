@@ -31,7 +31,7 @@ describe('Directive v-on', () => {
     expect(event.type).toBe('click')
   })
 
-  it('should bind event to an inline statement', () => {
+  it('should bind event to a inline statement', () => {
     vm = new Vue({
       el,
       template: '<div v-on:click="foo(1,2,3,$event)"></div>',
@@ -218,7 +218,7 @@ describe('Directive v-on', () => {
   })
 
   // ctrl, shift, alt, meta
-  it('should support system modifiers', () => {
+  it('should support system modifers', () => {
     vm = new Vue({
       el,
       template: `
@@ -280,7 +280,7 @@ describe('Directive v-on', () => {
     expect(spy.calls.count()).toBe(1)
   })
 
-  it('should support system modifiers with exact', () => {
+  it('should support system modifers with exact', () => {
     vm = new Vue({
       el,
       template: `
@@ -405,7 +405,7 @@ describe('Directive v-on', () => {
     Vue.config.keyCodes = Object.create(null)
   })
 
-  it('should override built-in keyCode', () => {
+  it('should override build-in keyCode', () => {
     Vue.config.keyCodes.up = [1, 87]
     vm = new Vue({
       el,
@@ -420,7 +420,7 @@ describe('Directive v-on', () => {
       e.keyCode = 1
     })
     expect(spy).toHaveBeenCalledTimes(2)
-    // should not affect built-in down keycode
+    // should not affect build-in down keycode
     triggerEvent(vm.$el, 'keyup', e => {
       e.keyCode = 40
     })
@@ -472,20 +472,6 @@ describe('Directive v-on', () => {
     triggerEvent(vm.$el, 'click')
     expect(`The .native modifier for v-on is only valid on components but it was used on <button>.`).toHaveBeenWarned()
     expect(spy.calls.count()).toBe(0)
-  })
-
-  it('should not throw a warning if native modifier is used on a dynamic component', () => {
-    vm = new Vue({
-      el,
-      template: `
-        <component is="div" @click.native="foo('native')" @click="foo('regular')"/>
-      `,
-      methods: { foo: spy },
-    })
-
-    triggerEvent(vm.$el, 'click')
-    expect(`The .native modifier for v-on is only valid on components but it was used on <div>.`).not.toHaveBeenWarned()
-    expect(spy.calls.allArgs()).toEqual([['regular']]); // Regular @click should work for dynamic components resolved to native HTML elements.
   })
 
   it('.once modifier should work with child components', () => {
@@ -974,17 +960,6 @@ describe('Directive v-on', () => {
       }
     }).$mount()
     expect(value).toBe(1)
-  })
-
-  it('should not execute callback if modifiers are present', () => {
-    vm = new Vue({
-      el,
-      template: '<input @keyup.?="foo">',
-      methods: { foo: spy }
-    })
-    // simulating autocomplete event (Event object with type keyup but without keyCode)
-    triggerEvent(vm.$el, 'keyup')
-    expect(spy.calls.count()).toBe(0)
   })
 
   describe('dynamic arguments', () => {

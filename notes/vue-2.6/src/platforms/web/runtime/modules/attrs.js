@@ -17,8 +17,13 @@ import {
   isFalsyAttrValue,
   convertEnumeratedValue
 } from 'web/util/index'
-
+/**
+ * 更新元素属性
+ * @param {object} oldVnode 旧的vnode
+ * @param object vnode 新vnode
+ */
 function updateAttrs (oldVnode: VNodeWithData, vnode: VNodeWithData) {
+  // 获取组件配置
   const opts = vnode.componentOptions
   if (isDef(opts) && opts.Ctor.options.inheritAttrs === false) {
     return
@@ -39,7 +44,7 @@ function updateAttrs (oldVnode: VNodeWithData, vnode: VNodeWithData) {
     cur = attrs[key]
     old = oldAttrs[key]
     if (old !== cur) {
-      setAttr(elm, key, cur, vnode.data.pre)
+      setAttr(elm, key, cur)
     }
   }
   // #4391: in IE9, setting type can reset value for input[type=radio]
@@ -58,9 +63,15 @@ function updateAttrs (oldVnode: VNodeWithData, vnode: VNodeWithData) {
     }
   }
 }
-
-function setAttr (el: Element, key: string, value: any, isInPre: any) {
-  if (isInPre || el.tagName.indexOf('-') > -1) {
+/**
+ * 设置属性
+ * @param {Element} el 元素
+ * @param {string} key 属性名称
+ * @param {string} value 属性值
+ */
+function setAttr (el: Element, key: string, value: any) {
+  // 判断
+  if (el.tagName.indexOf('-') > -1) {
     baseSetAttr(el, key, value)
   } else if (isBooleanAttr(key)) {
     // set attribute for blank value
