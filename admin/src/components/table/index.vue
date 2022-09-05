@@ -2,7 +2,17 @@
   <div class="template-table">
     <!-- 列表 -->
     <div>
-      <el-table v-bind="$attrs" v-on="$listeners" stripe v-loading="loading" tooltip-effect="light">
+      <el-table
+        highlight-current-row
+        border
+        v-bind="$attrs"
+        v-on="$listeners"
+        stripe
+        v-loading="loading"
+        tooltip-effect="light"
+        @selection-change="handleSelectionChange"
+      >
+        <el-table-column v-if="checks" type="selection" width="55"></el-table-column>
         <template v-for="(item, index) in columns">
           <el-table-column
             v-if="item.render"
@@ -42,18 +52,18 @@
       </el-table>
     </div>
     <!-- 分页 -->
-    <div v-if="showPage" style="padding-top: 10px">
+    <!-- <div v-if="showPage" style="padding-top: 10px">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="pageObj.pageNo"
+        :current-page="pageData.pageNo"
         :page-sizes="[5, 10, 20, 50]"
-        :page-size="pageObj.pageSize"
+        :page-size="pageData.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="pageObj.totalCount"
+        :total="pageData.totalCount"
       >
       </el-pagination>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -61,6 +71,11 @@
 export default {
   name: "TemplateTable",
   props: {
+    // 是否显示多选框
+    checks: {
+      type: Boolean,
+      default: true
+    },
     columns: Array,
     toUrl: {
       type: String,
@@ -70,7 +85,7 @@ export default {
       type: Boolean,
       default: false
     },
-    pageObj: {
+    pageData: {
       type: Object,
       default: () => {
         return {};
@@ -78,7 +93,7 @@ export default {
     },
     showPage: {
       type: Boolean,
-      default: false
+      default: true
     },
     tableLoading: {
       type: Boolean,
@@ -109,6 +124,9 @@ export default {
     }
   },
   methods: {
+    handleSelectionChange(val) {
+      this.$emit("selectChange", val);
+    },
     handleSizeChange(val) {
       this.$emit("pageSizeChange", val);
     },

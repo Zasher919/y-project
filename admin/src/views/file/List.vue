@@ -68,15 +68,15 @@
 </template>
 
 <script>
+/*-------utils-----------*/
 import { imgPostion } from "@/utils/enum";
-
-import { getList, create, update, remove } from "@/api/img";
-
-// import { getToken } from '@/utils/auth'
 import { resManage, formatDate } from "@/utils/index";
-import TemplateTable from "@/components/table";
-
 import { getToken } from "@/utils/auth";
+// import { getToken } from '@/utils/auth'
+/*-------api-----------*/
+import { getList, create, update, remove } from "@/api/img";
+/*-------component-----------*/
+import TemplateTable from "@/components/table";
 
 const token = getToken();
 const Authorization = `Bearer ${token}`;
