@@ -1,20 +1,20 @@
-import { IsNotEmpty, IsString } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString } from 'class-validator'
+import { ApiProperty } from '@nestjs/swagger'
 
 export class UpdataUserPasswordDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  readonly oldPassword: string;
+  readonly oldPassword: string
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  readonly password: string;
+  readonly password: string
 
   @ApiProperty()
   @IsNotEmpty()
-  readonly rePassword: string;
+  readonly rePassword: string
 
-  updatedAt: Date;
+  updatedAt: Date
 }

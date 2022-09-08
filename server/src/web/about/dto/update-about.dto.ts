@@ -1,30 +1,30 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger'
+import { IsBoolean, IsNotEmpty, IsString } from 'class-validator'
 export class UpdateAboutDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  name: string;
+  name: string
 
   @ApiProperty()
-  route: string;
+  route: string
 
   @ApiProperty()
-  description: string;
+  description: string
 
   @ApiProperty()
-  category: string;
+  category: string
 
   @ApiProperty()
-  banner: string;
+  banner: string
 
   @ApiProperty()
-  content: string;
+  content: string
 
   @ApiProperty()
   @IsBoolean()
-  status: boolean;
+  status: boolean
 
   @ApiProperty()
-  updatedAt: Date;
+  updatedAt: Date
 }

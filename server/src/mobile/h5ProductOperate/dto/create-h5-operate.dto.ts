@@ -14,7 +14,6 @@ export class CreateH5OperateDto {
   @IsNotEmpty({ message: 'password 不能为空' })
   productId: string
 
-  
   @ApiProperty({ description: '密码' })
   @IsString({ message: 'password 类型错误，正确类型 string' })
   @IsNotEmpty({ message: 'password 不能为空' })

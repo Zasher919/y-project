@@ -1,27 +1,27 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity('home')
 export class Home {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: number
 
   @Column()
-  name: string;
+  name: string
 
   @Column()
-  pic: string;
+  pic: string
 
   @Column('mediumtext', { nullable: true })
-  intro: string;
+  intro: string
 
   @Column()
-  status: boolean;
+  status: boolean
 
   @Column({
     select: false,
   })
-  createdAt: Date;
+  createdAt: Date
 
   @Column()
-  updatedAt: Date;
+  updatedAt: Date
 }

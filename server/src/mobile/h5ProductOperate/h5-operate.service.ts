@@ -16,14 +16,14 @@ export class H5OperateService {
   constructor(
     @InjectRepository(H5OperateEntity)
     private readonly H5OperateEntity: Repository<H5OperateEntity>,
-    private readonly ProductsService: ProductsService
+    private readonly ProductsService: ProductsService,
   ) {}
 
   /** 新增购物车 */
   async create(dto: CreateH5OperateDto): Promise<ResultData> {
     if (!dto.productId) return ResultData.fail(4002, 'err', '添加失败')
     // 防止重复创建 start
-    let isHas = await this.H5OperateEntity.findOne({ productId: dto.productId })
+    const isHas = await this.H5OperateEntity.findOne({ productId: dto.productId })
     if (isHas) return ResultData.fail(4001, 'err', '已添加到购物车')
 
     const result = this.H5OperateEntity.save(dto)
@@ -32,7 +32,7 @@ export class H5OperateService {
 
   /* 新增用户收藏 */
   async collect(dto: any): Promise<ResultData> {
-    let isHas = await this.H5OperateEntity.findOne({ productId: dto.productId, userId: dto.userId })
+    const isHas = await this.H5OperateEntity.findOne({ productId: dto.productId, userId: dto.userId })
     let result
     if (isHas) {
       result = await this.H5OperateEntity.update(isHas.id, dto)
@@ -43,30 +43,28 @@ export class H5OperateService {
   }
 
   async findCart(search: CreateH5OperateDto): Promise<ResultData> {
-   
     if (search.userId) {
-
-      let result = await this.H5OperateEntity.find({ userId: search.userId })
-      let ids = result.map(v=>v.productId)
-      let datas = await this.ProductsService.findOneByIds(ids)
-      return ResultData.ok(datas) 
+      const result = await this.H5OperateEntity.find({ userId: search.userId })
+      const ids = result.map((v) => v.productId)
+      const datas = await this.ProductsService.findOneByIds(ids)
+      return ResultData.ok(datas)
     }
 
-    let result = await this.H5OperateEntity.find()
+    const result = await this.H5OperateEntity.find()
 
     return ResultData.ok(result)
   }
 
   async getCollect(search: CreateH5OperateDto): Promise<ResultData> {
     if (search.userId) {
-      let result = await this.H5OperateEntity.find({ userId: search.userId })
+      const result = await this.H5OperateEntity.find({ userId: search.userId })
       // result = result.filter((v) => v.isCollect != '0')
       console.log(result, 'result')
 
       return ResultData.ok(result)
     }
 
-    let result = await this.H5OperateEntity.find()
+    const result = await this.H5OperateEntity.find()
 
     return ResultData.ok(result)
   }
@@ -74,7 +72,7 @@ export class H5OperateService {
   async delete(search: any): Promise<ResultData> {
     console.log(search.ids.split(','), 'search')
 
-    let result = await this.H5OperateEntity.delete(search.ids.split(','))
+    const result = await this.H5OperateEntity.delete(search.ids.split(','))
 
     return ResultData.ok()
   }

@@ -1,28 +1,27 @@
-
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn,  } from 'typeorm'
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm'
 @Entity('mobile_order')
-export class OrderEntity{
-    @PrimaryGeneratedColumn()
-    id: number
+export class OrderEntity {
+  @PrimaryGeneratedColumn()
+  id: number
 
-    @Column()
-    userId: string
+  @Column()
+  userId: string
 
-    @Column()
-    phoneNum: string
+  @Column()
+  phoneNum: string
 
-    @Column()
-    addressId:  string
+  @Column()
+  addressId: string
 
-    @Column()
-    price: string
+  @Column()
+  price: string
 
-    @Column()
-    remarks: string
+  @Column()
+  remarks: string
 
-    @Column()
-    orderStatus: string
-   
-    @Column()
-    createDate: Date
+  @Column()
+  orderStatus: string
+
+  @Column()
+  createDate: Date
 }

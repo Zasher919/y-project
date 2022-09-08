@@ -6,19 +6,19 @@
  * @see https://github.com/log4js-node/log4js-node/blob/master/lib/logger.js#L10
  **/
 
-const STACK_REG = /at (?:(.+)\s+\()?(?:(.+?):(\d+)(?::(\d+))?|([^)]+))\)?/;
+const STACK_REG = /at (?:(.+)\s+\()?(?:(.+?):(\d+)(?::(\d+))?|([^)]+))\)?/
 
 export const parseNestModuleCallStack = (data, skipIdx = 7) => {
-  const stackLines = data.stack.split('\n').slice(skipIdx);
-  const lineMatch = STACK_REG.exec(stackLines[0]);
+  const stackLines = data.stack.split('\n').slice(skipIdx)
+  const lineMatch = STACK_REG.exec(stackLines[0])
   if (lineMatch && lineMatch.length === 6) {
     return {
       functionName: lineMatch[1],
       fileName: lineMatch[2],
       lineNumber: parseInt(lineMatch[3], 10),
       columnNumber: parseInt(lineMatch[4], 10),
-      callStack: stackLines.join('\n')
-    };
+      callStack: stackLines.join('\n'),
+    }
   }
-  return null;
-};
+  return null
+}

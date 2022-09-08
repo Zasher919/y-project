@@ -1,25 +1,25 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger'
+import { IsBoolean, IsNotEmpty, IsString } from 'class-validator'
 export class CreateBannerDto {
-  id: number;
+  id: number
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  name: string;
+  name: string
 
   @ApiProperty()
-  url: string;
+  url: string
 
   @ApiProperty()
-  intro: string;
+  intro: string
 
   @ApiProperty()
   @IsBoolean()
-  status: boolean;
+  status: boolean
 
   @ApiProperty()
-  createdAt: Date;
+  createdAt: Date
 
-  updatedAt: Date;
+  updatedAt: Date
 }

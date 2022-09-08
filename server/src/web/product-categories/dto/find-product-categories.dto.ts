@@ -1,18 +1,18 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger'
 export class FindProductCategoriesDto {
   @ApiProperty({
     required: false,
   })
-  keyword: string;
+  keyword: string
 
   @ApiProperty({
     required: false,
   })
-  category: string;
+  category: string
 
   @ApiProperty()
-  page: number;
+  page: number
 
   @ApiProperty()
-  limit: number;
+  limit: number
 }

@@ -72,7 +72,7 @@ export class ImgService {
   /** 查询图片 */
   async find(search: FindImgDto): Promise<ResultData> {
     console.log(search, 'search')
-    let { imgType } = search
+    const { imgType } = search
     if (imgType == null) {
       const imgs = await this.imgRepo.find()
       return ResultData.ok(imgs)

@@ -4,11 +4,11 @@ import { MobileService } from './mobile.service'
 import { ProductCategoriesService } from 'src/web/product-categories/product-categories.service'
 @Controller('/api/h5')
 export class MobileController {
-  constructor(private readonly MobileService: MobileService,private readonly ProductCategoriesService: ProductCategoriesService) {}
+  constructor(private readonly MobileService: MobileService, private readonly ProductCategoriesService: ProductCategoriesService) {}
 
   @Get('test')
   async test() {
-    return  'mobiletest'
+    return 'mobiletest'
   }
 
   @Get('loginout')

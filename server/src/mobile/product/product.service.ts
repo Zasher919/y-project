@@ -93,7 +93,7 @@ export class ProductService {
   async findH5All(): Promise<any> {
     console.log('success-ress')
 
-    let list = {
+    const list = {
       newProductList: [],
       hotProductList: [],
       recommendProductList: [],

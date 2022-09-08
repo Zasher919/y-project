@@ -33,7 +33,7 @@ export class H5UserService {
   async create(dto: CreateH5UserDto): Promise<ResultData> {
     // if (dto.password !== dto.confirmPassword) return ResultData.fail(AppHttpCode.USER_PASSWORD_INVALID, '两次输入密码不一致，请重试')
     // 防止重复创建 start
-    let isHas = await this.h5UserRepo.findOne({ phoneNum: dto.phoneNum })
+    const isHas = await this.h5UserRepo.findOne({ phoneNum: dto.phoneNum })
     if (isHas) return ResultData.fail(4001, 'ok', '账户已存在')
 
     // if (await this.findOneByAccount(dto.phoneNum)) return ResultData.fail(AppHttpCode.USER_CREATE_EXISTING, '帐号已存在，请调整后重新注册！')
@@ -90,28 +90,28 @@ export class H5UserService {
     // let user = null
 
     if (search.phoneNum) {
-      let result = await this.h5UserRepo.findOne({ phoneNum: search.phoneNum })
+      const result = await this.h5UserRepo.findOne({ phoneNum: search.phoneNum })
       return ResultData.ok(result)
     }
 
-    let result = await this.h5UserRepo.find()
+    const result = await this.h5UserRepo.find()
 
     return ResultData.ok(result)
   }
 
   async findUser(search: CreateH5UserDto): Promise<ResultData> {
     if (search.phoneNum) {
-      let result = await this.h5UserRepo.findOne({ phoneNum: search.phoneNum })
+      const result = await this.h5UserRepo.findOne({ phoneNum: search.phoneNum })
       return ResultData.ok(result)
     }
 
-    let result = await this.h5UserRepo.find()
+    const result = await this.h5UserRepo.find()
 
     return ResultData.ok(result)
   }
 
   async delete(id: string): Promise<ResultData> {
-    let result = await this.h5UserRepo.findOne(id)
+    const result = await this.h5UserRepo.findOne(id)
     // const existing = await this.deptRepo.findOne(id)
     if (!result) return ResultData.fail(500, '用户不存在或已被删除')
     const { affected } = await getManager().transaction(async (transactionalEntityManager) => {

@@ -3,9 +3,9 @@ import { ProductCategoriesService } from '../web/product-categories/product-cate
 
 @Injectable()
 export class MobileService {
-    constructor(private ProductCategoriesService: ProductCategoriesService) {}
-    async loginout(){
-        // return {msg:'ok'}
-        return await this.ProductCategoriesService.getCount()
-    }
+  constructor(private ProductCategoriesService: ProductCategoriesService) {}
+  async loginout() {
+    // return {msg:'ok'}
+    return await this.ProductCategoriesService.getCount()
+  }
 }

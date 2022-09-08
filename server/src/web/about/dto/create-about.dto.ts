@@ -1,34 +1,34 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger'
+import { IsBoolean, IsNotEmpty, IsString } from 'class-validator'
 export class CreateAboutDto {
-  id: number;
+  id: number
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  name: string;
+  name: string
 
   @ApiProperty()
-  route: string;
+  route: string
 
   @ApiProperty()
-  description: string;
+  description: string
 
   @ApiProperty()
-  category: string;
+  category: string
 
   @ApiProperty()
-  banner: string;
+  banner: string
 
   @ApiProperty()
-  content: string;
+  content: string
 
   @ApiProperty()
   @IsBoolean()
-  status: boolean;
+  status: boolean
 
   @ApiProperty()
-  createdAt: Date;
+  createdAt: Date
 
-  updatedAt: Date;
+  updatedAt: Date
 }

@@ -6,10 +6,8 @@ import { Log4jsModule } from './libs/log4js/'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
-
 import { UploadModule } from './upload/upload.module'
 import { AuthModule } from './auth/auth.module'
-
 
 import { CatsModule } from './cats/cats.module'
 import { WebModule } from './web/web.module'
@@ -23,7 +21,7 @@ const dbInfo = {
   password: 'root',
 }
 if (ENV === 'prod') {
-  dbInfo.host = '10.0.224.4'
+  dbInfo.host = 'https://4h1s324364.qicp.vip'
   dbInfo.port = 25532 || 3306
   dbInfo.username = 'root'
   dbInfo.password = 'root'

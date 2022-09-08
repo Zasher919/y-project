@@ -1,38 +1,38 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger'
+import { IsBoolean, IsNotEmpty, IsString } from 'class-validator'
 export class UpdateProductDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  name: string;
+  name: string
 
   @ApiProperty()
   @IsString()
-  route: string;
+  route: string
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  pic: string;
+  pic: string
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  category: string;
+  category: string
 
   @ApiProperty()
-  intro: string;
+  intro: string
 
   @ApiProperty()
-  content: string;
+  content: string
 
   @ApiProperty()
-  recommend: boolean;
+  recommend: boolean
 
   @ApiProperty()
   @IsBoolean()
-  status: boolean;
+  status: boolean
 
   @ApiProperty()
-  updatedAt: Date;
+  updatedAt: Date
 }

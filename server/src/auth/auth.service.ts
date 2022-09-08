@@ -42,7 +42,7 @@ export class AuthService {
       areaId: user.areaId,
     }
     return {
-      access_token: this.jwtService.sign(payload,{expiresIn:'10m'}),
+      access_token: this.jwtService.sign(payload, { expiresIn: '10m' }),
     }
   }
 

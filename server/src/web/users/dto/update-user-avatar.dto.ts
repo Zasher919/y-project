@@ -1,11 +1,11 @@
-import { IsNotEmpty, IsString } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString } from 'class-validator'
+import { ApiProperty } from '@nestjs/swagger'
 
 export class UpdataUserAvatarDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  readonly avatar: string;
+  readonly avatar: string
 
-  updatedAt: Date;
+  updatedAt: Date
 }

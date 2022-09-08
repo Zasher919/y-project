@@ -2,8 +2,7 @@ import { ApiProperty } from '@nestjs/swagger'
 import { IsEmail, IsMobilePhone, IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from 'class-validator'
 
 export class CreateAddressrDto {
-
-@ApiProperty({ description: '用户ID' })
+  @ApiProperty({ description: '用户ID' })
   @IsNotEmpty({ message: 'userid 不能为空' })
   userID: string
 
@@ -16,11 +15,11 @@ export class CreateAddressrDto {
 
   @ApiProperty({ description: '收货人' })
   @IsNotEmpty({ message: 'userName 不能为空' })
-  userName:  string
+  userName: string
 
   @ApiProperty({ description: '省名' })
   @IsNotEmpty({ message: 'provinceName 不能为空' })
-  provinceName:  string
+  provinceName: string
 
   @ApiProperty({ description: '市名' })
   @IsNotEmpty({ message: 'cityName 不能为空' })

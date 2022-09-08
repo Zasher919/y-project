@@ -12,6 +12,6 @@ const baseHosts = {
     uploadPath: 'public/',
     domain: 'www.giibee.com',
   },
-};
+}
 
-export { baseHosts };
+export { baseHosts }
