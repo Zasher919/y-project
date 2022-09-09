@@ -14,6 +14,7 @@
 
     <script>
       let rkuohao = /\{\{(.+?)\}\}/g;
+      // 递归生成模版,并插入数据 支持链式查找
       function compiler(template, data) {
         let childNodes = template.childNodes; // 取出子元素
         for (let i = 0; i < childNodes.length; i++) {
@@ -29,8 +30,9 @@
               // 函数的 第 n 个参数 表示正则中的 第 n 组
               // debugger
               let key = g.trim(); // 写在双花括号里面的 东西
-              let value = data[key];
-
+              console.log("key", data, key);
+              let value = getValueByPath(data, "data" + "." + key);
+              console.log("value", value);
               // 将 {{ xxxx }} 用这个 值替换
               return value;
             });

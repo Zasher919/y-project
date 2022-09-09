@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // dp 算法
+      // 思想 很像高中数列的思想,给出首项,以及一个递推式子,让你求任意的值
+      // 步骤基本是:寻找状态转移方程=>建立合适的数据结构表=>填表
+
+      //1.爬楼梯
+      // 假设你正在爬楼梯. 需要n阶你才能爬到楼顶
+      // 每次你可以爬1或2个台阶. 求有多少种方法爬到楼顶
+      let climbStairs = function (n) {
+        let dp = [];
+        dp[1] = [1];
+        dp[2] = [2];
+        for (let index = 3; index < n.length; index++) {
+          dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        return dp[n];
+      };
+      console.log(climbStairs(3));
+    </script>
+  </body>
+</html>

@@ -46,6 +46,7 @@
        * Vue 中的源码使用的 栈结构 , 使用栈存储 父元素来实现递归生成
        */
       function getVNode(node) {
+        console.log("node", node, node.nodeType);
         let nodeType = node.nodeType;
         let _vnode = null;
         if (nodeType === 1) {
@@ -81,7 +82,7 @@
 
       // rootp.replaceChild(root, vroot);
 
-      console.log(vroot);
+      console.log("vroot", vroot);
 
       // 将 vNode 转换为真正的 DOM ( 作业 )
       function parseVNode(vnode) {}
