@@ -17,6 +17,7 @@
     </div>
 
     <script>
+      // JGVue 构造函数 实现传入元素,数据, 生成模版, 模版赋值, update刷新模版
       let rkuohao = /\{\{(.+?)\}\}/g;
       function compiler(template, data) {
         let childNodes = template.childNodes; // 取出子元素
