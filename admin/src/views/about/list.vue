@@ -2,18 +2,8 @@
   <div class="app-container">
     <div class="filter-container">
       <div class="filter-container__search">
-        <el-input
-          v-model="listQuery.keyword"
-          clearable
-          placeholder="请输入内容"
-          @keyup.enter.native="onFilter"
-        >
-          <el-button
-            slot="append"
-            icon="el-icon-search"
-            type="primary"
-            @click="onFilter"
-            @keyup.enter.native="onFilter"
+        <el-input v-model="listQuery.keyword" clearable placeholder="请输入内容" @keyup.enter.native="onFilter">
+          <el-button slot="append" icon="el-icon-search" type="primary" @click="onFilter" @keyup.enter.native="onFilter"
             >搜索</el-button
           >
         </el-input>
@@ -21,75 +11,16 @@
       <div class="filter-container__ctrl">
         <el-button
           class="filter-item"
-          style="margin-left: 10px;"
+          style="margin-left: 10px"
           type="primary"
           plain
           icon="el-icon-edit"
           @click="handleCreate"
         >
-          {{ $t('table.add') }}
+          {{ $t("table.add") }}
         </el-button>
       </div>
     </div>
-    <el-table
-      :key="tableKey"
-      v-loading="listLoading"
-      :data="list"
-      border
-      fit
-      highlight-current-row
-      stripe
-      @selection-change="handleSelectionChange"
-      id="tableList"
-    >
-      <el-table-column label="标题">
-        <template slot-scope="{ row }"> {{ row.name }} </template>
-      </el-table-column>
-
-      <el-table-column
-        sortable
-        prop="updatedAt"
-        :label="$t('table.updatedAt')"
-        align="center"
-      >
-        <template slot-scope="{ row }">
-          <span>{{ row.updatedAt | formatDate }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-        :label="$t('table.status')"
-        class-name="status-col"
-        width="100"
-      >
-        <template slot-scope="{ row }">
-          <el-tag :type="row.status | statusFilter" size="mini">
-            {{ row.status ? '开启' : '停用' }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column
-        :label="$t('table.actions')"
-        align="center"
-        class-name="small-padding fixed-width"
-      >
-        <template slot-scope="{ row }">
-          <el-button size="mini" @click="handleUpdate(row)">
-            {{ $t('table.edit') }}
-          </el-button>
-
-          <el-button
-            v-if="row.status != 'deleted' && isAdmin"
-            size="mini"
-            type="danger"
-            plain
-            @click="handleDelete(row)"
-          >
-            {{ $t('table.delete') }}
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
     <div class="el-table__footer">
       <el-button
         v-if="isAdmin"
@@ -100,6 +31,9 @@
         >删除选中
       </el-button>
     </div>
+
+    <TemplateTable @selectChange="handleSelectionChange" :data="list" :columns="columns" :tableLoading="listLoading">
+    </TemplateTable>
     <pagination
       v-show="total > 0"
       :total="total"
@@ -111,42 +45,89 @@
 </template>
 
 <script>
-import { config } from './config'
-import { fetchList, remove } from '@/api/about'
-import waves from '@/directive/waves' // waves directive
-import { formatDate } from '@/utils'
-import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import { config } from "./config";
+import { fetchList, remove } from "@/api/about";
+import waves from "@/directive/waves"; // waves directive
+import { formatDate } from "@/utils";
+import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+import TemplateTable from "@/components/table";
 
-let categoryList = {}
+let categoryList = {};
 export default {
-  name: 'AboutList',
+  name: "AboutList",
   components: {
     Pagination,
+    TemplateTable
   },
   directives: {
-    waves,
+    waves
   },
   filters: {
     statusFilter(status) {
-      return status ? 'success' : 'info'
+      return status ? "success" : "info";
     },
     formatDate(date) {
-      return formatDate(date)
+      return formatDate(date);
     },
     categoryIDsToName(ids) {
-      let names = ''
+      let names = "";
       ids.forEach((v, i) => {
-        let item = categoryList[v] || {}
-        let name = item.name || ''
+        let item = categoryList[v] || {};
+        let name = item.name || "";
         if (name) {
-          names += i === 0 ? name : ` > ` + name
+          names += i === 0 ? name : ` > ` + name;
         }
-      })
-      return names
-    },
+      });
+      return names;
+    }
   },
   data() {
     return {
+      columns: [
+        { label: "标题", prop: "name" },
+
+        { label: "更新时间", prop: "updatedAt" },
+        {
+          label: "状态",
+          render: scope => {
+            return (
+              <div>
+                <el-tag type={scope.row.status ? "success" : "info"} size="mini">
+                  {scope.row.status ? "开启" : "停用"}
+                </el-tag>
+              </div>
+            );
+          }
+        },
+        {
+          label: "操作",
+          render: scope => {
+            return (
+              <div>
+                <el-button
+                  size="mini"
+                  onClick={() => {
+                    this.handleUpdate(scope.row);
+                  }}
+                >
+                  {this.$t("table.edit")}
+                </el-button>
+                <el-button
+                  style={ scope.row.status  ? 'display:none' : 'display:block'}
+                  size="mini"
+                  type="danger"
+                  plain
+                  onClick={() => {
+                    this.handleDelete(scope.row);
+                  }}
+                >
+                  {this.$t("table.delete")}
+                </el-button>
+              </div>
+            );
+          }
+        }
+      ],
       tableKey: 0,
       list: null,
       total: 0,
@@ -157,98 +138,98 @@ export default {
         importance: undefined,
         title: undefined,
         type: undefined,
-        sort: '+id',
-        keyword: '',
+        sort: "+id",
+        keyword: ""
       },
       downloadLoading: false,
       selectedRows: [],
 
-      categoryList: {},
-    }
+      categoryList: {}
+    };
   },
   computed: {
     isAdmin() {
-      const roles = this.$store.state.user.roles
-      return roles.includes('admin')
-    },
+      const roles = this.$store.state.user.roles;
+      return roles.includes("admin");
+    }
   },
   watch: {
-    'listQuery.keyword'(value) {
+    "listQuery.keyword"(value) {
       if (value.length <= 0) {
-        this.getList()
+        this.getList();
       }
-    },
+    }
   },
   created() {
-    this.getList()
+    this.getList();
   },
   methods: {
     // 列表
     getList() {
-      this.listLoading = true
+      this.listLoading = true;
       fetchList(this.listQuery).then(res => {
-        this.list = res.data
-        this.total = res.total
+        this.list = res.data;
+        this.total = res.total;
 
-        this.listLoading = false
-      })
+        this.listLoading = false;
+      });
     },
 
     // 添加事件
     handleCreate() {
-      this.$router.push(`${config.routePath}create`)
+      this.$router.push(`${config.routePath}create`);
     },
 
     // 编辑信息
     handleUpdate(row) {
       this.$router.push({
         path: `${config.routePath}update`,
-        query: { id: row.id },
-      })
+        query: { id: row.id }
+      });
     },
 
     // 删除
     handleDelete(row) {
-      let ids = []
+      let ids = [];
       if (Array.isArray(row)) {
-        ids = row.map(v => v._id)
+        ids = row.map(v => v._id);
       } else {
-        ids.push(row._id)
+        ids.push(row._id);
       }
 
       this.handleClose(() => {
         remove({
-          ids,
+          ids
         }).then(res => {
           this.$notify({
-            title: '成功',
-            message: '删除成功',
-            type: 'success',
-            duration: 2000,
-          })
-          this.getList()
-        })
-      })
+            title: "成功",
+            message: "删除成功",
+            type: "success",
+            duration: 2000
+          });
+          this.getList();
+        });
+      });
     },
 
     handleSelectionChange(val) {
-      this.selectedRows = val
+      this.selectedRows = val;
     },
 
     // 删除提醒
     handleClose(done) {
-      this.$confirm('确认删除？')
+      this.$confirm("确认删除？")
         .then(_ => {
-          done()
+          done();
         })
-        .catch(_ => {})
+        .catch(_ => {});
     },
 
     // filter
     onFilter() {
-      this.listQuery.page = 1
-      this.getList()
-    },
-  },
-}
+      this.listQuery.page = 1;
+      this.getList();
+    }
+  }
+};
 </script>

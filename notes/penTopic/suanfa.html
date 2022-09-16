@@ -15,16 +15,18 @@
       //1.爬楼梯
       // 假设你正在爬楼梯. 需要n阶你才能爬到楼顶
       // 每次你可以爬1或2个台阶. 求有多少种方法爬到楼顶
-      let climbStairs = function (n) {
-        let dp = [];
+      function climbStairs(n) {
+        // debugger  
+        let dp = []
         dp[1] = [1];
         dp[2] = [2];
-        for (let index = 3; index < n.length; index++) {
-          dp[i] = dp[i - 1] + dp[i - 2];
+        for (let i = 3; i <= n; i++) {
+          dp[i] = Number(dp[i - 1]) + Number(dp[i - 2]);
         }
         return dp[n];
       };
-      console.log(climbStairs(3));
+      // climbStairs(5)
+      console.log(climbStairs(5));
     </script>
   </body>
 </html>
