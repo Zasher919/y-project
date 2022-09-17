@@ -1,17 +1,10 @@
 <template>
   <div class="login-container">
     <el-card class="box-card login-form">
-      <el-form
-        ref="loginForm"
-        :model="loginForm"
-        :rules="loginRules"
-        class=""
-        autocomplete="on"
-        label-position="left"
-      >
+      <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="" autocomplete="on" label-position="left">
         <div class="title-container">
           <h3 class="title">
-            {{ $t('login.title') }}
+            {{ $t("login.title") }}
           </h3>
           <!-- <lang-select class="set-language" /> -->
         </div>
@@ -30,12 +23,7 @@
           />
         </el-form-item>
 
-        <el-tooltip
-          v-model="capsTooltip"
-          content="Caps lock is On"
-          placement="right"
-          manual
-        >
+        <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
           <el-form-item prop="password">
             <span class="svg-container">
               <svg-icon icon-class="password" />
@@ -54,9 +42,7 @@
               @keyup.enter.native="handleLogin"
             />
             <span class="show-pwd" @click="showPwd">
-              <svg-icon
-                :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
-              />
+              <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
             </span>
           </el-form-item>
         </el-tooltip>
@@ -67,7 +53,7 @@
           style="width: 100%; margin-bottom: 30px"
           @click.native.prevent="handleLogin"
         >
-          {{ $t('login.logIn') }}
+          {{ $t("login.logIn") }}
         </el-button>
 
         <!-- <div style="position:relative">
@@ -89,7 +75,7 @@
       </el-form>
     </el-card>
     <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog">
-      {{ $t('login.thirdpartyTips') }}
+      {{ $t("login.thirdpartyTips") }}
       <br />
       <br />
       <br />
@@ -99,70 +85,69 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
+import { validUsername } from "@/utils/validate";
 // import LangSelect from '@/components/LangSelect'
-import SocialSign from './components/SocialSignin'
+import SocialSign from "./components/SocialSignin";
+
 // import errGif from '@/assets/401_images/401.gif'
+import axios from "axios";
 
 export default {
-  name: 'Login',
+  name: "Login",
   components: { SocialSign },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
+        callback(new Error("Please enter the correct user name"));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+        callback(new Error("The password can not be less than 6 digits"));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
     return {
       loginForm: {
-        username: 'admin999',
-        password: 'admin999',
+        username: "admin999",
+        password: "admin999"
       },
       loginRules: {
-        username: [
-          { required: true, trigger: 'blur', validator: validateUsername },
-        ],
-        password: [
-          { required: true, trigger: 'blur', validator: validatePassword },
-        ],
+        username: [{ required: true, trigger: "blur", validator: validateUsername }],
+        password: [{ required: true, trigger: "blur", validator: validatePassword }]
       },
-      passwordType: 'password',
+      passwordType: "password",
       capsTooltip: false,
       loading: false,
       showDialog: false,
       redirect: undefined,
-      otherQuery: {},
-    }
+      otherQuery: {}
+    };
   },
   watch: {
     $route: {
       handler: function (route) {
-        const query = route.query
+        const query = route.query;
         if (query) {
-          this.redirect = query.redirect
-          this.otherQuery = this.getOtherQuery(query)
+          this.redirect = query.redirect;
+          this.otherQuery = this.getOtherQuery(query);
         }
       },
-      immediate: true,
-    },
+      immediate: true
+    }
   },
   created() {
     // window.addEventListener('storage', this.afterQRScan)
   },
   mounted() {
-    if (this.loginForm.username === '') {
-      this.$refs.username.focus()
-    } else if (this.loginForm.password === '') {
-      this.$refs.password.focus()
+    axios.post("http://localhost:8000/testModel");
+    if (this.loginForm.username === "") {
+      this.$refs.username.focus();
+    } else if (this.loginForm.password === "") {
+      this.$refs.password.focus();
     }
   },
   destroyed() {
@@ -170,49 +155,49 @@ export default {
   },
   methods: {
     checkCapslock(e) {
-      const { key } = e
-      this.capsTooltip = key && key.length === 1 && key >= 'A' && key <= 'Z'
+      const { key } = e;
+      this.capsTooltip = key && key.length === 1 && key >= "A" && key <= "Z";
     },
     showPwd() {
-      if (this.passwordType === 'password') {
-        this.passwordType = ''
+      if (this.passwordType === "password") {
+        this.passwordType = "";
       } else {
-        this.passwordType = 'password'
+        this.passwordType = "password";
       }
       this.$nextTick(() => {
-        this.$refs.password.focus()
-      })
+        this.$refs.password.focus();
+      });
     },
     handleLogin() {
-      this.$refs.loginForm.validate((valid) => {
+      this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.loading = true
+          this.loading = true;
           this.$store
-            .dispatch('user/login', this.loginForm)
+            .dispatch("user/login", this.loginForm)
             .then(() => {
               this.$router.push({
-                path: this.redirect || '/',
-                query: this.otherQuery,
-              })
-              this.loading = false
+                path: this.redirect || "/",
+                query: this.otherQuery
+              });
+              this.loading = false;
             })
             .catch(() => {
-              this.loading = false
-            })
+              this.loading = false;
+            });
         } else {
-          console.log('error submit!!')
-          return false
+          console.log("error submit!!");
+          return false;
         }
-      })
+      });
     },
     getOtherQuery(query) {
       return Object.keys(query).reduce((acc, cur) => {
-        if (cur !== 'redirect') {
-          acc[cur] = query[cur]
+        if (cur !== "redirect") {
+          acc[cur] = query[cur];
         }
-        return acc
-      }, {})
-    },
+        return acc;
+      }, {});
+    }
     // afterQRScan() {
     //   if (e.key === 'x-admin-oauth-code') {
     //     const code = getQueryObject(e.newValue)
@@ -231,8 +216,8 @@ export default {
     //     }
     //   }
     // }
-  },
-}
+  }
+};
 </script>
 
 <style lang="scss">
@@ -295,7 +280,7 @@ $light_gray: #eee;
 .login-container {
   min-height: 100%;
   width: 100%;
-  background: url('../../assets/images/login-bg.jpg');
+  background: url("../../assets/images/login-bg.jpg");
   background-size: cover;
   overflow: hidden;
 

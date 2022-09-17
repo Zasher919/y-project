@@ -50,6 +50,14 @@ module.exports = {
         // pathRewrite: {
         //   // '^/api': '/'
         // }
+      },
+      "/admin": {
+        target: "http://localhost:8000/",
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: {
+          "/admin": ""
+        }
       }
       // "/api": {
       //   target: "https://4h1s324364.qicp.vip/",

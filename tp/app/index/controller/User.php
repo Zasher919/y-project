@@ -1,9 +1,9 @@
 <?php
 
-namespace app\controller;
+namespace app\index\controller;
 use app\BaseController;
-use think\facade\Db;
 use app\model\UserModel;
+use think\facade\Db;
 
 
 class User extends BaseController{

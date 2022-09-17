@@ -22,6 +22,40 @@
 
 ```
 
+### set, map 数据结构和区别
+
+```bash
+set:
+    ES6提供了新的数据结构,类似于数组,但成员是唯一的,
+    Set本身是一个构造函数需要new, 用来生成set数据结构
+    set对象允许存储任何类型的唯一值,
+    提供操作api: 1.add 添加 2.delete 删除 3.has 判断 4.clear 清楚
+    set遍历: 1.keys 遍历建 2.values 值 3.entries 建,值,需接受 4.foreach
+    总结:1.类似数组,值不重复 2.可存贮任何类型 3.值不会进行类型转换 4.NaN值是重复的 5.undefined 被存储
+
+map:
+    map数据结构用来保存任何类型的键值对
+    需要new map生成map数据结构
+    操作api: 1.get 2.set 3.has 4.delete 5.clear
+    遍历方法: 1.keys 2.values 3.entries 4.foreach
+    总结: 1.支持所有数据类型为键 2.本质上是键值对的集合,类型集合 3.二个NaN也是重复的 4.NaN和undefined都可以被存
+
+map和object的区别:
+    1.object的key必须是简单数据类型(整数,字符串,symbol), map的key可以是任何类型
+    2.map元素插入顺序是FIFO, object 没有
+    3.map继承object
+    4.map在存储大量元素的时候性能表现更好
+    5.写入删除密集的情况下应该使用map
+
+map和set的区别:
+    1.set以[val,val]形式存储元素, map以[key,value]形式存储
+    2.map的值不作为键, 键和值是分开的
+扩展:
+    什么是FIFO？
+　　FIFO是英文First In First Out 的缩写，是一种先进先出的数据缓存器，他与普通存储器的区别是没有外部读写地址线，这样使用起来非常简单，但缺点就是只能顺序写入数据，顺序的读出数据，其数据地址由内部读写指针自动加1完成，不能像普通存储器那样可以由地址线决定读取或写入某个指定的地址
+
+```
+
 ### 3.节流与防抖
 
 ```bash

@@ -72,6 +72,7 @@
 import { imgPostion } from "@/utils/enum";
 import { resManage, formatDate } from "@/utils/index";
 import { getToken } from "@/utils/auth";
+import axios from "axios";
 // import { getToken } from '@/utils/auth'
 /*-------api-----------*/
 import { getList, create, update, remove } from "@/api/img";

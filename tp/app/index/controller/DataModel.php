@@ -1,6 +1,7 @@
 <?php
-namespace app\controller;
-use app\model\User;
+namespace app\index\controller;
+use app\index\model\User;
+
 class DataModel
 {
     public function index()

@@ -1,12 +1,13 @@
 <?php
 
-namespace app\controller;
-use app\model\Test;
+namespace app\index\controller;
+use app\index\model\Test;
+use think\facade\Request;
+
 //use think\Request;
 
 //use think\Request;
 //使用 Facade 方式应用于没有进行依赖注入时使用 Request 对象的场合；
-use think\facade\Request;
 class TestModel
 {
 //  public function index(Request $request)

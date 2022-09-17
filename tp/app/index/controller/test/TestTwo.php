@@ -1,5 +1,5 @@
 <?php
-namespace app\controller\test;
+namespace app\index\controller\test;
 
 class TestTwo
 {

@@ -107,9 +107,13 @@ export default {
         scope: [Object, String]
       },
       render(h, stx) {
-        // const dom=this.item.render()
+        console.log("h,stx", h, stx);
         return <div>{this.item.render(this.scope)}</div>;
       }
+
+      // render(CreateElement) {
+      //   return CreateElement("div", {}, this.item.render(this.scope));
+      // }
     }
   },
   data() {
