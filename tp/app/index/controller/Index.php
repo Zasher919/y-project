@@ -17,7 +17,7 @@ class Index extends BaseController
 
     public function test()
     {
-        return 'test';
+        return 'test123';
     }
 
 }
