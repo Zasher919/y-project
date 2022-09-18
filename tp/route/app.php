@@ -10,8 +10,16 @@
 // +----------------------------------------------------------------------
 use think\facade\Route;
 
-Route::get('think', function () {
-    return 'hello,ThinkPHP6!';
+//Route::get('think', function () {
+//    return 'hello,ThinkPHP6!';
+//});
+//
+//Route::get('hello/:name', 'index/hello');
+
+Route::group(function(){
+  Route::get('token', 'index/hello1');
 });
 
-Route::get('hello/:name', 'index/hello');
+Route::group(function(){
+  Route::get('login', 'index/hello2');
+})->middleware(\app\middleware\JWT1::class);
