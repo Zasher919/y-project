@@ -17,9 +17,9 @@ use think\facade\Route;
 //Route::get('hello/:name', 'index/hello');
 
 Route::group(function(){
-  Route::get('token', 'index/hello1');
+  Route::get('token', 'admin/index/hello1');
 });
 
 Route::group(function(){
-  Route::get('login', 'index/hello2');
+  Route::get('login', 'admin/index/hello2');
 })->middleware(\app\middleware\JWT1::class);

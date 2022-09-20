@@ -86,11 +86,10 @@
 
 <script>
 import { validUsername } from "@/utils/validate";
-// import LangSelect from '@/components/LangSelect'
+// import { decodeMd5 } from "@/utils";
 import SocialSign from "./components/SocialSignin";
-
+// import { login } from '@/api/user'
 // import errGif from '@/assets/401_images/401.gif'
-import axios from "axios";
 
 export default {
   name: "Login",
@@ -143,7 +142,6 @@ export default {
     // window.addEventListener('storage', this.afterQRScan)
   },
   mounted() {
-    axios.post("http://localhost:8000/testModel");
     if (this.loginForm.username === "") {
       this.$refs.username.focus();
     } else if (this.loginForm.password === "") {
@@ -169,9 +167,12 @@ export default {
       });
     },
     handleLogin() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true;
+      this.$refs.loginForm.validate(async valid => {
+        if (valid) {  
+          // this.loginForm.password = decodeMd5(this.loginForm.password);
+          this.loading = true; 
+
+          // let res = login(this.loginForm);
           this.$store
             .dispatch("user/login", this.loginForm)
             .then(() => {
