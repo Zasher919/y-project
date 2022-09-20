@@ -5,6 +5,7 @@ namespace app\admin\controller;
 use think\facade\Db;
 //use think\Db;
 use app\admin\model\User as Model;
+use think\facade\Request;
 
 class User
 {
@@ -24,6 +25,9 @@ class User
 
   public function add()
   {
+    $data = Request::param();
+    $res = Model::create($data);
+    return json($res);
     return 'admin add user';
   }
 
