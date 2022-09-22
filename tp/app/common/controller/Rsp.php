@@ -4,7 +4,7 @@ namespace app\common\controller;
 
 use think\facade\Config;
 
-class Base
+class Rsp
 {
   /**
    * @param int $code code码
@@ -12,7 +12,7 @@ class Base
    * @return '\think\response\Json'
    */
 
-  public static function returnInfo($code,$data=[])
+  public static function rspInfo($code,$data=[])
   {
     $msg = Config::get('code.'.$code);
     $rs = [

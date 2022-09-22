@@ -1,7 +1,7 @@
 <?php
 namespace app\admin\controller;
 
-use app\common\controller\Base;
+use app\common\controller\Rsp;
 use app\BaseController;
 
 class Index extends BaseController
@@ -10,7 +10,7 @@ class Index extends BaseController
   {
 //    return '管理后台';
 
-    return Base::returnInfo(10000,['name'=>'张三']);
+    return Rsp::rspInfo(10000,['name'=>'张三']);
   }
 
   public function hello1()

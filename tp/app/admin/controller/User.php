@@ -6,6 +6,7 @@ use think\facade\Db;
 //use think\Db;
 use app\admin\model\User as Model;
 use think\facade\Request;
+use app\common\controller\Rsp;
 
 class User
 {
@@ -14,8 +15,21 @@ class User
 //      return '123';
 
 //    $user = Db::name('user')->select();
+    $data = [
 
-    return Model::select();
+      "username" =>'test',
+      "password" =>'123456',
+      "avatar"   =>'',
+      "roles"    =>'all',
+      "status"   =>1,
+
+    ];
+
+
+    Model::create($data);
+//    return json($data);
+    Rsp::rspInfo();
+//    return;
   }
 
   public function login()
