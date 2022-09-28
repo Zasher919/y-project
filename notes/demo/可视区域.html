@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container{
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .target {
+            margin: 5px;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container"></div>
+    <script>
+        
+
+        function createTargets(){
+            let container = document.querySelector(".container")
+            let nodeName = document.createElement('div')
+            // container.createElement('<div>3333333</div>')
+            nodeName.classList = 'target'
+            // let renderDom = container.appendChild(nodeName)
+            for(i=1;i<1000;i++){
+                container.appendChild(nodeName)
+                // renderDom()
+            }
+            // const htmlString = new Array(1000).map(v=>renderDom)
+            
+
+            console.log(container.target);
+            // container.appendChild(nodeName)
+        }
+
+        
+
+        createTargets()
+    </script>
+</body>
+</html>
