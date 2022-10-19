@@ -42,9 +42,12 @@ service.interceptors.response.use(
    * You can also judge the status by HTTP Status Code
    */
   response => {
-    const { status, data } = response;
-    const res = data;
 
+    
+    const { status, data } = response;
+    // return data
+    const res = data;
+    
     // console.log();
 
     // if the custom code is not 20000, it is judged as an error.
@@ -74,9 +77,10 @@ service.interceptors.response.use(
       }
       return Promise.reject(new Error(res.message || "Error"));
     } else {
-      const { statusCode, message } = res;
-
-      if ([202, 400].includes(statusCode)) {
+      const { status, message } = res;
+      console.log('status',status)
+      // debugger
+      if ([202, 400].includes(status)) {
         Message({
           message: message || "Error",
           type: "error",
@@ -84,7 +88,9 @@ service.interceptors.response.use(
         });
         return Promise.reject(res);
       }
-      return res;
+
+  
+      return data;
     }
   },
   error => {

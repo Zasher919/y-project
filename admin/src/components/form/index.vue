@@ -36,8 +36,8 @@
       <template>
         <div class="footer-btn">
           <slot name="footer">
-            <el-button type="primary" @click="submit('ruleForm')">立即创建</el-button>
             <el-button @click="$emit('update:showForm', false)">取消</el-button>
+            <el-button type="primary" @click="submit('ruleForm')">确认</el-button>
           </slot>
         </div>
       </template>
@@ -77,9 +77,8 @@ export default {
   },
   created() {},
   mounted() {
-    console.log("mounted", this.config);
     this.config = deepClone(this.configData);
-
+    console.log("mounted", this.config);
     this.$nextTick(() => {
       this.config.forEach(v => {
         // this.form[v.key] = null;

@@ -16,6 +16,8 @@ import productRouter from "./modules/product";
 import homeRouter from "./modules/home";
 import fileRouter from "./modules/file";
 import demoRouter from "./modules/demo";
+import sysRouter from "./modules/sys";
+
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -82,6 +84,7 @@ export const constantRoutes = [
     redirect: "/home/dashboard",
     children: []
   },
+  sysRouter,
   homeRouter,
   aboutRouter,
   productRouter,

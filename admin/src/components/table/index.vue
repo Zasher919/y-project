@@ -121,9 +121,7 @@ export default {
       tableHeight: window.screen.width >= 1920 ? 600 : 405
     };
   },
-  mounted() {
-    debugger
-  },
+  mounted() {},
   computed: {
     loading() {
       return this.tableLoading;

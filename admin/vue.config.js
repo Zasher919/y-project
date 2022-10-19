@@ -43,6 +43,14 @@ module.exports = {
       errors: true
     },
     proxy: {
+      "/api/admin": {
+        target: "http://localhost:8000/",
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: {
+          "^/api/admin": "/admin"
+        }
+      },
       "/api": {
         target: process.env.VUE_APP_BASE_HOST,
         ws: true,
@@ -51,19 +59,12 @@ module.exports = {
         //   // '^/api': '/'
         // }
       },
-      "/admin": {
-        target: "http://localhost:8000/",
+
+      "/api": {
+        target: "https://4h1s324364.qicp.vip/",
         ws: true,
-        changeOrigin: true,
-        // pathRewrite: {
-        //   "^/admin": "/admin"
-        // }
+        changeOrigin: true
       }
-      // "/api": {
-      //   target: "https://4h1s324364.qicp.vip/",
-      //   ws: true,
-      //   changeOrigin: true
-      // }
 
       // '/api': {
       //   target: 'http://49.232.20.32:5057/',

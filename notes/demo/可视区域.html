@@ -1,49 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
-        .container{
-            display: flex;
-            flex-wrap: wrap;
-        }
+      html {
+        overflow: hidden;
+        height: 100%;
+      }
 
-        .target {
-            margin: 5px;
-            width: 20px;
-            height: 20px;
-            background-color: red;
-        }
+      body {
+        /* 视差元素的父级需要3D视角 */
+        perspective: 1px;
+        transform-style: preserve-3d;
+        height: 100%;
+        overflow-y: scroll;
+        overflow-x: hidden;
+      }
+      #app {
+        width: 100vw;
+        height: 200vh;
+        background: skyblue;
+        padding-top: 100px;
+      }
+      .one {
+        width: 500px;
+        height: 200px;
+        background: #409eff;
+        transform: translateZ(0px);
+        margin-bottom: 50px;
+      }
+      .two {
+        width: 500px;
+        height: 200px;
+        background: #67c23a;
+        transform: translateZ(-50px);
+        margin-bottom: 150px;
+      }
+      .three {
+        width: 500px;
+        height: 200px;
+        background: #e6a23c;
+        transform: translateZ(-50px);
+        margin-bottom: 150px;
+      }
+
+      .border{
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 50px 50px;
+        border-color: transparent transparent #d9534f;
+      }
     </style>
-</head>
-<body>
-    <div class="container"></div>
+  </head>
+  <body>
+    <div class="border"></div>
+
+    <div id="app">
+      <div class="one">one</div>
+      <div class="two">two</div>
+      <div class="three">three</div>
+    </div>
     <script>
-        
-
-        function createTargets(){
-            let container = document.querySelector(".container")
-            let nodeName = document.createElement('div')
-            // container.createElement('<div>3333333</div>')
-            nodeName.classList = 'target'
-            // let renderDom = container.appendChild(nodeName)
-            for(i=1;i<1000;i++){
-                container.appendChild(nodeName)
-                // renderDom()
-            }
-            // const htmlString = new Array(1000).map(v=>renderDom)
-            
-
-            console.log(container.target);
-            // container.appendChild(nodeName)
+      function createTargets() {
+        let container = document.querySelector(".container");
+        let nodeName = document.createElement("div");
+        // container.createElement('<div>3333333</div>')
+        nodeName.classList = "target";
+        // let renderDom = container.appendChild(nodeName)
+        for (i = 1; i < 1000; i++) {
+          container.appendChild(nodeName);
+          // renderDom()
         }
+        // const htmlString = new Array(1000).map(v=>renderDom)
 
-        
+        console.log(container.target);
+        // container.appendChild(nodeName)
+      }
 
-        createTargets()
+      createTargets();
     </script>
-</body>
+  </body>
 </html>
