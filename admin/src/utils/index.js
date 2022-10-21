@@ -436,12 +436,17 @@ export function deepClone(source) {
   }
   const targetObj = source.constructor === Array ? [] : {};
   Object.keys(source).forEach(keys => {
+    console.log('111',source[keys])
     if (source[keys] && typeof source[keys] === "object") {
+     
       targetObj[keys] = deepClone(source[keys]);
     } else {
       targetObj[keys] = source[keys];
     }
   });
+
+  
+  
   return targetObj;
 }
 

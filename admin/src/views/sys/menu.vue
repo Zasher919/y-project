@@ -9,13 +9,13 @@
 
     <!-- 新增 -->
     <el-dialog title="提示" :visible.sync="showForm">
-      <TemplateForm v-if="showForm" :showForm.sync="showForm" :configData="formConfig" />
+      <TemplateForm v-if="showForm" :showForm.sync="showForm" :configData="formConfig" @submit="submit" />
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { menuList } from "@/api/sys.js";
+import { menuList, menuAdd } from "@/api/sys.js";
 import TemplateTable from "@/components/table";
 import TemplateForm from "@/components/form";
 export default {
@@ -45,6 +45,7 @@ export default {
         {
           key: "type",
           type: "radio",
+          value:1,
           label: "类型:",
           options: [
             { label: "目录", value: 1 },
@@ -53,11 +54,11 @@ export default {
           ]
         },
         { key: "name", type: "input", label: "菜单名称:" },
-        { key: "parent_id", type: "select", label: "上级菜单:", options: this.parentList },
+        { key: "parent_id", type: "select", label: "上级菜单:", options: this.parentList, show: { showKey: "type", hideValue: 1 } },
         { key: "icon", type: "input", label: "菜单图片:" },
         { key: "sort", type: "input", label: "排序:" },
         { key: "url", type: "input", label: "菜单地址:" },
-        { key: "auth_flag", type: "input", label: "按钮标识:" }
+        { key: "auth_flag", type: "input", label: "按钮标识:", show: { showKey: "type", showValue: 3 } }
       ]
     };
   },
@@ -75,6 +76,12 @@ export default {
         this.$set(this.formConfig, index, { ...this.formConfig[index], options: this.parentList });
         console.log(this.parentList);
       });
+    },
+
+    async submit(data) {
+      let res = await menuAdd(data);
+      console.log(res, "data");
+      this.init();
     },
     handleSelectionChange() {},
     btnClick(type) {
