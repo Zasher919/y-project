@@ -1,11 +1,12 @@
 import axios from "axios";
-// import { MessageBox, Message } from 'element-ui'
+// import { MessageBox, Message } from "element-ui";
 import store from "@/store";
 import { getToken } from "@/utils/auth";
+import { Toast } from "vant";
 
 // create an axios instance
 const service = axios.create({
-  baseURL: "http://localhost:7788/", // url = base url + request url
+  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 });
@@ -14,7 +15,6 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     // do something before request is sent
-
     if (store.getters.token) {
       // let each request carry token
       // ['X-Token'] is a custom headers key
@@ -44,55 +44,56 @@ service.interceptors.response.use(
    */
   response => {
     const { status, data } = response;
+    // return data
     const res = data;
-
     // if the custom code is not 20000, it is judged as an error.
-    if ([200, 201, 304].indexOf(status) < 0) {
-      // Message({
-      //   message: res.message || 'Error',
-      //   type: 'error',
-      //   duration: 3 * 1000,
-      // })
-
+    if ([200, 201, 304].indexOf(status) < 0 ) {
+      Toast({
+        message: res.message || "Error",
+        type: "error",
+        duration: 3 * 1000
+      });
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
       if (status === 50008 || status === 50012 || status === 50014) {
         // to re-login
-        // MessageBox.confirm(
-        //   'You have been logged out, you can cancel to stay on this page, or log in again',
-        //   'Confirm logout',
-        //   {
-        //     confirmButtonText: 'Re-Login',
-        //     cancelButtonText: 'Cancel',
-        //     type: 'warning',
-        //   }
-        // ).then(() => {
-        //   store.dispatch('user/resetToken').then(() => {
-        //     location.reload()
-        //   })
-        // })
+        Toast(
+          "You have been logged out, you can cancel to stay on this page, or log in again",
+          "Confirm logout",
+          {
+            confirmButtonText: "Re-Login",
+            cancelButtonText: "Cancel",
+            type: "warning"
+          }
+        ).then(() => {
+          store.dispatch("user/resetToken").then(() => {
+            location.reload();
+          });
+        });
       }
       return Promise.reject(new Error(res.message || "Error"));
     } else {
-      const { statusCode } = res;
-
-      if ([202, 400].includes(statusCode)) {
-        // Message({
-        //   message: message || 'Error',
-        //   type: 'error',
-        //   duration: 3 * 1000,
-        // })
+      const { status, message } = res;
+      console.log('status',status)
+      // debugger
+      if ([202, 400].includes(status)) {
+        Toast({
+          message: message || "Error",
+          type: "error",
+          duration: 3 * 1000
+        });
         return Promise.reject(res);
       }
-      return res;
+
+  
+      return data;
     }
   },
   error => {
-    console.log("err" + error); // for debug
-    // Message({
-    //   message: error.message,
-    //   type: 'error',
-    //   duration: 5 * 1000,
-    // })
+    Toast({
+      message: error.message,
+      type: "error",
+      duration: 5 * 1000
+    });
     return Promise.reject(error);
   }
 );

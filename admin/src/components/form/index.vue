@@ -121,9 +121,6 @@ export default {
         this.rules[v.key] = [{ required: v.required, message: v.tip, trigger: v.trigger }];
       });
     });
-
-    console.log("form", this.form);
-    // console.log("rule", this.rules);
   },
   methods: {
     submit(formName) {
