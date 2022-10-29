@@ -6,9 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
-  
+
   <body>
+    <button id="btn">点击</button>
+    <div style="height: 5000px"></div>
     <script>
+      let btn = document.querySelector("#btn");
+
       function Hero(name) {
         let o = new Object();
         o.name = name;
@@ -46,7 +50,45 @@
         };
         return o;
       }
-      Hero("jack").kill("22").recover("33");
+      // Hero("jack").kill("22").recover("33");
+
+      function d(fn) {
+        let content = this;
+        let args = [...arguments];
+        let timer;
+
+        return function () {
+          clearTimeout(timer);
+
+          timer = setTimeout(() => {
+            fn.apply(content, args);
+          }, 500);
+        };
+      }
+
+      function t(fn) {
+        let timer;
+
+        return function () {
+          if (timer) return;
+          let content = this;
+          let args = [...arguments];
+          timer = setTimeout(() => {
+            fn.apply(content, args);
+            timer = null;
+          }, 200);
+        };
+      }
+
+      window.addEventListener(
+        "scroll",
+        () => {
+          console.log("1");
+        }
+      );
+      // btn.addEventListener('click',d(()=>{
+      //   console.log('1111');
+      // }))
       //   let hero = new Hero()
     </script>
   </body>

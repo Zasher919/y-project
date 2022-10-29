@@ -7,10 +7,13 @@ import { Toast } from "vant";
 // axios.defaults.baseURL = process.env.NODE_ENV == 'development' ? '//backend-api-01.newbee.ltd/api/v1' : '//backend-api-01.newbee.ltd/api/v1'
 // axios.defaults.baseURL = '/'
 
-axios.defaults.baseURL = "https://4h1s324364.qicp.vip";
+// axios.defaults.baseURL = process.env.VUE_APP_BASE_HOST;
 // axios.defaults.baseURL = "http://localhost:7788/";
+axios.defaults.baseURL = "http://localhost:8000/";
+
 
 // axios.defaults.withCredentials = true
+axios.defaults.headers['Content-Type'] = 'application/json'
 // axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest'
 // axios.defaults.headers['authorization'] = localStorage.getItem('token') || ''
 // axios.defaults.headers.post['Content-Type'] = 'application/json'

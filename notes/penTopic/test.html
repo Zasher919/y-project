@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // vue3 Proxy
+      function reactive(data) {
+        const handler = {
+          get(target, prop, receiver) {
+            track(target, prop);
+            const value = Reflect.get(...arguments);
+            if (typeof value === "object") {
+              reactive(value);
+            } else {
+              return value;
+            }
+          },
+          set(target, key, value, receiver) {
+            trigger(target, key, value);
+            return Reflect.set(...arguments);
+          },
+        };
+
+        return new Proxy(data, handler);
+      }
+
+      function track(data, key) {
+        console.log("get", data, key);
+      }
+
+      function trigger(data, key, value) {
+        console.log("set", data, key, value);
+      }
+
+      const testa = reactive({ a: "1" });
+
+      const _permute = (string) => {
+        const result = [];
+        const map = new Map();
+        const dfs = (path) => {
+          if (path.length === string.length) {
+            result.push(path);
+            return;
+          }
+          for (let i = 0; i < string.length; i++) {
+            if (map.get(string[i])) continue;
+            map.set(string[i], true);
+            path += string[i];
+            console.log("map", map, path);
+            dfs(path);
+            path = path.substring(0, path.length - 1);
+            map.set(string[i], false);
+          }
+        };
+        dfs("");
+        return result;
+      };
+      // console.log(_permute("abc")); // [ 'abc', 'acb', 'bac', 'bca', 'cab', 'cba' ]
+
+      function A() {}
+      const a = new A();
+
+      Array.prototype._map = function (ctx) {
+        console.log(this, "this");
+        let result = [];
+        for (let index = 0; index < this.length; index++) {
+          result[index] = ctx(this[index], index, this);
+        }
+        console.log("data", result, this);
+        return result;
+      };
+
+      Array.prototype._filter = function (ctx) {
+        let result = [];
+        for (let index = 0; index < this.length; index++) {
+          if (ctx(this[index])) {
+            console.log("item", this[index]);
+            result.push(this[index]);
+          }
+        }
+        return result;
+      };
+
+      Array.prototype._some = function (ctx) {
+        let flag;
+        for (let index = 0; index < this.length; index++) {
+          if (ctx(this[index])) {
+            flag = true;
+          } else {
+            flag = false;
+          }
+        }
+
+        return flag;
+      };
+
+      Function.prototype._call = function (ctx, ...arguments) {
+        // 如果不为空, 则需要进行对象包装
+        const o = ctx == undefined ? window : Object(ctx);
+        // 给ctx添加如一无二key
+        const key = Symbol();
+        o[key] = this;
+        // 执行函数,得到返回结果
+        const result = o[key](...arguments);
+        // 删除该属性
+        delete o[key];
+        return result;
+      };
+
+      Function.prototype._bind = function (ctx, ...arguments) {
+        // 获取函数体
+        const _self = this
+        // 用一个新函数包裹, 避免立即执行
+        const bindFn = (...reset) => {
+          return _self.call(ctx, ...arguments, ...reset)
+        }
+
+        return bindFn;
+      };
+
+      const obj = {
+        name:'11',
+        fun(){
+          console.log(this.name)
+        }
+      }
+
+      const obj2 = {name:'22'}
+      obj.fun()
+      obj.fun._call(obj2)
+
+      let testA = [1, 2, 3, 4, 5];
+      let testC = [{ name: "1" }, { name: "2" }];
+
+      let testB = testA._some((v) => v < 1);
+
+      console.log("_some", testB);
+
+      // 1.要求以数组的形式返回字符串参数的所有排列组合。
+    </script>
+  </body>
+</html>

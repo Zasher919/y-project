@@ -3,7 +3,27 @@
  */
 
 import * as dayjs from "dayjs";
+import jsEncrypt from "jsencrypt";
+import CryptoJS from "crypto-js";
 // import { deleteMetadata } from "core-js/fn/reflect";
+
+export const decodeMd5 = data => {
+  return CryptoJS.MD5(data).toString();
+};
+
+const PUBLIC_KEY = "ABCDEFG_HI_JK_LMN_OPQ__RST_UVW_XYZ";
+// Rsa 加密
+export function decodeRsa(data) {
+  let jsEncrypt = new jsEncrypt();
+  jsEncrypt.setPublicKey(PUBLIC_KEY);
+  return jsEncrypt.encrypt(data);
+}
+// Rsa 解密
+export function encodeRsa(data) {
+  let jsEncrypt = new jsEncrypt();
+  jsEncrypt.setPublicKey(PUBLIC_KEY);
+  return jsEncrypt.encrypt(data);
+}
 
 export function formatDate(date) {
   return dayjs(date).format("YYYY-MM-DD HH:mm:ss");
@@ -416,12 +436,17 @@ export function deepClone(source) {
   }
   const targetObj = source.constructor === Array ? [] : {};
   Object.keys(source).forEach(keys => {
+    console.log('111',source[keys])
     if (source[keys] && typeof source[keys] === "object") {
+     
       targetObj[keys] = deepClone(source[keys]);
     } else {
       targetObj[keys] = source[keys];
     }
   });
+
+  
+  
   return targetObj;
 }
 

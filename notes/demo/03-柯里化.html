@@ -24,6 +24,51 @@
       let initName = testFun(tags);
 
       console.log("ccc", initName("div"));
+
+      const curry = function (fn) {
+        return function (x) {
+          return function (y) {
+            console.log("222", x, y);
+
+            return fn(x, y);
+          };
+        };
+      };
+
+      let myFn = curry((x, y) => x + y);
+      console.log(myFn(1)(2));
+      console.log(myFn.length, "33333");
+
+      // 组合与管道
+
+      function afn(a) {
+        return a * 2;
+      }
+      function bfn(b) {
+        return b * 3;
+      }
+      // const compose = (a, b) => (c) => a(b(c));
+      // let myfn = compose(afn, bfn);
+      // console.log('myfn(2)',myfn(4));
+
+      const memoize = function (fn,content){
+        debugger
+        let obj = Object.create(null)
+        content = content || this
+        return (...key)=>{
+          if(!obj[key]){
+            obj[key] = fn.apply(content,key)
+          }else{
+            return obj[key]
+          }
+        }
+      }
+
+      let add = (x,y)=>x+y;
+      let test = memoize(add)
+      let num1 = test(100,200)
+      console.log(num1,'num1');
+   
     </script>
   </body>
 </html>

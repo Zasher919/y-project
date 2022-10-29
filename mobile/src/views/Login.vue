@@ -1,5 +1,3 @@
-
-
 <template>
   <div class="login">
     <s-header
@@ -87,7 +85,7 @@
 </template>
 
 <script>
-import { reactive, ref, toRefs, getCurrentInstance } from "vue";
+import { reactive, ref, toRefs } from "vue";
 import { useRouter } from "vue-router";
 import sHeader from "@/components/SimpleHeader";
 // import vueImgVerify from '@/components/VueImageVerify'
@@ -96,10 +94,12 @@ import sHeader from "@/components/SimpleHeader";
 // import { setToken } from "@/utils/auth.js";
 // import md5 from 'js-md5'
 import { Toast } from "vant";
+
+import { addUser, login } from "@/api/index";
+import { isMobile } from '@/utils/validate';
 export default {
   setup() {
     const verifyRef = ref(null);
-    const { proxy } = getCurrentInstance();
     const state = reactive({
       username: "",
       password: "",
@@ -111,15 +111,11 @@ export default {
     });
     const router = useRouter();
 
-     
-
     // 切换登录和注册两种模式
     const toggle = v => {
       state.type = v;
       state.verify = "";
     };
-
-    
 
     // 提交登录或注册表单
     const onSubmit = async values => {
@@ -130,14 +126,9 @@ export default {
       //   return
       // }
       if (state.type == "login") {
-        // let res = await login({
-        //   account: values.username,
-        //   password: values.password
-        // });
-        // console.log("login-res", res.data.data.accessToken);
-
-        const { code, data } = await proxy.$api.http("post", `api/h5/login`, {
-          phoneNum: values.username,
+        const { code, data } = await login({
+          // phoneNum: values.username,
+          username: values.username,
           password: values.password
         });
 
@@ -164,7 +155,10 @@ export default {
         // 需要刷新页面，否则 axios.js 文件里的 token 不会被重置
         // window.location.href = '/'
       } else {
-        const { code } = await proxy.$api.http("post", `api/h5/register`, {
+        if(!isMobile(values.username1)){
+          return Toast.success("请输入正确的手机号码");
+        }
+        const { code } = await addUser({
           phoneNum: values.username1,
           password: values.password1
         });
