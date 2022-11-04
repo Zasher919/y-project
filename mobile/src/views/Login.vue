@@ -95,8 +95,8 @@ import sHeader from "@/components/SimpleHeader";
 // import md5 from 'js-md5'
 import { Toast } from "vant";
 
-import { addUser, login } from "@/api/index";
-import { isMobile } from '@/utils/validate';
+import { login, register } from "@/api/index";
+import { isMobile } from "@/utils/validate";
 export default {
   setup() {
     const verifyRef = ref(null);
@@ -132,34 +132,30 @@ export default {
           password: values.password
         });
 
-        sessionStorage.setItem("tokenH", JSON.stringify(data.access_token));
-        sessionStorage.setItem("userInfo", JSON.stringify(data.userinfo));
+        sessionStorage.setItem("tokenH", JSON.stringify(data.token));
+        sessionStorage.setItem("userInfo", JSON.stringify(data.userInfo));
 
-        console.log("res", JSON.stringify(data.access_token));
-        // return;
-
-        // router.replace("/home");
-        // const data = await login({
-        //   "account": values.username,
-        //   "password": values.password
-        // })
-
-        // setToken(data.accessToken);
-        if (code == 200) {
+        console.log("res", JSON.stringify(data.token));
+        if (code == 10000) {
           router.push("/home");
-        } else {
           Toast.success("登录成功");
+        } else {
+          Toast("登录失败", {
+            confirmButtonText: "Re-Login",
+            cancelButtonText: "Cancel",
+            type: "error"
+          });
         }
         // setToken("user-mbn", JSON.stringify(values.username));
 
         // 需要刷新页面，否则 axios.js 文件里的 token 不会被重置
         // window.location.href = '/'
       } else {
-        if(!isMobile(values.username1)){
+        if (!isMobile(values.username1)) {
           return Toast.success("请输入正确的手机号码");
         }
-        const { code } = await addUser({
-          phoneNum: values.username1,
+        const { code } = await register({
+          username: values.username1,
           password: values.password1
         });
         if (code == 200) {

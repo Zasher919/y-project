@@ -9,6 +9,14 @@ export const register = data => {
   return request({ method: "post", url: "/mobile/user/register", data });
 };
 
+export const getProduct = data => {
+  return request({ method: "get", url: "/mobile/user/register", data });
+};
+
+export const getSwiperImg = data => {
+  return request({ method: "get", url: "/mobile/user/register", data });
+};
+
 export const addUser = data => post("mobile/user/register", data);
 
 export const loginUser = data => post("mobile/user/login", data);

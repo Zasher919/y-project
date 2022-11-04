@@ -44,47 +44,41 @@ service.interceptors.response.use(
    */
   response => {
     const { status, data } = response;
-    // return data
-    const res = data;
+
     // if the custom code is not 20000, it is judged as an error.
-    if ([200, 201, 304].indexOf(status) < 0 ) {
-      Toast({
-        message: res.message || "Error",
-        type: "error",
-        duration: 3 * 1000
-      });
-      // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (status === 50008 || status === 50012 || status === 50014) {
-        // to re-login
-        Toast(
-          "You have been logged out, you can cancel to stay on this page, or log in again",
-          "Confirm logout",
-          {
-            confirmButtonText: "Re-Login",
-            cancelButtonText: "Cancel",
-            type: "warning"
-          }
-        ).then(() => {
+
+    if ([200, 201, 304].includes(status)) {
+      const { code, msg } = data;
+      // Toast({
+      //   message: msg || "Error",
+      //   type: "error",
+      //   duration: 3 * 1000
+      // });
+      if (code != 10000) {
+        Toast(msg, {
+          confirmButtonText: "Re-Login",
+          cancelButtonText: "Cancel",
+          type: "warning"
+        }).then(() => {
           store.dispatch("user/resetToken").then(() => {
             location.reload();
           });
         });
       }
-      return Promise.reject(new Error(res.message || "Error"));
+      // return Promise.reject(new Error(msg || "Error"));
+      return Promise.resolve(data)
     } else {
-      const { status, message } = res;
-      console.log('status',status)
+      const { msg, code } = data;
       // debugger
-      if ([202, 400].includes(status)) {
+      if ([202, 400].includes(code)) {
         Toast({
-          message: message || "Error",
+          message: msg || "Error",
           type: "error",
           duration: 3 * 1000
         });
-        return Promise.reject(res);
+        return Promise.reject(data);
       }
 
-  
       return data;
     }
   },

@@ -97,149 +97,142 @@
   </div>
 </template>
 
-<script>
-import { reactive, onMounted, toRefs, nextTick, getCurrentInstance } from "vue";
+<script setup>
+import { reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { imgEnum } from "../utils/enum";
+// import { imgEnum } from "../utils/enum";
+import { Toast } from "vant";
 import swiper from "@/components/Swiper";
 import navBar from "@/components/NavBar";
-// import { getHome } from '@/service/home'
-// import { getLocal } from '@/common/js/utils'
-import { Toast } from "vant";
-// import { log } from "console";
 export default {
   name: "home",
   components: {
     swiper,
     navBar
-  },
-  setup() {
-    const router = useRouter();
-    const { proxy } = getCurrentInstance();
-    const state = reactive({
-      swiperList: [], // 轮播图列表
-      isLogin: false, // 是否已登录
-      headerScroll: false, // 滚动透明判断
-      hots: [],
-      imgHeadUrl: "https://4h1s324364.qicp.vip/",
-      newGoodses: [],
-      recommends: [],
-      categoryList: [],
-      loading: true
-    });
-    onMounted(async () => {
-      // const token = getLocal('token')
-      // if (token) {
-      //   state.isLogin = true
-      // }
-      // let res = await getList();
-
-      // let res = await addUser("api/h5/register", {
-      //   phoneNum: "12399999999",
-      //   password: "123456"
-      // });
-      // console.log("abc", abc);
-
-      initHomeIcon();
-      // initHomeSlideshow();
-      initProdectList();
-
-      Toast.loading({
-        message: "加载中...",
-        forbidClick: true
-      });
-
-      Toast.clear();
-    });
-
-    const initHomeIcon = async () => {
-      // let res = await getList();
-      // console.log("abc", res);
-      const { data } = await proxy.$api.http("get", `/api/img`);
-      state.categoryList = data.filter(v => v.imgType == "1");
-      state.swiperList = data.filter(v => v.imgType == "2");
-      state.categoryList = state.categoryList.map(v => ({
-        ...v,
-        imgUrl: state.imgHeadUrl + v.imgUrl
-      }));
-      state.swiperList = state.swiperList.map(v => ({
-        ...v,
-        imgUrl: state.imgHeadUrl + v.imgUrl
-      }));
-      console.log("codeo,data", state.categoryList, state.swiperList);
-
-      // if (code != 200) {
-      //   Toast.loading({
-      //     message: "数据异常",
-      //     forbidClick: true,
-      //   });
-      // }
-      // state.swiperList = res["data"][0].map(item => ({
-      //   name: item.imgName,
-      //   imgUrl: state.imgHeadUrl + item.imgUrl,
-      //   categoryId: item.id
-      // }));
-      // console.log(res, "res33");
-      // console.log(state.categoryList, "res");
-    };
-
-    const initHomeSlideshow = async () => {
-      const { code, data } = await proxy.$api.http(
-        "get",
-        `/img/${imgEnum.homeSlideshow}`
-      );
-
-      if (code != 200) {
-        Toast.loading({
-          message: "数据异常",
-          forbidClick: true
-        });
-      }
-      state.swiperList = data[0];
-    };
-
-    const initProdectList = async () => {
-      const res = await proxy.$api.http("get", `api/products`);
-      state.newGoodses = res.data;
-      state.loading = false;
-      res.data.forEach(v => {
-        console.log("pic", state.imgHeadUrl + v.pic);
-      });
-      console.log("res", state.newGoodses);
-    };
-
-    nextTick(() => {
-      window.addEventListener("scroll", () => {
-        let scrollTop =
-          window.pageYOffset ||
-          document.documentElement.scrollTop ||
-          document.body.scrollTop;
-        scrollTop > 100
-          ? (state.headerScroll = true)
-          : (state.headerScroll = false);
-      });
-    });
-
-    const goToDetail = item => {
-      router.push({ path: `/product/${item.id}` });
-    };
-
-    const tips = path => {
-      // Toast("敬请期待");
-      router.push({ path: path || "/category" });
-    };
-
-    return {
-      ...toRefs(state),
-      goToDetail,
-      initHomeIcon,
-      initHomeSlideshow,
-      initProdectList,
-      // init,
-      tips
-    };
   }
 };
+  const router = useRouter();
+const state = reactive({
+  swiperList: [], // 轮播图列表
+  isLogin: false, // 是否已登录
+  headerScroll: false, // 滚动透明判断
+  hots: [],
+  imgHeadUrl: "https://4h1s324364.qicp.vip/",
+  newGoodses: [],
+  recommends: [],
+  categoryList: [],
+  loading: true
+});
+
+onMounted(() => {
+  console.log("home-mounted", state);
+  init();
+});
+
+function init() {
+  Toast.loading({ message: "加载中...", forbidClick: true });
+  console.log('router',router)
+  console.log("init");
+
+  setTimeout(() => {
+    Toast.clear();
+  }, 3000);
+
+  // router.push('/login');
+}
+
+// setup() {
+
+//   const { proxy } = getCurrentInstance();
+//   const state = reactive({
+//     swiperList: [], // 轮播图列表
+//     isLogin: false, // 是否已登录
+//     headerScroll: false, // 滚动透明判断
+//     hots: [],
+//     imgHeadUrl: "https://4h1s324364.qicp.vip/",
+//     newGoodses: [],
+//     recommends: [],
+//     categoryList: [],
+//     loading: true
+//   });
+//   onMounted(async () => {
+
+//     initHomeIcon();
+//     initProdectList();
+
+//   });
+
+//   const initHomeIcon = async () => {
+//     const { data } = await proxy.$api.http("get", `/api/img`);
+//     state.categoryList = data.filter(v => v.imgType == "1");
+//     state.swiperList = data.filter(v => v.imgType == "2");
+//     state.categoryList = state.categoryList.map(v => ({
+//       ...v,
+//       imgUrl: state.imgHeadUrl + v.imgUrl
+//     }));
+//     state.swiperList = state.swiperList.map(v => ({
+//       ...v,
+//       imgUrl: state.imgHeadUrl + v.imgUrl
+//     }));
+//   };
+
+//   const initHomeSlideshow = async () => {
+//     const { code, data } = await proxy.$api.http(
+//       "get",
+//       `/img/${imgEnum.homeSlideshow}`
+//     );
+
+//     if (code != 200) {
+//       Toast.loading({
+//         message: "数据异常",
+//         forbidClick: true
+//       });
+//     }
+//     state.swiperList = data[0];
+//   };
+
+//   const initProdectList = async () => {
+//     const res = await proxy.$api.http("get", `api/products`);
+//     state.newGoodses = res.data;
+//     state.loading = false;
+//     res.data.forEach(v => {
+//       console.log("pic", state.imgHeadUrl + v.pic);
+//     });
+//     console.log("res", state.newGoodses);
+//   };
+
+//   nextTick(() => {
+//     window.addEventListener("scroll", () => {
+//       let scrollTop =
+//         window.pageYOffset ||
+//         document.documentElement.scrollTop ||
+//         document.body.scrollTop;
+//       scrollTop > 100
+//         ? (state.headerScroll = true)
+//         : (state.headerScroll = false);
+//     });
+//   });
+
+//   const goToDetail = item => {
+//     router.push({ path: `/product/${item.id}` });
+//   };
+
+//   const tips = path => {
+//     // Toast("敬请期待");
+//     router.push({ path: path || "/category" });
+//   };
+
+//   // return {
+//   //   ...toRefs(state),
+//   //   goToDetail,
+//   //   initHomeIcon,
+//   //   initHomeSlideshow,
+//   //   initProdectList,
+//   //   // init,
+//   //   tips
+//   // };
+// }
+// };
 </script>
 
 <style lang="less" scoped>
