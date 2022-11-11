@@ -19,30 +19,12 @@
         </el-form-item>
 
         <el-form-item label="文件">
-          <!-- <el-upload
-            class="upload-demo"
-            drag
-            :headers="token"
-            :action="`${uploadApi}/oss/upload`"
-            :file-list="fileList"
-            :limit="1"
-            list-type="picture"
-            :on-success="
-              (response, file, fileList) => {
-                return sucUpload(response, file, fileList)
-              }
-            "
-          >
-            <el-icon class="el-icon--upload"></el-icon>
-            <div class="el-upload__text">拖动上传 <em>点击上传</em></div>
-          </el-upload> -->
-
           <el-upload
-            :action="`${uploadApi}/api/upload`"
+            :action="`${uploadApi}/index/Upload/uploadImg`"
             list-type="picture-card"
             :auto-upload="true"
             :file-list="uploadFile.list"
-            name="upload"
+            name="image"
             drag
             :limit="uploadFile.limit"
             :on-success="
@@ -72,7 +54,6 @@
 import { imgPostion } from "@/utils/enum";
 import { resManage, formatDate } from "@/utils/index";
 import { getToken } from "@/utils/auth";
-import axios from "axios";
 // import { getToken } from '@/utils/auth'
 /*-------api-----------*/
 import { getList, create, update, remove } from "@/api/img";

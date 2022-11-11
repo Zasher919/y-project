@@ -44,34 +44,21 @@ module.exports = {
     },
     proxy: {
       "/api/admin": {
-        target: "http://localhost:8000/",
+        target: process.env.VUE_APP_BASE_HOST,
         ws: true,
         changeOrigin: true,
         pathRewrite: {
           "^/api/admin": "/admin"
         }
       },
-      "/api": {
+      "/api/index": {
         target: process.env.VUE_APP_BASE_HOST,
         ws: true,
-        changeOrigin: true
-        // pathRewrite: {
-        //   // '^/api': '/'
-        // }
+        changeOrigin: true,
+        pathRewrite: {
+          "^/api/index": "/index"
+        }
       },
-
-      "/api": {
-        target: "https://4h1s324364.qicp.vip/",
-        ws: true,
-        changeOrigin: true
-      }
-
-      // '/api': {
-      //   target: 'http://49.232.20.32:5057/',
-      //   pathRewrite: {
-      //     // '^/api': '/'
-      //   },
-      // },
     }
     // before: require('./mock/mock-server.js')
   },

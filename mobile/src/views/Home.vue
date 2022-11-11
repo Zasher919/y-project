@@ -25,6 +25,7 @@
 
     <!-- 轮播图 -->
     <swiper :list="swiperList"></swiper>
+
     <!-- 图标 -->
     <div class="category-list">
       <div
@@ -47,7 +48,7 @@
             :key="item.id"
             @click="goToDetail(item)"
           >
-            <img :src="imgHeadUrl + item.pic" alt="" />
+            <!-- <img :src="imgHeadUrl + item.pic" alt="" /> -->
             <div class="good-desc">
               <div class="title">{{ item.name }}</div>
               <div class="price">¥ {{ item.price }}</div>
@@ -97,21 +98,18 @@
   </div>
 </template>
 
-<script setup>
-import { reactive, onMounted } from "vue";
+<script>
+import { reactive, onMounted,toRefs } from "vue";
 import { useRouter } from "vue-router";
 // import { imgEnum } from "../utils/enum";
 import { Toast } from "vant";
 import swiper from "@/components/Swiper";
 import navBar from "@/components/NavBar";
+
+import { getHomeList } from "@/api";
 export default {
-  name: "home",
-  components: {
-    swiper,
-    navBar
-  }
-};
-  const router = useRouter();
+  setup() {
+    const router = useRouter();
 const state = reactive({
   swiperList: [], // 轮播图列表
   isLogin: false, // 是否已登录
@@ -121,25 +119,44 @@ const state = reactive({
   newGoodses: [],
   recommends: [],
   categoryList: [],
-  loading: true
+  loading: true,
+  pageInfo: {
+    pageSum: 1,
+    pageSize: 10
+  }
 });
 
 onMounted(() => {
-  console.log("home-mounted", state);
   init();
 });
 
-function init() {
+const init = async () => {
+  console.log("state", state, router);
   Toast.loading({ message: "加载中...", forbidClick: true });
-  console.log('router',router)
-  console.log("init");
 
-  setTimeout(() => {
-    Toast.clear();
-  }, 3000);
+  let { data } = await getHomeList(state.pageInfo);
 
-  // router.push('/login');
-}
+  state.newGoodses = data.data;
+  state.loading = false;
+
+  console.log("res", state.newGoodses, state.loading);
+
+  Toast.clear();
+};
+
+
+    return {
+      ...toRefs(state),
+    };
+  },
+  components: {
+    swiper,
+    navBar
+  }
+};
+
+
+
 
 // setup() {
 

@@ -111,8 +111,8 @@ export default {
     };
     return {
       loginForm: {
-        username: "admin999",
-        password: "admin999"
+        username: "admin",
+        password: "123456"
       },
       loginRules: {
         username: [{ required: true, trigger: "blur", validator: validateUsername }],
@@ -133,6 +133,7 @@ export default {
         if (query) {
           this.redirect = query.redirect;
           this.otherQuery = this.getOtherQuery(query);
+          console.log('query',query);
         }
       },
       immediate: true
@@ -281,7 +282,7 @@ $light_gray: #eee;
 .login-container {
   min-height: 100%;
   width: 100%;
-  background: url("../../assets/images/login-bg.jpg");
+  // background: url("../../assets/images/login-bg.jpg");
   background-size: cover;
   overflow: hidden;
 

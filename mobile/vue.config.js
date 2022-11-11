@@ -26,6 +26,15 @@ module.exports = {
           "^/api/mobile": "/mobile"
         }
       },
+      "/api/index": {
+        target: "http://localhost:8000/",
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: {
+          "^/api/index": "/index"
+        }
+      },
+    
       // "/api": {
       //   target: "https://4h1s324364.qicp.vip",
       //   ws: true,

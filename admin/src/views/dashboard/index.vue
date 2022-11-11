@@ -16,6 +16,8 @@ export default {
     }
   },
 
-  created() {},
+  created() {
+    debugger
+  },
 }
 </script>

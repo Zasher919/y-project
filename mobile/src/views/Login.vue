@@ -9,6 +9,7 @@
       src="https://s.yezgea02.com/1604045825972/newbee-mall-vue3-app-logo.png"
       alt=""
     />
+
     <div v-if="type == 'login'" class="login-body login">
       <van-form @submit="onSubmit">
         <van-field
@@ -45,6 +46,10 @@
         </div>
       </van-form>
     </div>
+
+    
+  
+
     <div v-else class="login-body register">
       <van-form @submit="onSubmit">
         <van-field
@@ -84,14 +89,14 @@
   </div>
 </template>
 
-<script>
+<script >
 import { reactive, ref, toRefs } from "vue";
 import { useRouter } from "vue-router";
 import sHeader from "@/components/SimpleHeader";
 // import vueImgVerify from '@/components/VueImageVerify'
 // import { login } from "@/service/user";
 // import { setLocal } from "@/common/js/utils";
-// import { setToken } from "@/utils/auth.js";
+import { setToken } from "@/utils/auth.js";
 // import md5 from 'js-md5'
 import { Toast } from "vant";
 
@@ -107,7 +112,8 @@ export default {
       password1: "",
       type: "login",
       imgCode: "",
-      verify: ""
+      verify: "",
+      token:''
     });
     const router = useRouter();
 
@@ -131,12 +137,12 @@ export default {
           username: values.username,
           password: values.password
         });
-
-        sessionStorage.setItem("tokenH", JSON.stringify(data.token));
+        state.token =data.token
+        setToken(JSON.stringify(data.token))
         sessionStorage.setItem("userInfo", JSON.stringify(data.userInfo));
-
         console.log("res", JSON.stringify(data.token));
         if (code == 10000) {
+          console.log('router'),router;
           router.push("/home");
           Toast.success("登录成功");
         } else {
@@ -146,6 +152,7 @@ export default {
             type: "error"
           });
         }
+        
         // setToken("user-mbn", JSON.stringify(values.username));
 
         // 需要刷新页面，否则 axios.js 文件里的 token 不会被重置
