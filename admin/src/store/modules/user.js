@@ -40,10 +40,11 @@ const actions = {
     return new Promise((resolve, reject) => {
       login(userInfo)
         .then(res => {
+          // debugger
           commit("SET_TOKEN", res.data.token);
           commit("USER_INFO", res.data.userInfo);
           setToken(res.data.token);
-          resolve(res);
+          resolve(res.data);
         })
         .catch(error => {
           reject(error);

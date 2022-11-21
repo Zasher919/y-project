@@ -45,18 +45,17 @@ service.interceptors.response.use(
 
     
     const { status, data } = response;
-    // return data
     const res = data;
-    
-    // console.log();
-
     // if the custom code is not 20000, it is judged as an error.
-    if ([200, 201, 304].indexOf(status) < 0) {
-      Message({
-        message: res.message || "Error",
-        type: "error",
-        duration: 3 * 1000
-      });
+
+    console.log('[200, 201, 304].indexOf(status) > 0',status);
+
+    if ([200, 201, 304].includes(status)) {
+      // Message({
+      //   message: res.message || "Error",
+      //   type: "error",
+      //   duration: 3 * 1000
+      // });
 
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
       if (status === 50008 || status === 50012 || status === 50014) {
@@ -70,16 +69,16 @@ service.interceptors.response.use(
             type: "warning"
           }
         ).then(() => {
-          store.dispatch("user/resetToken").then(() => {
-            location.reload();
-          });
+          // store.dispatch("user/resetToken").then(() => {
+          //   location.reload();
+          // });
         });
       }
+      return data
       return Promise.reject(new Error(res.message || "Error"));
     } else {
       const { status, message } = res;
       console.log('status',status)
-      // debugger
       if ([202, 400].includes(status)) {
         Message({
           message: message || "Error",

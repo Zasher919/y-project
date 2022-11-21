@@ -126,19 +126,19 @@ export default {
       otherQuery: {}
     };
   },
-  watch: {
-    $route: {
-      handler: function (route) {
-        const query = route.query;
-        if (query) {
-          this.redirect = query.redirect;
-          this.otherQuery = this.getOtherQuery(query);
-          console.log('query',query);
-        }
-      },
-      immediate: true
-    }
-  },
+  // watch: {
+  //   $route: {
+  //     handler: function (route) {
+  //       const query = route.query;
+  //       if (query) {
+  //         this.redirect = query.redirect;
+  //         this.otherQuery = this.getOtherQuery(query);
+  //         console.log("query", query);
+  //       }
+  //     },
+  //     immediate: true
+  //   }
+  // },
   created() {
     // window.addEventListener('storage', this.afterQRScan)
   },
@@ -169,14 +169,17 @@ export default {
     },
     handleLogin() {
       this.$refs.loginForm.validate(async valid => {
-        if (valid) {  
+        if (valid) {
           // this.loginForm.password = decodeMd5(this.loginForm.password);
-          this.loading = true; 
+          this.loading = true;
 
           // let res = login(this.loginForm);
           this.$store
             .dispatch("user/login", this.loginForm)
             .then(() => {
+              debugger
+              this.$router.push({ path: "/test" });
+              return;
               this.$router.push({
                 path: this.redirect || "/",
                 query: this.otherQuery
