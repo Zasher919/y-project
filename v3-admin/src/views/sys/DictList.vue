@@ -1,12 +1,17 @@
 <!--  -->
 <template>
   <div>
-    Test
+    <h1>DictList</h1>
   </div>
 </template>
 
-<script setup>
-
+<script>
+export default {
+  data () {
+    return {
+    }
+  }
+}
 </script>
 
 <style  scoped>

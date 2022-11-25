@@ -88,7 +88,7 @@
 import { validUsername } from "@/utils/validate";
 // import { decodeMd5 } from "@/utils";
 import SocialSign from "./components/SocialSignin";
-// import { login } from '@/api/user'
+import { login } from '@/api/user'
 // import errGif from '@/assets/401_images/401.gif'
 
 export default {
@@ -173,13 +173,17 @@ export default {
           // this.loginForm.password = decodeMd5(this.loginForm.password);
           this.loading = true;
 
-          // let res = login(this.loginForm);
+          let res = login(this.loginForm);
+          this.$router.push({
+                path: this.redirect || "/",
+                query: this.otherQuery
+              });
+              this.loading = false;
+          return
           this.$store
             .dispatch("user/login", this.loginForm)
             .then(() => {
-              debugger
-              this.$router.push({ path: "/test" });
-              return;
+              
               this.$router.push({
                 path: this.redirect || "/",
                 query: this.otherQuery

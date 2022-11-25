@@ -1,12 +1,17 @@
 <!--  -->
 <template>
   <div>
-    TestTwo
+    <h2>UserList</h2>
   </div>
 </template>
 
-<script setup>
-
+<script>
+export default {
+  data () {
+    return {
+    }
+  }
+}
 </script>
 
 <style  scoped>

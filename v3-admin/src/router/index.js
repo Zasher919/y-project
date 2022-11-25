@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { menuList } from './routerList';
+import { getToken } from '@/utils/auth';
 
 // 省略了routes 中的路由规则
 const routes = [
@@ -7,40 +9,17 @@ const routes = [
     name: 'AppMain',
     component: () => import('@/views/AppMain.vue'),
     redirect: { name: 'Home' },
-    children: [
-      {
-        path: 'home',
-        name: 'Home',
-        component: () => import('@/views/Home.vue'),
-      },
-      {
-        path: 'test',
-        name: 'Test',
-        component: () => import('@/views/Test.vue'),
-      }
-    ],
+    children: menuList,
   },
   {
     path: '/login',
     name: 'login',
-    component: () => import(/* webpackChunkName: "login" */ '@/views/login/Index.vue'),
+    component: () => import(/* webpackChunkName: "login" */ '@/views/Login.vue'),
     meta: {
       title: '登录',
     },
     hidden: true,
   },
-
-  // {
-  //   path: '/',
-  //   name: 'index',
-  //   component: () => import(/* webpackChunkName: "login" */ '@/components/layout/Index.vue'),
-  // },
-  // {
-  //   path: '/home',
-  //   name: 'home',
-  //   component: () => import(/* webpackChunkName: "login" */ '@/views/Home.vue'),
-  // },
-  // @/views/Home.vue
   {
     path: '/401',
     name: '401',
@@ -57,5 +36,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
+
 
 export default router;

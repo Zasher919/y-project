@@ -1,16 +1,12 @@
 <!--  -->
 <template>
   <div>
-    <el-container>
-      <el-aside width="auto">
+    <el-container class="layout-container-demo" style="height: 500px">
+      <el-aside width="200px">
         <!-- 左侧菜单 -->
         <SideBar />
-        <!-- <side-bar></side-bar> -->
       </el-aside>
       <el-container>
-        <!-- <el-header :height="nav_height">
-          <navigate-bar></navigate-bar>
-        </el-header> -->
 
         <el-header>
           头部内容
@@ -31,7 +27,7 @@
 </template>
 
 <script setup>
-import SideBar from "@/components/layout/SideBar.vue";
+import SideBar from '@/components/layout/SideBar.vue';
 import { ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 
@@ -40,8 +36,10 @@ const routerAlive = ref(null);
 watchEffect(() => {
   routerAlive.value = route.name;
   console.log('route.name', route.name);
-//   debugger;
+  //   debugger;
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

@@ -12,7 +12,7 @@ const whiteList = ["/login", "/auth-redirect"]; // no redirect whitelist
 
 router.beforeEach(async (to, from, next) => {
   // start progress bar
-  // debugger;
+  debugger;
   NProgress.start();
 
   // set page title
@@ -33,6 +33,7 @@ router.beforeEach(async (to, from, next) => {
         next();
       } else {
         try {
+          debugger
           // get user info
           // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
           const { roles } = await store.dispatch("user/getInfo");

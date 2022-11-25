@@ -41,10 +41,15 @@ const actions = {
       login(userInfo)
         .then(res => {
           // debugger
-          commit("SET_TOKEN", res.data.token);
-          commit("USER_INFO", res.data.userInfo);
-          setToken(res.data.token);
-          resolve(res.data);
+          
+          // commit("SET_TOKEN", res.data.token);
+          // commit("USER_INFO", res.data.userInfo);
+          // setToken(res.data.token);
+          // resolve(res.data);
+          debugger
+          commit("SET_TOKEN", res.access_token);
+          setToken(res.access_token);
+          resolve(res.access_token);
         })
         .catch(error => {
           reject(error);

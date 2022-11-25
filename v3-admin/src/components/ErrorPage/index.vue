@@ -23,7 +23,7 @@
 
 <script>
   import { useRouter } from 'vue-router';
-  import { useI18n } from 'vue-i18n';
+  // import { useI18n } from 'vue-i18n';
   export default {
     props: {
       src: {
@@ -44,13 +44,13 @@
       },
     },
     setup() {
-      const { t } = useI18n();
+      // const { t } = useI18n();
       const router = useRouter();
       const handleBack = () => {
         router.replace('/');
       };
       return {
-        t,
+        // t,
         handleBack,
       };
     },

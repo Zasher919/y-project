@@ -69,13 +69,31 @@ const user = {
       return new Promise(async (resolve, reject) => {
         let userInfo = JSON.parse(localStorage.getItem('userInfo'));
         let res = await menuList({ roleId: userInfo.role_id });
+        // debugger
+        let menus = [];
+        let childrenMenu = [];
+        res.data.forEach((item, index) => {
+          if (item.parent_id == 0) {
+            menus.push({...item,url: item.url.replace(/\//g, '-') + `-${item.id}`,});
+          } else {
+            childrenMenu.push(item);
+          }
+        });
+
+        menus.forEach((v) => {
+          childrenMenu.forEach((j) => {
+            if (v.id == j.parent_id) {
+              v.children = [];
+              v.children.push({ ...j, url: j.url.replace(/\//g, '-') + `-${j.id}` });
+            }
+          });
+        });
 
         let auth = {
           menuList: res.data,
           authList: res.authList || [],
         };
-        localStorage.setItem('menus', JSON.stringify(res.data));
-        commit('SET_PERMISSIONLIST', res.data);
+        commit('SET_PERMISSIONLIST', menus);
         resolve(auth);
       });
     },

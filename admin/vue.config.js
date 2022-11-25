@@ -59,6 +59,15 @@ module.exports = {
           "^/api/index": "/index"
         }
       },
+      "/api": {
+        target: "https://4h1s324364.qicp.vip",
+        // target: "http://localhost:7788",
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: {
+          "^/api": "/api"
+        }
+      },
     }
     // before: require('./mock/mock-server.js')
   },

@@ -2,24 +2,27 @@
   <div class="login-body">
     <div class="login-container">
       <h1 class="head">管理系统登录</h1>
-      <el-form :rules="state.rules" :model="state.ruleForm" label-width="120px" ref="loginForm">
-        <el-form-item label="账号" prop="username">
-          <el-input type="text" v-model.trim="state.ruleForm.username" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input type="password" v-model.trim="state.ruleForm.password" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button style="width: 100%" type="info" @click="submitForm">立即登录</el-button>
-        </el-form-item>
-      </el-form>
+
+      <div class="z-form">
+        <el-form :rules="state.rules" :model="state.ruleForm" label-width="50px" ref="loginForm">
+          <el-form-item label="账号" prop="username">
+            <el-input type="text" v-model.trim="state.ruleForm.username" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="密码" prop="password">
+            <el-input type="password" v-model.trim="state.ruleForm.password" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button style="width: 100%" type="info" @click="submitForm">立即登录</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import md5 from 'js-md5';
-import { reactive, ref,onMounted } from 'vue';
+// import md5 from 'js-md5';
+import { reactive, ref, onMounted } from 'vue';
 import { setToken } from '@/utils/auth';
 import { login } from '@/api';
 import { useRouter } from 'vue-router';
@@ -38,9 +41,9 @@ const state = reactive({
   },
 });
 
-const init = onMounted(()=>{
-    localStorage.removeItem('menus')
-})
+const init = onMounted(() => {
+  localStorage.removeItem('menus');
+});
 
 const submitForm = async () => {
   loginForm.value.validate(async (valid) => {
@@ -49,7 +52,7 @@ const submitForm = async () => {
       let res = await login({ username: state.ruleForm.username || '', password: state.ruleForm.password });
       setToken(res.data.token);
       localStorage.setItem('userInfo', JSON.stringify(res.data.userInfo));
-        
+
       router.push('/');
     } else {
       console.log('error submit!!');
@@ -69,7 +72,10 @@ const resetForm = () => {
   text-align: center;
   h1 {
     width: 100%;
-    margin: 0 auto;
+    text-align: center;
+  }
+  .z-form{
+    width: 100%;
     text-align: center;
   }
 }
