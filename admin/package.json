@@ -2,7 +2,7 @@
   "name": "vue-cms-admin",
   "version": "1.0.0",
   "description": "A vue cms admin. An out-of-box UI solution for enterprise applications. Newest development stack of vue.",
-  "author": "Givebest <givenlovs@msn.com>",
+  "author": "z-Mr",
   "scripts": {
     "lint": "vue-cli-service lint",
     "build": "vue-cli-service build",
