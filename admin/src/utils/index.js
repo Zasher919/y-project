@@ -2,157 +2,12 @@
  * Created by PanJiaChen on 16/11/18.
  */
 
-import * as dayjs from "dayjs";
-import jsEncrypt from "jsencrypt";
-import CryptoJS from "crypto-js";
+import * as dayjs from 'dayjs'
 // import { deleteMetadata } from "core-js/fn/reflect";
 
-export const decodeMd5 = data => {
-  return CryptoJS.MD5(data).toString();
-};
-
-const PUBLIC_KEY = "ABCDEFG_HI_JK_LMN_OPQ__RST_UVW_XYZ";
-// Rsa 加密
-export function decodeRsa(data) {
-  let jsEncrypt = new jsEncrypt();
-  jsEncrypt.setPublicKey(PUBLIC_KEY);
-  return jsEncrypt.encrypt(data);
-}
-// Rsa 解密
-export function encodeRsa(data) {
-  let jsEncrypt = new jsEncrypt();
-  jsEncrypt.setPublicKey(PUBLIC_KEY);
-  return jsEncrypt.encrypt(data);
-}
-
 export function formatDate(date) {
-  return dayjs(date).format("YYYY-MM-DD HH:mm:ss");
+  return dayjs(date).format('YYYY-MM-DD HH:mm:ss')
 }
-// 遍历树节点
-//   if (item.id === 9) {
-//     result = item
-//   }
-// })
-export const foreachTree = (data, callback, childrenName = "children") => {
-  for (let i = 0; i < data.length; i++) {
-    callback(data[i]);
-    if (data[i][childrenName] && data[i][childrenName].length > 0) {
-      foreachTree(data[i][childrenName], callback, childrenName);
-    }
-  }
-};
-
-/*
-cn:金额格式化
-{number} number：要格式化的数字
-{number} decimals：保留几位小数
-{string} dec_point：小数点符号
-{string} thousands_sep：千分位符号
-*/
-export const moneyFormat = (number, decimals, dec_point, thousands_sep) => {
-  number = (number + "").replace(/[^0-9+-Ee.]/g, "");
-  const n = !isFinite(+number) ? 0 : +number;
-  const prec = !isFinite(+decimals) ? 2 : Math.abs(decimals);
-  const sep = typeof thousands_sep === "undefined" ? "," : thousands_sep;
-  const dec = typeof dec_point === "undefined" ? "." : dec_point;
-  let s = "";
-  const toFixedFix = function (n, prec) {
-    const k = Math.pow(10, prec);
-    return "" + Math.ceil(n * k) / k;
-  };
-  s = (prec ? toFixedFix(n, prec) : "" + Math.round(n)).split(".");
-  const re = /(-?\d+)(\d{3})/;
-  while (re.test(s[0])) {
-    s[0] = s[0].replace(re, "$1" + sep + "$2");
-  }
-
-  if ((s[1] || "").length < prec) {
-    s[1] = s[1] || "";
-    s[1] += new Array(prec - s[1].length + 1).join("0");
-  }
-  return s.join(dec);
-};
-
-// uuid
-export const uuid = () => {
-  const temp_url = URL.createObjectURL(new Blob());
-  const uuid = temp_url.toString();
-  URL.revokeObjectURL(temp_url); //释放这个url
-  return uuid.substring(uuid.lastIndexOf("/") + 1);
-};
-
-// 滚动到元素位置
-export const smoothScroll = element => {
-  document.querySelector(element).scrollIntoView({
-    behavior: "smooth"
-  });
-};
-
-// 滚动到页面顶部
-export const scrollToTop = () => {
-  const height = document.documentElement.scrollTop || document.body.scrollTop;
-  if (height > 0) {
-    window.requestAnimationFrame(scrollToTop);
-    window.scrollTo(0, height - height / 8);
-  }
-};
-
-// 校验数据类型
-export const typeOf = function (obj) {
-  return Object.prototype.toString.call(obj).slice(8, -1).toLowerCase();
-};
-
-// 节流
-// callback function | wait number
-export const throttle = (() => {
-  let last = 0;
-  return (callback, wait = 800) => {
-    let now = +new Date();
-    if (now - last > wait) {
-      callback();
-      last = now;
-    }
-  };
-})();
-
-// 开启全屏
-// element dom
-export const launchFullscreen = element => {
-  if (element.requestFullscreen) {
-    element.requestFullscreen();
-  } else if (element.mozRequestFullScreen) {
-    element.mozRequestFullScreen();
-  } else if (element.msRequestFullscreen) {
-    element.msRequestFullscreen();
-  } else if (element.webkitRequestFullscreen) {
-    element.webkitRequestFullScreen();
-  }
-};
-
-// 关闭全屏
-// element dom
-export const exitFullscreen = () => {
-  if (document.exitFullscreen) {
-    document.exitFullscreen();
-  } else if (document.msExitFullscreen) {
-    document.msExitFullscreen();
-  } else if (document.mozCancelFullScreen) {
-    document.mozCancelFullScreen();
-  } else if (document.webkitExitFullscreen) {
-    document.webkitExitFullscreen();
-  }
-};
-
-// 解析URL参数
-
-export const getSearchParams = () => {
-  const searchPar = new URLSearchParams(window.location.search);
-  const paramsObj = {};
-  for (const [key, value] of searchPar.entries()) {
-    paramsObj[key] = value;
-  }
-  return paramsObj;
-};
 
 /**
  * Parse the time to string
@@ -162,28 +17,28 @@ export const getSearchParams = () => {
  */
 export function parseTime(time, cFormat) {
   if (arguments.length === 0 || !time) {
-    return null;
+    return null
   }
-  const format = cFormat || "{y}-{m}-{d} {h}:{i}:{s}";
-  let date;
-  if (typeof time === "object") {
-    date = time;
+  const format = cFormat || '{y}-{m}-{d} {h}:{i}:{s}'
+  let date
+  if (typeof time === 'object') {
+    date = time
   } else {
-    if (typeof time === "string") {
+    if (typeof time === 'string') {
       if (/^[0-9]+$/.test(time)) {
         // support "1548221490638"
-        time = parseInt(time);
+        time = parseInt(time)
       } else {
         // support safari
         // https://stackoverflow.com/questions/4310953/invalid-date-in-safari
-        time = time.replace(new RegExp(/-/gm), "/");
+        time = time.replace(new RegExp(/-/gm), '/')
       }
     }
 
-    if (typeof time === "number" && time.toString().length === 10) {
-      time = time * 1000;
+    if (typeof time === 'number' && time.toString().length === 10) {
+      time = time * 1000
     }
-    date = new Date(time);
+    date = new Date(time)
   }
   const formatObj = {
     y: date.getFullYear(),
@@ -192,17 +47,17 @@ export function parseTime(time, cFormat) {
     h: date.getHours(),
     i: date.getMinutes(),
     s: date.getSeconds(),
-    a: date.getDay()
-  };
+    a: date.getDay(),
+  }
   const time_str = format.replace(/{([ymdhisa])+}/g, (result, key) => {
-    const value = formatObj[key];
+    const value = formatObj[key]
     // Note: getDay() returns 0 on Sunday
-    if (key === "a") {
-      return ["日", "一", "二", "三", "四", "五", "六"][value];
+    if (key === 'a') {
+      return ['日', '一', '二', '三', '四', '五', '六'][value]
     }
-    return value.toString().padStart(2, "0");
-  });
-  return time_str;
+    return value.toString().padStart(2, '0')
+  })
+  return time_str
 }
 
 /**
@@ -211,30 +66,40 @@ export function parseTime(time, cFormat) {
  * @returns {string}
  */
 export function formatTime(time, option) {
-  if (("" + time).length === 10) {
-    time = parseInt(time) * 1000;
+  if (('' + time).length === 10) {
+    time = parseInt(time) * 1000
   } else {
-    time = +time;
+    time = +time
   }
-  const d = new Date(time);
-  const now = Date.now();
+  const d = new Date(time)
+  const now = Date.now()
 
-  const diff = (now - d) / 1000;
+  const diff = (now - d) / 1000
 
   if (diff < 30) {
-    return "刚刚";
+    return '刚刚'
   } else if (diff < 3600) {
     // less 1 hour
-    return Math.ceil(diff / 60) + "分钟前";
+    return Math.ceil(diff / 60) + '分钟前'
   } else if (diff < 3600 * 24) {
-    return Math.ceil(diff / 3600) + "小时前";
+    return Math.ceil(diff / 3600) + '小时前'
   } else if (diff < 3600 * 24 * 2) {
-    return "1天前";
+    return '1天前'
   }
   if (option) {
-    return parseTime(time, option);
+    return parseTime(time, option)
   } else {
-    return d.getMonth() + 1 + "月" + d.getDate() + "日" + d.getHours() + "时" + d.getMinutes() + "分";
+    return (
+      d.getMonth() +
+      1 +
+      '月' +
+      d.getDate() +
+      '日' +
+      d.getHours() +
+      '时' +
+      d.getMinutes() +
+      '分'
+    )
   }
 }
 
@@ -243,18 +108,18 @@ export function formatTime(time, option) {
  * @returns {Object}
  */
 export function getQueryObject(url) {
-  url = url == null ? window.location.href : url;
-  const search = url.substring(url.lastIndexOf("?") + 1);
-  const obj = {};
-  const reg = /([^?&=]+)=([^?&=]*)/g;
+  url = url == null ? window.location.href : url
+  const search = url.substring(url.lastIndexOf('?') + 1)
+  const obj = {}
+  const reg = /([^?&=]+)=([^?&=]*)/g
   search.replace(reg, (rs, $1, $2) => {
-    const name = decodeURIComponent($1);
-    let val = decodeURIComponent($2);
-    val = String(val);
-    obj[name] = val;
-    return rs;
-  });
-  return obj;
+    const name = decodeURIComponent($1)
+    let val = decodeURIComponent($2)
+    val = String(val)
+    obj[name] = val
+    return rs
+  })
+  return obj
 }
 
 /**
@@ -263,14 +128,14 @@ export function getQueryObject(url) {
  */
 export function byteLength(str) {
   // returns the byte length of an utf8 string
-  let s = str.length;
+  let s = str.length
   for (var i = str.length - 1; i >= 0; i--) {
-    const code = str.charCodeAt(i);
-    if (code > 0x7f && code <= 0x7ff) s++;
-    else if (code > 0x7ff && code <= 0xffff) s += 2;
-    if (code >= 0xdc00 && code <= 0xdfff) i--;
+    const code = str.charCodeAt(i)
+    if (code > 0x7f && code <= 0x7ff) s++
+    else if (code > 0x7ff && code <= 0xffff) s += 2
+    if (code >= 0xdc00 && code <= 0xdfff) i--
   }
-  return s;
+  return s
 }
 
 /**
@@ -278,13 +143,13 @@ export function byteLength(str) {
  * @returns {Array}
  */
 export function cleanArray(actual) {
-  const newArray = [];
+  const newArray = []
   for (let i = 0; i < actual.length; i++) {
     if (actual[i]) {
-      newArray.push(actual[i]);
+      newArray.push(actual[i])
     }
   }
-  return newArray;
+  return newArray
 }
 
 /**
@@ -292,13 +157,13 @@ export function cleanArray(actual) {
  * @returns {Array}
  */
 export function param(json) {
-  if (!json) return "";
+  if (!json) return ''
   return cleanArray(
     Object.keys(json).map(key => {
-      if (json[key] === undefined) return "";
-      return encodeURIComponent(key) + "=" + encodeURIComponent(json[key]);
+      if (json[key] === undefined) return ''
+      return encodeURIComponent(key) + '=' + encodeURIComponent(json[key])
     })
-  ).join("&");
+  ).join('&')
 }
 
 /**
@@ -306,21 +171,21 @@ export function param(json) {
  * @returns {Object}
  */
 export function param2Obj(url) {
-  const search = decodeURIComponent(url.split("?")[1]).replace(/\+/g, " ");
+  const search = decodeURIComponent(url.split('?')[1]).replace(/\+/g, ' ')
   if (!search) {
-    return {};
+    return {}
   }
-  const obj = {};
-  const searchArr = search.split("&");
+  const obj = {}
+  const searchArr = search.split('&')
   searchArr.forEach(v => {
-    const index = v.indexOf("=");
+    const index = v.indexOf('=')
     if (index !== -1) {
-      const name = v.substring(0, index);
-      const val = v.substring(index + 1, v.length);
-      obj[name] = val;
+      const name = v.substring(0, index)
+      const val = v.substring(index + 1, v.length)
+      obj[name] = val
     }
-  });
-  return obj;
+  })
+  return obj
 }
 
 /**
@@ -328,9 +193,9 @@ export function param2Obj(url) {
  * @returns {string}
  */
 export function html2Text(val) {
-  const div = document.createElement("div");
-  div.innerHTML = val;
-  return div.textContent || div.innerText;
+  const div = document.createElement('div')
+  div.innerHTML = val
+  return div.textContent || div.innerText
 }
 
 /**
@@ -340,21 +205,21 @@ export function html2Text(val) {
  * @returns {Object}
  */
 export function objectMerge(target, source) {
-  if (typeof target !== "object") {
-    target = {};
+  if (typeof target !== 'object') {
+    target = {}
   }
   if (Array.isArray(source)) {
-    return source.slice();
+    return source.slice()
   }
   Object.keys(source).forEach(property => {
-    const sourceProperty = source[property];
-    if (typeof sourceProperty === "object") {
-      target[property] = objectMerge(target[property], sourceProperty);
+    const sourceProperty = source[property]
+    if (typeof sourceProperty === 'object') {
+      target[property] = objectMerge(target[property], sourceProperty)
     } else {
-      target[property] = sourceProperty;
+      target[property] = sourceProperty
     }
-  });
-  return target;
+  })
+  return target
 }
 
 /**
@@ -363,16 +228,18 @@ export function objectMerge(target, source) {
  */
 export function toggleClass(element, className) {
   if (!element || !className) {
-    return;
+    return
   }
-  let classString = element.className;
-  const nameIndex = classString.indexOf(className);
+  let classString = element.className
+  const nameIndex = classString.indexOf(className)
   if (nameIndex === -1) {
-    classString += "" + className;
+    classString += '' + className
   } else {
-    classString = classString.substr(0, nameIndex) + classString.substr(nameIndex + className.length);
+    classString =
+      classString.substr(0, nameIndex) +
+      classString.substr(nameIndex + className.length)
   }
-  element.className = classString;
+  element.className = classString
 }
 
 /**
@@ -380,47 +247,52 @@ export function toggleClass(element, className) {
  * @returns {Date}
  */
 export function getTime(type) {
-  if (type === "start") {
-    return new Date().getTime() - 3600 * 1000 * 24 * 90;
+  if (type === 'start') {
+    return new Date().getTime() - 3600 * 1000 * 24 * 90
   } else {
-    return new Date(new Date().toDateString());
+    return new Date(new Date().toDateString())
   }
 }
 
-// 防抖
+/**
+ * @param {Function} func
+ * @param {number} wait
+ * @param {boolean} immediate
+ * @return {*}
+ */
 export function debounce(func, wait, immediate) {
-  let timeout, args, context, timestamp, result;
+  let timeout, args, context, timestamp, result
 
-  const later = function () {
+  const later = function() {
     // 据上一次触发时间间隔
-    const last = +new Date() - timestamp;
+    const last = +new Date() - timestamp
 
     // 上次被包装函数被调用时间间隔 last 小于设定时间间隔 wait
     if (last < wait && last > 0) {
-      timeout = setTimeout(later, wait - last);
+      timeout = setTimeout(later, wait - last)
     } else {
-      timeout = null;
+      timeout = null
       // 如果设定为immediate===true，因为开始边界已经调用过了此处无需调用
       if (!immediate) {
-        result = func.apply(context, args);
-        if (!timeout) context = args = null;
+        result = func.apply(context, args)
+        if (!timeout) context = args = null
       }
     }
-  };
+  }
 
-  return function (...args) {
-    context = this;
-    timestamp = +new Date();
-    const callNow = immediate && !timeout;
+  return function(...args) {
+    context = this
+    timestamp = +new Date()
+    const callNow = immediate && !timeout
     // 如果延时不存在，重新设定延时
-    if (!timeout) timeout = setTimeout(later, wait);
+    if (!timeout) timeout = setTimeout(later, wait)
     if (callNow) {
-      result = func.apply(context, args);
-      context = args = null;
+      result = func.apply(context, args)
+      context = args = null
     }
 
-    return result;
-  };
+    return result
+  }
 }
 
 /**
@@ -431,23 +303,18 @@ export function debounce(func, wait, immediate) {
  * @returns {Object}
  */
 export function deepClone(source) {
-  if (!source && typeof source !== "object") {
-    throw new Error("error arguments", "deepClone");
+  if (!source && typeof source !== 'object') {
+    throw new Error('error arguments', 'deepClone')
   }
-  const targetObj = source.constructor === Array ? [] : {};
+  const targetObj = source.constructor === Array ? [] : {}
   Object.keys(source).forEach(keys => {
-    console.log('111',source[keys])
-    if (source[keys] && typeof source[keys] === "object") {
-     
-      targetObj[keys] = deepClone(source[keys]);
+    if (source[keys] && typeof source[keys] === 'object') {
+      targetObj[keys] = deepClone(source[keys])
     } else {
-      targetObj[keys] = source[keys];
+      targetObj[keys] = source[keys]
     }
-  });
-
-  
-  
-  return targetObj;
+  })
+  return targetObj
 }
 
 /**
@@ -455,16 +322,16 @@ export function deepClone(source) {
  * @returns {Array}
  */
 export function uniqueArr(arr) {
-  return Array.from(new Set(arr));
+  return Array.from(new Set(arr))
 }
 
 /**
  * @returns {string}
  */
 export function createUniqueString() {
-  const timestamp = +new Date() + "";
-  const randomNum = parseInt((1 + Math.random()) * 65536) + "";
-  return (+(randomNum + timestamp)).toString(32);
+  const timestamp = +new Date() + ''
+  const randomNum = parseInt((1 + Math.random()) * 65536) + ''
+  return (+(randomNum + timestamp)).toString(32)
 }
 
 /**
@@ -474,7 +341,7 @@ export function createUniqueString() {
  * @returns {boolean}
  */
 export function hasClass(ele, cls) {
-  return !!ele.className.match(new RegExp("(\\s|^)" + cls + "(\\s|$)"));
+  return !!ele.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'))
 }
 
 /**
@@ -483,7 +350,7 @@ export function hasClass(ele, cls) {
  * @param {string} cls
  */
 export function addClass(ele, cls) {
-  if (!hasClass(ele, cls)) ele.className += " " + cls;
+  if (!hasClass(ele, cls)) ele.className += ' ' + cls
 }
 
 /**
@@ -493,8 +360,8 @@ export function addClass(ele, cls) {
  */
 export function removeClass(ele, cls) {
   if (hasClass(ele, cls)) {
-    const reg = new RegExp("(\\s|^)" + cls + "(\\s|$)");
-    ele.className = ele.className.replace(reg, " ");
+    const reg = new RegExp('(\\s|^)' + cls + '(\\s|$)')
+    ele.className = ele.className.replace(reg, ' ')
   }
 }
 
@@ -505,43 +372,43 @@ export function removeClass(ele, cls) {
  */
 export function translateDataToTree(data) {
   //没有父节点的数据
-  let parents = data.filter(value => value.parent[0] === "0");
+  let parents = data.filter(value => value.parent[0] === '0')
 
   //有父节点的数据
-  let children = data.filter(value => value.parent[0] !== "0");
+  let children = data.filter(value => value.parent[0] !== '0')
 
   //定义转换方法的具体实现
   let translator = (parents, children) => {
     //遍历父节点数据
     parents.forEach(parent => {
-      parent.label = parent.name;
-      parent.value = parent._id;
+      parent.label = parent.name
+      parent.value = parent._id
 
       //遍历子节点数据
       children.forEach((current, index) => {
         //此时找到父节点对应的一个子节点
         if (current.parent[current.parent.length - 1] === parent._id) {
           //对子节点数据进行深复制，这里只支持部分类型的数据深复制，对深复制不了解的童靴可以先去了解下深复制
-          let temp = JSON.parse(JSON.stringify(children));
+          let temp = JSON.parse(JSON.stringify(children))
           //让当前子节点从temp中移除，temp作为新的子节点数据，这里是为了让递归时，子节点的遍历次数更少，如果父子关系的层级越多，越有利
-          temp.splice(index, 1);
+          temp.splice(index, 1)
           //让当前子节点作为唯一的父节点，去递归查找其对应的子节点
-          translator([current], temp);
+          translator([current], temp)
           //把找到子节点放入父节点的children属性中
           parent.children && parent.children.length > 0
             ? parent.children.push(current)
             : // : delete parent.children
-              (parent.children = [current]);
+              (parent.children = [current])
         }
-      });
-    });
-  };
+      })
+    })
+  }
 
   //调用转换方法
-  translator(parents, children);
+  translator(parents, children)
 
   //返回最终的结果
-  return parents;
+  return parents
 }
 
 /**
@@ -550,14 +417,14 @@ export function translateDataToTree(data) {
  */
 export function removeEmptyChildren(data) {
   data.forEach(v => {
-    let childrens = v.children || [];
+    let childrens = v.children || []
     if (childrens.length <= 0) {
-      delete v.children;
+      delete v.children
     } else {
-      removeEmptyChildren(v.children);
+      removeEmptyChildren(v.children)
     }
-  });
-  return data;
+  })
+  return data
 }
 
 /**
@@ -565,27 +432,27 @@ export function removeEmptyChildren(data) {
  * @param {*} list
  */
 export function listToObject(list) {
-  let obj = {};
+  let obj = {}
 
   list.forEach(v => {
     obj[v.id] = {
       name: v.name,
-      id: v.id
-    };
-  });
+      id: v.id,
+    }
+  })
 
-  return obj;
+  return obj
 }
 
 // api 地址
-export const baseApi = process.env.VUE_APP_BASE_API;
+export const baseApi = process.env.VUE_APP_BASE_API
 
 // 服务端 host 地址
-export const baseHost = process.env.VUE_APP_BASE_HOST;
+export const baseHost = process.env.VUE_APP_BASE_HOST
 
 // 权限角色匹配
 export function roleName(name) {
-  return name === "admin" ? "管理员" : "编辑员";
+  return name === 'admin' ? '管理员' : '编辑员'
 }
 
 //

@@ -30,6 +30,80 @@
         </el-button>
       </div>
     </div>
+    <el-table
+      :key="tableKey"
+      v-loading="listLoading"
+      :data="list"
+      border
+      fit
+      highlight-current-row
+      stripe
+      @selection-change="handleSelectionChange"
+      id="tableList"
+    >
+      <el-table-column type="selection" width="55"></el-table-column>
+
+      <el-table-column label="标题">
+        <template slot-scope="{ row }"> {{ row.name }} </template>
+      </el-table-column>
+
+      <el-table-column label="图片" align="center">
+        <template slot-scope="{ row }">
+          <el-popover placement="right" width="230" trigger="hover">
+            <img :src="uploadApi + '/' + row.pic" style="width: 200px" />
+            <img
+              :src="uploadApi + '/' + row.pic"
+              slot="reference"
+              style="width: 40px"
+            />
+          </el-popover>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        sortable
+        prop="updatedAt"
+        :label="$t('table.updatedAt')"
+        align="center"
+      >
+        <template slot-scope="{ row }">
+          <span>{{ row.updatedAt | formatDate }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        :label="$t('table.status')"
+        class-name="status-col"
+        width="100"
+      >
+        <template slot-scope="{ row }">
+          <el-tag :type="row.status | statusFilter" size="mini">
+            {{ row.status ? '开启' : '停用' }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column
+        :label="$t('table.actions')"
+        align="center"
+        class-name="small-padding fixed-width"
+      >
+        <template slot-scope="{ row }">
+          <el-button size="mini" @click="handleUpdate(row)">
+            {{ $t('table.edit') }}
+          </el-button>
+
+          <el-button
+            v-if="row.status != 'deleted'"
+            size="mini"
+            type="danger"
+            plain
+            @click="handleDelete(row)"
+          >
+            {{ $t('table.delete') }}
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
     <div class="el-table__footer">
       <el-button
         type="danger"
@@ -39,16 +113,6 @@
         >删除选中
       </el-button>
     </div>
-
-
-    <TemplateTable
-      @selectChange="handleSelectionChange"
-      :data="list"
-      :columns="columns"
-      :tableLoading="listLoading"
-    >
-    </TemplateTable>
-
     <pagination
       v-show="total > 0"
       :total="total"
@@ -65,14 +129,12 @@ import { fetchList, remove } from '@/api/home-about'
 import waves from '@/directive/waves' // waves directive
 import { formatDate, baseHost } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import TemplateTable from "@/components/table";
 
 let categoryList = {}
 export default {
   name: 'HomeAboutList',
   components: {
     Pagination,
-    TemplateTable
   },
   directives: {
     waves,
@@ -88,60 +150,6 @@ export default {
   data() {
     return {
       uploadApi: process.env.VUE_APP_UPLOAD_API,
-      columns: [
-        { label: "标题", prop: "name" },
-        {
-          label: "图片",
-          render: scope => {
-            return (
-              <div>
-                <el-popover placement="right" width="230" trigger="hover">
-                  <img src={scope.row.pic} style="width: 200px" />
-                  <img src={scope.row.pic} slot="reference" style="width: 40px" />
-                </el-popover>
-              </div>
-            );
-          }
-        },
-        { label: "更新时间", prop: "updatedAt" },
-        {
-          label: "状态",
-          render: scope => {
-            return (
-              <div>
-                <el-tag type={scope.row.status ? "success" : "info"} size="mini">
-                  {scope.row.status ? "开启" : "停用"}
-                </el-tag>
-              </div>
-            );
-          }
-        },
-        {
-          label: "操作",
-          render: scope => {
-            return (
-              <div>
-                <el-button
-                  type="text"
-                  onClick={() => {
-                    this.handleUpdate(scope.row);
-                  }}
-                >
-                  修改
-                </el-button>
-                <el-button
-                  type="text"
-                  onClick={() => {
-                    this.handleDelete(scope.row.id);
-                  }}
-                >
-                  删除
-                </el-button>
-              </div>
-            );
-          }
-        }
-      ],
       tableKey: 0,
       list: [],
       total: 0,

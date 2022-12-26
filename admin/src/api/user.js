@@ -1,23 +1,13 @@
 import request from '@/utils/request'
 
-// export function login(data) {
-//   return request({
-//     url: '/admin/user/login',
-//     method: 'post',
-//     data,
-//   })
-// }
-
 export function login(data) {
+  console.log('data-', data);
   return request({
     url: '/auth/login',
     method: 'post',
     data,
   })
 }
-
-
-
 
 export function getInfo() {
   return request({

@@ -1,6 +1,6 @@
 export default {
   route: {
-    dashboard: '首页',
+    dashboard: '仪表盘',
     documentation: '文档',
     guide: '引导页',
     permission: '权限测试页',
@@ -65,11 +65,6 @@ export default {
     profile: '个人中心',
     listManagement: '列表管理',
     categoryManagement: '分类管理',
-
-    // sys
-    sys: '系统设置',
-    sysMenu: '菜单管理',
-    sysDict: '字典管理',
 
     // home
     home: '首页',

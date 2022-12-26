@@ -3,7 +3,6 @@ export { parseTime, formatTime } from "@/utils";
 
 /**
  * Show plural label if time is plural number
- * 如果时间为复数数字，则显示复数标签
  * @param {number} time
  * @param {string} label
  * @return {string}
@@ -46,7 +45,11 @@ export function numberFormatter(num, digits) {
   ];
   for (let i = 0; i < si.length; i++) {
     if (num >= si[i].value) {
-      return (num / si[i].value).toFixed(digits).replace(/\.0+$|(\.[0-9]*[1-9])0+$/, "$1") + si[i].symbol;
+      return (
+        (num / si[i].value)
+          .toFixed(digits)
+          .replace(/\.0+$|(\.[0-9]*[1-9])0+$/, "$1") + si[i].symbol
+      );
     }
   }
   return num.toString();
@@ -57,7 +60,9 @@ export function numberFormatter(num, digits) {
  * @param {number} num
  */
 export function toThousandFilter(num) {
-  return (+num || 0).toString().replace(/^-?\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ","));
+  return (+num || 0)
+    .toString()
+    .replace(/^-?\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ","));
 }
 
 /**
