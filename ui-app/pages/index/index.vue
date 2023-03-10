@@ -14,13 +14,16 @@
 		</view>
 
 		<view class="d-flex icon-list">
-			<view class="icon-item">
-				<image src="../../static/sy-icon/cs.png"></image>
-				<view>超市</view>
+			<view class="icon-item" v-for="(item, index) in iconList" :key="index">
+
+				<image @click="iconBtn(index)" :src="item.url"></image>
+				<view>{{ item.name }}</view>
+
+
 			</view>
 
-			<view class="icon-item">
-				<image src="../../static/sy-icon/cz.png"></image>
+			<!-- <view class="icon-item"> -->
+			<!-- 	<image src="../../static/sy-icon/cz.png"></image>
 				<view>充值</view>
 			</view>
 
@@ -37,7 +40,7 @@
 			<view class="icon-item">
 				<image src="../../static/sy-icon/wl.png"></image>
 				<view>物流</view>
-			</view>
+			</view> -->
 		</view>
 
 		<view class="d-flex product-list">
@@ -53,15 +56,19 @@
 		<!-- <cl-image size="150rpx" v-for="(item,index) in imgList" :key="index" :src="item.url" mode="aspectFill">
 
 		</cl-image> -->
+		
+		<pay v-if="isPay" />
 	</view>
 </template>
 
 <script>
 	import http from '@/common/utlis/request.js';
+	import { indexList } from '@/api/api.js'
 	// import require from 'require'
 	export default {
 		data() {
 			return {
+				isPay:false,
 				active: 'home',
 				imgList: [],
 				goodList: [],
@@ -84,28 +91,133 @@
 					{
 						url: '../../static/sy-icon/wl.png',
 						name: '物流'
-					}
+					},
+					{
+						url: '../../static/sy-icon/cs.png',
+						name: '超市'
+					},
+					{
+						url: '../../static/sy-icon/cz.png',
+						name: '充值'
+					},
+					{
+						url: '../../static/sy-icon/lq.png',
+						name: '礼券'
+					},
+					{
+						url: '../../static/sy-icon/sx.png',
+						name: '蔬菜'
+					},
+					{
+						url: '../../static/sy-icon/wl.png',
+						name: '物流'
+					},
 				],
 				list: ['/static/images/banner1.png', '/static/images/banner2.png', '/static/images/banner3.png']
 			};
 		},
 		onShow() {
 			console.log('页面显示1')
-			
+
 			this.init();
 		},
 
 		created() {
 			this.init();
-
+			this.initTwo()
 			console.log(this.$config.baseUrl, 'this.$config.baseUrl');
 		},
 		methods: {
+			async initTwo(){
+				let res = await indexList()
+			},
 			async init() {
 				this.getImgs(); // 取首页图
 				this.getGoods(); // 产品
 			},
-
+			iconBtn(index) {
+				console.log('index', index);
+				
+				if(index === 9){
+					// this.getUserInfo()
+					this.isPay = true
+				}
+			},
+				getUserInfo() {
+					return new Promise((resolve, reject) => {
+						uni.getUserProfile({
+							lang: 'zh_CN',
+							desc: '用户登录', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，
+							success: (res) => {
+								console.log(res, 'resss')
+								resolve(res.userInfo)
+							},
+							fail: (err) => {
+								reject(err)
+							}
+						})
+					})
+				},
+						
+				getLogin() {
+					return new Promise((resolve, reject) => {
+						uni.login({
+							success(res) {
+								console.log(res, 'res')
+								resolve(res)
+							},
+							fail: (err) => {
+								console.log(err, 'logoer')
+								reject(err)
+							}
+						})
+					})
+				},
+			 
+			   weixinLogin() {
+					let that = this;
+					uni.getProvider({
+						service: 'oauth',
+						success: function(res) {
+						   //支持微信、qq和微博等
+						   if (~res.provider.indexOf('weixin')) {
+								console.log(res, 'ress')
+								let userInfo = that.getUserInfo();
+								let loginRes = that.getLogin();
+								Promise.all([userInfo, loginRes]).then((result) =>{
+									let userInfo = result[0];
+									let loginRes = result[1];
+									let access_token = loginRes.authResult.access_token;
+									let openid = loginRes.authResult.openid;
+									let data = Object.assign(loginRes.authResult, userInfo);
+									that.$store.dispatch('Login', {
+											type: 'weixin',
+											url: that.url,
+											data
+									}).then(r => {
+											if (r == 'ok') {
+												uni.hideLoading()
+											}
+											}).catch(err => {
+												uni.hideLoading();
+												uni.showToast({
+												icon: 'none',
+												title: err
+											})
+										})
+									})
+			 
+									}
+								},
+					   fail: function(err) {
+							uni.hideLoading();
+							uni.showToast({
+							icon: 'none',
+							title: err
+							})
+						}
+				})
+			},
 			btnClick(type, data) {
 				switch (type) {
 					case 'detail':

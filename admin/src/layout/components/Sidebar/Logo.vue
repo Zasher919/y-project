@@ -7,11 +7,13 @@
         class="sidebar-logo-link"
         to="/"
       >
-        <img v-if="logo" :src="logo" class="sidebar-logo" />
-        <h1 v-else class="sidebar-title">{{ title }}</h1>
+        <!-- <img v-if="logo" :src="logo" class="sidebar-logo" /> -->
+        <!-- <h1 v-else class="sidebar-title">{{ title }}</h1> -->
+        <h1 class="sidebar-title">{{ title }}</h1>
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo" />
+        <!-- <img v-if="logo" :src="logo" class="sidebar-logo" />
+        <h1 class="sidebar-title">{{ title }}</h1> -->
         <h1 class="sidebar-title">{{ title }}</h1>
       </router-link>
     </transition>
@@ -19,22 +21,23 @@
 </template>
 
 <script>
-import logo from "@/assets/images/logo.png";
+import logo from '@/assets/images/logo.png'
 export default {
-  name: "SidebarLogo",
+  name: 'SidebarLogo',
   props: {
     collapse: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
-      title: "极倍 CMS",
-      logo: logo
-    };
-  }
-};
+      // title: "极倍 CMS",
+      title: '后台管理系统',
+      logo: logo,
+    }
+  },
+}
 </script>
 
 <style lang="scss" scoped>

@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'GiiBee CMS 管理系统',
+  title: '后台管理系统',
 
   /**
    * @type {boolean} true | false

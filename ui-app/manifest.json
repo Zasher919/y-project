@@ -13,7 +13,11 @@
             "autoclose" : true,
             "delay" : 0
         },
-        "modules" : {},
+        "modules" : {
+            "OAuth" : {},
+            "Maps" : {},
+            "Payment" : {}
+        },
         "distribute" : {
             "android" : {
                 "permissions" : [
@@ -43,7 +47,22 @@
             },
             "ios" : {},
             "sdkConfigs" : {
-                "ad" : {}
+                "ad" : {},
+                "oauth" : {
+                    "weixin" : {
+                        "appid" : "wxd4c6356695a9c536",
+                        "appsecret" : "a5194d50b2ce38665282c8bc47dc6864",
+                        "UniversalLinks" : ""
+                    }
+                },
+                "maps" : {},
+                "payment" : {
+                    "weixin" : {
+                        "__platform__" : [ "ios", "android" ],
+                        "appid" : "wxd4c6356695a9c536",
+                        "UniversalLinks" : ""
+                    }
+                }
             }
         }
     },
@@ -51,7 +70,10 @@
     "mp-weixin" : {
         "appid" : "wxd4c6356695a9c536",
         "setting" : {
-            "urlCheck" : false
+            "urlCheck" : false,
+            "es6" : true,
+            "postcss" : true,
+            "minified" : true
         },
         "usingComponents" : true
     },

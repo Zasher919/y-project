@@ -59,6 +59,7 @@
             }
             
         }
+        
     ],
 	"subPackages": [{
 			"root": "pages/demo/basic",

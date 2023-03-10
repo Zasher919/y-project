@@ -39,7 +39,8 @@ module.exports = {
     },
     proxy: {
       '/api': {
-        target: process.env.VUE_APP_BASE_HOST,
+        // target: process.env.VUE_APP_BASE_HOST,
+        target: 'http://localhost:7788/',
         pathRewrite: {
           // '^/api': '/'
         },
