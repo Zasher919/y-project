@@ -1,17 +1,23 @@
 <template>
 	<view>
-		<view class="swiper-box">
-			<view class="uni-margin-wrap">
-				<swiper class="swiper" circular :indicator-dots="true" :autoplay="true" :interval="3000"
-					:duration="500">
-					<swiper-item v-for="(item, index) in imgList" :key="index">
-						<view class="swiper-item uni-bg-red">
-							<image style="width: 100%;" :src="item.url" mode="aspectFill"></image>
-						</view>
-					</swiper-item>
-				</swiper>
+		
+		<view class="head-content">
+			<view class="content">
+				<cl-input
+					v-model="queryValue"
+					round
+					placeholder="3C数码"
+					prefix-icon="cl-icon-search"
+					@prefix-icon-tap="queryChcange"
+				></cl-input>
+			</view>
+			
+			<view class="swiper-box">
+				<cl-swiper :list="imgList" :autoplay="true"> </cl-swiper>
 			</view>
 		</view>
+
+	
 
 		<view class="d-flex icon-list">
 			<view class="icon-item" v-for="(item, index) in iconList" :key="index">
@@ -21,54 +27,38 @@
 
 
 			</view>
-
-			<!-- <view class="icon-item"> -->
-			<!-- 	<image src="../../static/sy-icon/cz.png"></image>
-				<view>充值</view>
-			</view>
-
-			<view class="icon-item">
-				<image src="../../static/sy-icon/lq.png"></image>
-				<view>礼券</view>
-			</view>
-
-			<view class="icon-item">
-				<image src="../../static/sy-icon/sx.png"></image>
-				<view>蔬菜</view>
-			</view>
-
-			<view class="icon-item">
-				<image src="../../static/sy-icon/wl.png"></image>
-				<view>物流</view>
-			</view> -->
 		</view>
 
 		<view class="d-flex product-list">
 			<view @click="btnClick('detail', v)" class="product-item" v-for="(v, i) in goodList" :key="i">
 				<image :src="v.url" mode=""></image>
-				<p>{{ v.name }}</p>
-			</view>
+				<view class="goods-title">{{ v.name }}</view>
 
-			<!-- <view class="product-item"></view> -->
+				<view class="item-footer">
+					<view class="goods-re">
+						￥<text>279.0</text>
+					</view>
+					<view class="nums">482人付款</view>
+				</view>
+			</view>
 		</view>
 
-		<!-- <img src="http://localhost:7788/uploads/68395781f3ff89e45d8be05a410bac601655890761396.jpg" alt="" srcset=""> -->
-		<!-- <cl-image size="150rpx" v-for="(item,index) in imgList" :key="index" :src="item.url" mode="aspectFill">
-
-		</cl-image> -->
-		
-		<pay v-if="isPay" />
 	</view>
 </template>
 
 <script>
-	import http from '@/common/utlis/request.js';
-	import { indexList } from '@/api/api.js'
-	// import require from 'require'
+	import {
+		indexList,
+		indexImgList
+	} from '@/api/api.js'
+	import {
+		baseUrl
+	} from '@/utils/config.js'
 	export default {
 		data() {
 			return {
-				isPay:false,
+				queryValue:'',
+				isPay: false,
 				active: 'home',
 				imgList: [],
 				goodList: [],
@@ -118,105 +108,60 @@
 		},
 		onShow() {
 			console.log('页面显示1')
-
-			this.init();
+			// this.init();
 		},
 
 		created() {
 			this.init();
-			this.initTwo()
-			console.log(this.$config.baseUrl, 'this.$config.baseUrl');
 		},
 		methods: {
-			async initTwo(){
-				let res = await indexList()
-			},
 			async init() {
-				this.getImgs(); // 取首页图
-				this.getGoods(); // 产品
+				let productList = await indexList()
+				let imgList = await indexImgList()
+				this.productListDispose(productList)
+				this.imgListDipose(imgList)
+			},
+			imgListDipose({
+				data
+			}) {
+				this.imgList = data
+					.filter(v => v.imgType === "2")
+					.map(v => ({
+						...v,
+						url: baseUrl + v.imgUrl
+					}))
+					.map(v =>
+						v.url.split('\\').join('/')
+					)
+
+				console.log('this.imgList', this.imgList);
+
+			},
+			productListDispose({
+				data
+			}) {
+				this.goodList = data
+					.map(v => ({
+						...v,
+						url: baseUrl + v.pic
+					}))
+					.map(v => ({
+						...v,
+						url: v.url.split('\\').join('/')
+					}));
+
+				console.log(this.goodList, 'this.goodList');
+			},
+			queryChcange(val){
+				console.log('val->',123);
 			},
 			iconBtn(index) {
 				console.log('index', index);
-				
-				if(index === 9){
+
+				if (index === 9) {
 					// this.getUserInfo()
 					this.isPay = true
 				}
-			},
-				getUserInfo() {
-					return new Promise((resolve, reject) => {
-						uni.getUserProfile({
-							lang: 'zh_CN',
-							desc: '用户登录', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，
-							success: (res) => {
-								console.log(res, 'resss')
-								resolve(res.userInfo)
-							},
-							fail: (err) => {
-								reject(err)
-							}
-						})
-					})
-				},
-						
-				getLogin() {
-					return new Promise((resolve, reject) => {
-						uni.login({
-							success(res) {
-								console.log(res, 'res')
-								resolve(res)
-							},
-							fail: (err) => {
-								console.log(err, 'logoer')
-								reject(err)
-							}
-						})
-					})
-				},
-			 
-			   weixinLogin() {
-					let that = this;
-					uni.getProvider({
-						service: 'oauth',
-						success: function(res) {
-						   //支持微信、qq和微博等
-						   if (~res.provider.indexOf('weixin')) {
-								console.log(res, 'ress')
-								let userInfo = that.getUserInfo();
-								let loginRes = that.getLogin();
-								Promise.all([userInfo, loginRes]).then((result) =>{
-									let userInfo = result[0];
-									let loginRes = result[1];
-									let access_token = loginRes.authResult.access_token;
-									let openid = loginRes.authResult.openid;
-									let data = Object.assign(loginRes.authResult, userInfo);
-									that.$store.dispatch('Login', {
-											type: 'weixin',
-											url: that.url,
-											data
-									}).then(r => {
-											if (r == 'ok') {
-												uni.hideLoading()
-											}
-											}).catch(err => {
-												uni.hideLoading();
-												uni.showToast({
-												icon: 'none',
-												title: err
-											})
-										})
-									})
-			 
-									}
-								},
-					   fail: function(err) {
-							uni.hideLoading();
-							uni.showToast({
-							icon: 'none',
-							title: err
-							})
-						}
-				})
 			},
 			btnClick(type, data) {
 				switch (type) {
@@ -273,22 +218,33 @@
 </script>
 
 <style lang="scss" scoped>
+	.head-content{
+		width: 100%;
+		margin: auto;
+		// background-color: palevioletred;
+		.content{
+			width: 96%;
+			margin: 10px auto 0;
+		}
+		
+		.swiper-box {
+			margin: 10px;
+		}
+	}
+	
+
 	.d-flex {
 		display: flex;
 		justify-content: space-between;
 		flex-wrap: wrap;
 	}
 
-	// .swiper-box{
-	// height: 240rpx;
-	// }
-
 	.icon-list {
 		margin-top: 20rpx;
 
 		.icon-item {
 			width: 20%;
-
+			padding: 10rpx 0;
 			height: 112rpx;
 			text-align: center;
 
@@ -313,15 +269,14 @@
 		.product-item {
 			box-sizing: border-box;
 			width: 50%;
-			height: 200rpx;
-			// border: 1px solid black;
-
 			text-align: center;
-			padding: 10rpx;
+			padding: 10px;
+
 
 			image {
+				border-radius: 10px;
 				width: 100%;
-				height: 70%;
+				height: 176px;
 			}
 
 			p {
@@ -331,17 +286,36 @@
 				overflow: hidden;
 			}
 
-			// margink;
-			// margin-left: -2px;
+			.goods-title {
+				padding: 9rpx 18rpx;
+				color: #323332;
+				font-size: 28rpx;
+				text-align: left;
+			}
+
+			.item-footer {
+
+				padding: 15rpx;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+
+				.goods-re {
+					color: #FB2B1C;
+					font-size: 24rpx;
+
+					text {
+						font-size: 34rpx;
+						font-weight: 600;
+					}
+				}
+
+				.nums {
+					color: #999999;
+					font-size: 22rpx;
+				}
+
+			}
 		}
-
-		// .product-item::nth-child(odd) {
-		// 	border-left: 1px solid black;
-		// }
-
-		// .z-suang{
-		// 	// background-color: red;
-		// 	border-left: -1px solid black;
-		// }
 	}
 </style>

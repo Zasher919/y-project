@@ -16,11 +16,11 @@ const httprequest = (url, options = {}) => {
 	};
 	header = handleHeader(header);
 	let data = options.data
-	console.log(data)
 	if (options.method == 'post') {
 		data.mchid = 'blindbox'
 	}
 	// let url = options.url
+	// console.log('baseUrl',baseUrl);
 	url = baseUrl + url
 	if (options.showLoad) {
 		uni.showLoading({
@@ -36,6 +36,7 @@ const httprequest = (url, options = {}) => {
 			data: data,
 			header,
 			success: (res) => {
+				console.log('11111111',res);
 				if (res.statusCode !== 200) {
 					const data = res.data
 					if (res.statusCode == '400' || res.statusCode == '500') {
@@ -56,7 +57,10 @@ const httprequest = (url, options = {}) => {
 				} else {
 					const result = res.data
 					const code = result.code
-
+					
+					resolve(res.data)
+					
+					return
 					if (!code) {
 						const result = res.data
 						resolve(res.data);

@@ -15,7 +15,7 @@ const { NODE_ENV } = process.env
 const baseHost = baseHosts[NODE_ENV] || {
   uploadPath: 'public/',
   baseHost: 'http://localhost:3000/',
-  // domain: 'www.giibee.com',
+  domain: 'www.giibee.com',
 }
 
 @UseGuards(JwtAuthGuardUser)
@@ -63,17 +63,18 @@ export class UploadController {
     upload.url = path.replace(baseHost.uploadPath, baseHost.baseHost)
     upload.fileName = filename
 
-    if (mimetype.includes('image')) {
-      // 图片上传增加水印功能
-      const text = baseHost.domain
-      jimp.read(path).then((image) => {
-        const { width, height } = image.bitmap
-        console.log(width, height)
-        jimp.loadFont(jimp.FONT_SANS_32_BLACK).then((font) => {
-          image.print(font, width - text.length * 20, height - 50, text).write(path)
-        })
-      })
-    }
+    //   // 图片上传增加水印功能
+    // if (mimetype.includes('image')) {
+    //   const text = baseHost.domain
+    
+    //   jimp.read(path).then((image) => {
+    //     const { width, height } = image.bitmap
+    //     console.log(width, height)
+    //     jimp.loadFont(jimp.FONT_SANS_32_BLACK).then((font) => {
+    //       image.print(font, width - text.length * 20, height - 50, text).write(path)
+    //     })
+    //   })
+    // }
 
     return upload
   }
