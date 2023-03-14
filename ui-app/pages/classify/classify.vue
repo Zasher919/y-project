@@ -1,379 +1,201 @@
 <template>
-	<view class="page-index">
-		<view class="header">
-			<image mode="aspectFill" src="@/static/icon/logo.png" class="logo" alt />
-			<view class="desc">简单易用的uni-app组件库</view>
+	<view class="box-content">
+		<view class="box-left">
+			<view class="left-item" :class="leftIndex === index ? 'item-active' : ''"
+				@click="btnClick('leftEnvClick', index)" v-for="(item, index) in leftList" :key="index">
+				{{ item }}
+			</view>
 		</view>
 
-		<view class="container">
-			<view class="group">
-				<view class="item" v-for="(item, index) in list" :key="index">
-					<text class="item__label">{{ item.label }}</text>
+		<view class="box-right">
+			<view class="right-head-swiper">
+				<cl-swiper :list="imgList" height="100%" radius="10px" :autoplay="true"> </cl-swiper>
+			</view>
 
-					<view class="item__container">
-						<view v-for="(item2, index2) in item.children" :key="index2" class="block" @tap="toDemo(item, item2)">
-							<text class="label">{{ item2.label }}</text>
-							<text class="cl-icon-arrow-right" v-if="item2.path"></text>
-							<text class="cl-icon-close" v-else></text>
+			<view class="item-list">
+				<view class="right-item" v-for="item in rightList" :key="item.key">
+					<view class="item-name">
+						{{ item.name }}
+					</view>
+
+					<view class="children-list" v-for="dump in item.children" :key="dump.key">
+
+						<view class="children-item-img">
+							<cl-image :src="dump.imgUrl" :size="['65px','65px']"></cl-image>
+						</view>
+						<view class="children-item-name">
+							{{ dump.name }}
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
-
-		<cl-toast ref="toast"></cl-toast>
 	</view>
 </template>
 
 <script>
-export default {
-	data() {
-		return {
-			list: [
-				{
-					label: 'Basic 基础组件',
-					key: 'basic',
-					children: [
-						{
-							label: 'Text 文本',
-							path: 'text'
-						},
-						{
-							label: 'Button 按钮',
-							path: 'button'
-						},
-						{
-							label: 'Input 输入框',
-							path: 'input'
-						},
-						{
-							label: 'Image 图片',
-							path: 'image'
-						},
-						{
-							label: 'Icon 图标',
-							path: 'icon'
-						},
-						{
-							label: 'Tag 标签',
-							path: 'tag'
-						},
-						{
-							label: 'Divider 分割线',
-							path: 'divider'
-						}
-					]
-				},
-				{
-					label: 'Feedback 反馈组件',
-					key: 'feedback',
-					children: [
-						{
-							label: 'Toast 提示',
-							path: 'toast'
-						},
-						{
-							label: 'Message 消息',
-							path: 'message'
-						},
-						{
-							label: 'Loading 加载',
-							path: 'loading'
-						}
-					]
-				},
-				{
-					label: 'Form 表单组件',
-					key: 'form',
-					children: [
-						{
-							label: 'Radio 单选框',
-							path: 'radio'
-						},
-						{
-							label: 'Switch 开关',
-							path: 'switch'
-						},
-						{
-							label: 'Checkbox 多选框',
-							path: 'checkbox'
-						},
-						{
-							label: 'Select 下拉框',
-							path: 'select'
-						},
-						{
-							label: 'SelectRegion 下拉城市',
-							path: 'select-region'
-						},
-						{
-							label: 'Upload 上传',
-							path: 'upload'
-						},
-						{
-							label: 'Rate 评分',
-							path: 'rate'
-						},
-						{
-							label: 'Rules 校验',
-							path: 'rules'
-						},
-						{
-							label: 'InputNumber 计数器',
-							path: 'input-number'
-						},
-						{
-							label: 'Textarea 文本域',
-							path: 'textarea'
-						}
-					]
-				},
-				{
-					label: 'Operate 操作',
-					key: 'operate',
-					children: [
-						{
-							label: 'LoadMore 页底提示',
-							path: 'loadmore'
-						},
-						{
-							label: 'Dialog 对话框',
-							path: 'dialog'
-						},
-						{
-							label: 'Confirm 确认框',
-							path: 'confirm'
-						},
-						{
-							label: 'ActionSheet 底部菜单',
-							path: 'action-sheet'
-						},
-						{
-							label: 'Search 搜索',
-							path: 'search'
-						}
-					]
-				},
-				{
-					label: 'Nav 导航组件',
-					key: 'nav',
-					children: [
-						{
-							label: 'Tabs 选项卡',
-							path: 'tabs'
-						},
-						{
-							label: 'Topbar 顶部导航',
-							path: 'topbar'
-						},
-						{
-							label: 'Tabbar 底部导航',
-							path: 'tabbar'
-						}
-					]
-				},
-				{
-					label: 'Layout 布局',
-					key: 'layout',
-					children: [
-						{
-							label: 'Flex 柔性',
-							path: 'flex'
-						},
-						{
-							label: 'Grid 宫格',
-							path: 'grid'
-						},
-						{
-							label: 'WaterFall 瀑布流',
-							path: 'waterfall'
-						},
-						{
-							label: 'List 列表',
-							path: 'list'
-						},
-						{
-							label: 'Card 卡片',
-							path: 'card'
-						},
-						{
-							label: 'Scroller 滚动区域',
-							path: 'scroller'
-						}
-					]
-				},
-				{
-					label: 'View 视图',
-					key: 'view',
-					children: [
-						{
-							label: 'Popup 弹出层',
-							path: 'popup'
-						},
-						{
-							label: 'Badge 角标',
-							path: 'badge'
-						},
-						{
-							label: 'Avatar 头像',
-							path: 'avatar'
-						},
-						{
-							label: 'CountDown 倒计时',
-							path: 'countdown'
-						},
-						{
-							label: 'NoticeBar 通知公告栏',
-							path: 'noticebar'
-						},
-						{
-							label: 'Progress 进度条',
-							path: 'progress'
-						},
-						{
-							label: 'Slider 滑块',
-							path: 'slider'
-						},
-						{
-							label: 'TimeLine 时间轴',
-							path: 'timeline'
-						},
-						{
-							label: 'Swiper 轮播图',
-							path: 'swiper'
-						}
-					]
-				},
-				{
-					label: 'Advanced 高级组件',
-					key: 'advanced',
-					children: [
-						{
-							label: 'Filter-Bar 筛选栏',
-							path: 'filter-bar'
-						},
-						{
-							label: 'Captcha 验证码输入框',
-							path: 'captcha'
-						},
-						{
-							label: 'Drag 拖动排序'
-						},
-						{
-							label: 'Canvas 画布',
-							path: 'canvas'
-						},
-						{
-							label: 'Cropper 图片裁剪',
-							path: 'cropper'
-						},
-						{
-							label: 'Ticket 优惠券'
-						},
-						{
-							label: 'Guide 操作引导',
-							path: 'guide'
-						},
-						{
-							label: 'RichText 富文本'
-						},
-						{
-							label: 'IndexList 索引列表',
-							path: 'list-index'
-						},
-						{
-							label: 'Calendar 日历',
-							path: 'calendar'
-						}
-					]
+	export default {
+		data() {
+			return {
+				leftIndex: 0,
+				imgList: ['http://localhost:7788/uploads/536e8a5c35ed932e1fd1484cebb5a0231678691736008.png',
+					'http://localhost:7788/uploads/536e8a5c35ed932e1fd1484cebb5a0231678691736008.png'
+				],
+				leftList: [
+					"推荐分类",
+					"生活超市",
+					"手机数码",
+					"家用电器",
+					"玩具乐器",
+					"家具加装",
+					"美妆护肤",
+				],
+				rightList: [{
+						name: '常用分类',
+						key: '1',
+						children: [{
+							key: '1-1',
+							imgUrl: 'http://localhost:7788/uploads/536e8a5c35ed932e1fd1484cebb5a0231678691736008.png',
+							name: '测试产品'
+						}]
+					},
+					{
+						name: '专场推荐',
+						key: '2',
+						children: [{
+								key: '2-1',
+								imgUrl: 'http://localhost:7788/uploads/536e8a5c35ed932e1fd1484cebb5a0231678691736008.png',
+								name: '测试产品'
+							},
+							{
+								key: '2-2',
+								imgUrl: 'http://localhost:7788/uploads/536e8a5c35ed932e1fd1484cebb5a0231678691736008.png',
+								name: '测试产品'
+							}
+						]
+					},
+					{
+						name: '热门分类',
+						key: '3',
+						children: [{
+								key: '3-1',
+								imgUrl: 'http://localhost:7788/uploads/536e8a5c35ed932e1fd1484cebb5a0231678691736008.png',
+								name: '测试产品'
+							},
+							{
+								key: '3-2',
+								imgUrl: 'http://localhost:7788/uploads/536e8a5c35ed932e1fd1484cebb5a0231678691736008.png',
+								name: '测试产品'
+							},
+							{
+								key: '3-3',
+								imgUrl: 'http://localhost:7788/uploads/536e8a5c35ed932e1fd1484cebb5a0231678691736008.png',
+								name: '测试产品'
+							}
+						]
+					},
+
+
+				]
+			};
+		},
+
+		onShareAppMessage() {
+			return {
+				title: `简单易用的uni-app组件库`,
+				path: '/pages/index/index'
+			};
+		},
+
+		methods: {
+			btnClick(type, data = null) {
+
+				switch (type) {
+					case 'leftEnvClick':
+						this.leftIndex = data
+						break;
+					default:
+						break;
 				}
-			]
-		};
-	},
-
-	onShareAppMessage() {
-		return {
-			title: `简单易用的uni-app组件库`,
-			path: '/pages/index/index'
-		};
-	},
-
-	methods: {
-		toDemo({ key }, item) {
-			if (item.path) {
-				uni.navigateTo({
-					url: `/pages/demo/${key}/${item.path}`
-				});
-			} else {
-				this.$refs['toast'].open(`${item.label}开发中`);
 			}
 		}
-	}
-};
+	};
 </script>
 
 <style lang="scss">
-page {
-	background-color: #fff;
-}
-
-.page-index {
-	padding-top: env(safe-area-inset-top);
-	padding-bottom: env(safe-area-inset-bottom);
-	.header {
-		padding: 20rpx 50rpx;
-
-		.logo {
-			height: 91rpx;
-			width: 397rpx;
-			margin: 20rpx 0;
-		}
-
-		.desc {
-			font-size: 28rpx;
-			color: #909ca2;
-			height: 50rpx;
-		}
-	}
-
-	.container {
-		padding: 20rpx 33rpx;
-		box-sizing: border-box;
+	.box-content {
+		display: flex;
+		height: 100vh;
 		width: 100%;
+		margin-right: 20px;
+		// overflow: hidden;
 
-		.item {
-			&__label {
-				display: inline-block;
-				height: 70rpx;
-				line-height: 70rpx;
-				width: 100%;
-				padding: 0 30rpx;
-				font-size: 28rpx;
-				color: #909ca2;
-				box-sizing: border-box;
+		// background-color: pink;
+		.box-left {
+			height: 100%;
+			width: 116px;
+			background-color: #F6F5F5;
+
+			.left-item {
+				display: flex;
+				height: 46px;
+				align-items: center;
+				justify-content: center;
+				color: #333333;
+				font-size: 14px;
+				width: 116px;
+				position: relative;
 			}
 
-			&__container {
-				.block {
-					display: flex;
-					align-items: center;
-					height: 80rpx;
-					padding: 0 30rpx;
-					margin-bottom: 30rpx;
-					font-size: 26rpx;
-					background-color: #f7f7f7;
-					border-radius: 80rpx;
+			.item-active {
+				color: #333333 !important;
+				font-size: 16px !important;
+				font-weight: 600;
+				background-color: #fff !important;
+				margin-right: 2px;
+			}
+		}
 
-					&:active {
-						background-color: #eee;
-					}
+		.box-right {
+			height: 100%;
+			width: 259px;
+			background-color: #fff;
 
-					.label {
-						flex: 1;
+			.right-head-swiper {
+				margin: 10px;
+				padding: 15px 16px 3px 16px;
+				height: 77px;
+				width: 220px;
+			}
+
+			.item-list {
+				.right-item{
+					display: block;
+					height: 135px;
+				}
+				.item-name {
+					padding: 18px 17px 0px 17px;
+					color: #333333;
+					font-size: 14px;
+					font-weight: bold;
+				}
+
+				.children-list {
+					text-align: center;
+					margin: 13px 8px 0px 8px;
+					float: left;
+
+					
+
+					.children-item-name {
+						color: #333333;
+						font-size: 12px;
 					}
 				}
+
 			}
+
+
 		}
 	}
-}
 </style>

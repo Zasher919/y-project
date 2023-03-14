@@ -33,34 +33,39 @@
 				"enablePullDownRefresh": false
 			}
 
-		}, {
+		},
+		{
+			"path": "pages/classify/demo",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		
+		},
+		{
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "登录",
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/productDetail/productDetail",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/myCollect/myCollect",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
 		}
-	    ,{
-            "path" : "pages/productDetail/productDetail",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/myCollect/myCollect",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        
-    ],
+
+	],
 	"subPackages": [{
 			"root": "pages/demo/basic",
 			"pages": [{

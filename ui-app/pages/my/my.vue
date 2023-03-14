@@ -1,6 +1,8 @@
 <template>
 	<view>
-		<view class="head-content"><image src="../../static/images/test.jpg" mode=""></image></view>
+		<view class="head-content">
+			<image src="../../static/images/test.jpg" mode=""></image>
+		</view>
 
 		<view class="opt-list">
 			<view @click="btn('myCollect')" class="opt-item">
@@ -13,8 +15,8 @@
 				<cl-icon class="icon" name="cl-icon-arrow-right"></cl-icon>
 			</view>
 
-			<view class="opt-item">
-				<p>我的快递</p>
+			<view @click="btn('myUi')" class="opt-item">
+				<p>我的组件</p>
 				<cl-icon class="icon" name="cl-icon-arrow-right"></cl-icon>
 			</view>
 
@@ -32,80 +34,83 @@
 </template>
 
 <script>
-export default {
-	data() {
-		return {};
-	},
-	async created() {
-		// let res = await this.$http('GET', 'api/about');
-	},
-	methods: {
-		btn(type) {
-			switch (type) {
-				case 'myCollect':
-					uni.navigateTo({
-						url: '/pages/myCollect/myCollect'
-					});
-					break;
-				case value:
-					break;
-				case value:
-					break;
-				default:
-					break;
+	export default {
+		data() {
+			return {};
+		},
+		async created() {
+			// let res = await this.$http('GET', 'api/about');
+		},
+		methods: {
+			btn(type) {
+				switch (type) {
+					case 'myCollect':
+						uni.navigateTo({
+							url: '/pages/myCollect/myCollect'
+						});
+						break;
+					case 'myUi':
+						console.log('111')
+						uni.navigateTo({
+							url: '/pages/classify/demo'
+						});
+						break;
+					case value:
+						break;
+					default:
+						break;
+				}
 			}
+			// weixinLo() {
+
+			// 	let that = this;
+			// 	wx.getUserProfile({
+			// 		desc: '业务需要',
+			// 		success: data => {
+			// 			let bbb = data
+			// 			wx.login({
+			// 				success: async (res) => {
+			// 					const code = res.code;
+			// 					const aaa = await that.$http('GET', 'api/wxlogin?code=' + code)
+			// 				},
+			// 			})
+			// 		}
+			// 	})
+
+			// }
 		}
-		// weixinLo() {
-
-		// 	let that = this;
-		// 	wx.getUserProfile({
-		// 		desc: '业务需要',
-		// 		success: data => {
-		// 			let bbb = data
-		// 			wx.login({
-		// 				success: async (res) => {
-		// 					const code = res.code;
-		// 					const aaa = await that.$http('GET', 'api/wxlogin?code=' + code)
-		// 				},
-		// 			})
-		// 		}
-		// 	})
-
-		// }
-	}
-};
+	};
 </script>
 
 <style scoped>
-.head-content {
-	width: 400rpx;
-	height: 400rpx;
-	text-align: center;
-	border-radius: 50%;
+	.head-content {
+		width: 400rpx;
+		height: 400rpx;
+		text-align: center;
+		border-radius: 50%;
 
-	overflow: hidden;
-	margin: 0 auto;
-}
+		overflow: hidden;
+		margin: 0 auto;
+	}
 
-.opt-list {
-}
+	.opt-list {}
 
-.opt-item {
-	width: 100%;
-	height: 80rpx;
+	.opt-item {
+		width: 100%;
+		height: 80rpx;
 
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 
-	border-bottom: 1px solid #f0f0f0;
-}
+		border-bottom: 1px solid #f0f0f0;
+	}
 
-.opt-item p {
-	padding-left: 30rpx;
-}
+	.opt-item p {
+		padding-left: 30rpx;
+	}
 
-.opt-item .icon {
-	padding-right: 20rpx;
-}
+	.opt-item .icon {
+		padding-right: 20rpx;
+	}
 </style>
