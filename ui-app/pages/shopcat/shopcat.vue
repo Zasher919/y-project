@@ -3,18 +3,19 @@
 		<view class="good-list">
 			<view class="good-item" v-for="(v, i) in goodList" :key="i">
 				<cl-checkbox-group @change="checkChange('radio', goods)" class="good-check" v-model="goods">
-					<cl-checkbox :label="v.id"></cl-checkbox>
+
+					<cl-checkbox :label="v.id" round></cl-checkbox>
 				</cl-checkbox-group>
 
 				<view class="good-img">
-					<image :src="v.productImg"></image>
+					<image :src="v.url"></image>
 				</view>
 				<view class="good-name">
-					<view class="good-item-name">{{ v.productName || '无' }}</view>
-					<view class="good-item-params">{{ v.productTag }}</view>
-					<view class="good-item-pic">
+					<view class="good-item-name">{{ v.name || '无' }}</view>
+					<view class="good-item-params">{{ v.price || 0 }}</view>
+					<view class="good-item-pic price">
 						<text>￥</text>
-						{{ v.productPrice }}
+						{{ v.price }}
 					</view>
 				</view>
 			</view>
@@ -22,10 +23,10 @@
 
 		<view class="footer-all">
 			<view class="footer-left">
-				
-			<cl-checkbox @change="checkChange('all', !allGoods)"  v-model="allGoods">全选</cl-checkbox>
-			
-			<text @click="del" style="font-size: 24rpx;margin-left:20rpx ;">删除</text>
+
+				<cl-checkbox @change="checkChange('all', !allGoods)" v-model="allGoods">全选</cl-checkbox>
+
+				<text @click="del" style="font-size: 24rpx;margin-left:20rpx ;">删除</text>
 			</view>
 			<view class="footer-right">
 				<view class="pic-count">
@@ -39,6 +40,13 @@
 </template>
 
 <script>
+	import {
+		indexList,
+		indexImgList
+	} from '@/api/api.js'
+	import {
+		baseUrl
+	} from '@/utils/config.js'
 	export default {
 		data() {
 			return {
@@ -58,7 +66,7 @@
 
 		onShow() {
 			console.log('页面显示2', )
-			
+
 			this.init()
 		},
 
@@ -66,43 +74,62 @@
 		created() {
 			//登录按钮触发的事件
 			// this.$forceUpdate();
-			uni.getStorage({
-				key: this.$config.token,
-				complete: function(res) {
+			// uni.getStorage({
+			// 	key: this.$config.token,
+			// 	complete: function(res) {
 
-					if (!res.data) {
-						uni.navigateTo({
-							url: '/pages/login/login'
-						});
-					}
-				}
-			});
-			uni.getStorage({
-				key: this.$config.userinfo,
-				complete: res => {
+			// 		if (!res.data) {
+			// 			uni.navigateTo({
+			// 				url: '/pages/login/login'
+			// 			});
+			// 		}
+			// 	}
+			// });
+			// uni.getStorage({
+			// 	key: this.$config.userinfo,
+			// 	complete: res => {
 
-					this.userinfo = res.data ? JSON.parse(res.data) : uni.navigateTo({
-						url: '/pages/login/login'
-					});;
-					this.init();
+			// 		this.userinfo = res.data ? JSON.parse(res.data) : uni.navigateTo({
+			// 			url: '/pages/login/login'
+			// 		});;
+			// 		this.init();
 
-				}
-			});
+			// 	}
+
+			// });
+
+			this.init();
+
 
 
 		},
 		computed: {
 			sumpic() {
 				return this.goodList.filter(v => this.goods.includes(v.id)).reduce((pre, cur) => Number(pre) + Number(cur
-					.productPrice), 0);
+					.price), 0);
 			}
 		},
 		methods: {
 			async init() {
-				let {
-					data
-				} = await this.$http('GET', 'api/h5/cart?userId=' + this.userinfo.id);
-				this.goodList = data;
+				let productList = await indexList()
+
+
+				this.productListDispose(productList)
+			},
+			productListDispose({
+				data
+			}) {
+				this.goodList = data
+					.map(v => ({
+						...v,
+						url: baseUrl + v.pic
+					}))
+					.map(v => ({
+						...v,
+						url: v.url.split('\\').join('/')
+					}));
+
+				console.log(this.goodList, 'this.goodList');
 			},
 			checkChange(type, data) {
 				switch (type) {
@@ -114,13 +141,15 @@
 						break;
 				}
 			},
-			async del(){
-				console.log('del',this.goods);
-				
+			async del() {
+				console.log('del', this.goods);
+
 				// return 
-				
-				let res = await this.$http('GET','api/h5/cart/del',{ids:this.goods.join()})
-				
+
+				let res = await this.$http('GET', 'api/h5/cart/del', {
+					ids: this.goods.join()
+				})
+
 			}
 		}
 	};
@@ -170,7 +199,7 @@
 				font-weight: 600;
 				font-size: 35rpx;
 				margin-top: 10rpx;
-				
+
 				width: 100%;
 				height: 40rpx;
 				overflow-y: hidden;
@@ -218,5 +247,11 @@
 				font-size: 30rpx;
 			}
 		}
+	}
+
+	.price {
+		color: #FC482F;
+		font-size: 15px;
+		font-weight: 600;
 	}
 </style>
