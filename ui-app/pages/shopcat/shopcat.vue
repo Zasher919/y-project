@@ -159,6 +159,9 @@
 	.page-cart {
 		position: relative;
 		// background: #f0f0f0;
+		.good-list{
+			padding-bottom: 50px;
+		}
 	}
 
 	.good-item {
